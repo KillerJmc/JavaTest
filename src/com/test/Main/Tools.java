@@ -169,4 +169,12 @@ public class Tools {
 	public static void shortNewLine() {
 		System.out.println("------------------------------------");
 	}
+
+	public static void tryThis(RunnableThrowsException r) {
+		try {
+			r.run();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

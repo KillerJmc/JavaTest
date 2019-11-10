@@ -179,6 +179,22 @@ public class TestNewDateAPI {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * 时间戳转LocalDateTime
+	 * long timestamp = System.currentTimeMillis();
+	 * Instant instant = Instant.ofEpochMilli(timestamp);
+	 * LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+	 */
+
+	/**
+	 * LocalDateTime转时间戳
+	 * LocalDateTime dateTime = LocalDateTime.now();
+	 * dateTime.toInstant(ZoneOffset.ofHours(8)).toEpochMilli();
+	 * dateTime.toInstant(ZoneOffset.of("+08:00")).toEpochMilli();
+	 * dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+	 */
+
 }
 
 

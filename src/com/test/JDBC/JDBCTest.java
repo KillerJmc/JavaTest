@@ -1,15 +1,18 @@
 package com.test.JDBC;
 
 import com.jmc.chatserver.CloseUtils;
-import com.sun.source.doctree.ThrowsTree;
 import com.test.Main.Tools;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Arrays;
 
 public class JDBCTest {
     public static void main(String[] args) throws Exception {
-        //batch();
-        select();
+        //clear();
+        enquireDates();
+        //select();
     }
 
     public static void connect() {
@@ -74,15 +77,21 @@ public class JDBCTest {
     }
 
     public static void select() throws Exception {
-        Connection conn = conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_jdbc?useSSL=false", "root", "123456");
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_jdbc?useSSL=false", "root", "123456");
 
         //select id, name, pwd from t_user where id>?
         String sql = "select * from t_user where id>?";
+
+        sql = "select * from t_user";
         PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setObject(1, 17);
+        //ps.setObject(1, 17);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-            System.out.println(rs.getInt(1) + "---" + rs.getString(2) + "---" + rs.getString(3));
+            System.out.println(rs.getInt(1) + " "
+                + rs.getString(2) + " "
+                + rs.getString(3) + " "
+                + rs.getDate(4) + " "
+                + rs.getTimestamp(5));
         }
         CloseUtils.closeAll(rs, ps, conn);
     }
@@ -95,8 +104,12 @@ public class JDBCTest {
     public static void batch() {
         Tools.milliTimer(() -> {
             Connection conn = conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_jdbc?useSSL=false", "root", "123456");
-            //设为手动提交
+            /**
+             * 设为手动提交（把执行之前的所有语句当成一个事务，某条执行失败可回滚，不会写入数据库）
+             * 而默认为自动递交，每条指令都是一个事务，不可回滚，都会尝试写入数据库
+             */
             conn.setAutoCommit(false);
+            //用Statement更保险，PreparedStatement可能会因为域空间问题出错
             var stm = conn.createStatement();
 
             for (int i = 0; i < 20000; i++) {
@@ -105,7 +118,116 @@ public class JDBCTest {
             stm.executeBatch();
             conn.commit();
             System.out.println("插入20000条数据");
+
+            CloseUtils.closeAll(stm, conn);
         });
     }
 
+    /**
+     * 事务：要么全部成功，要么全部失败。一个事务里有多条语句的时候，如果有执行失败的，会回滚到指令执行前的状态
+     */
+    public static void commit() {
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_jdbc?useSSL=false", "root", "123456");
+             var ps1 = conn.prepareStatement("insert into t_user(name, pwd) value(?, ?)");
+             //ps2执行失败会自动回滚
+             var ps2 = conn.prepareStatement("insert into t_user(name, pwd) value(?, ?, ?)")) {
+            conn.setAutoCommit(false);
+
+            ps1.setObject(1, "gaoqi");
+            ps1.setObject(2, "123456");
+            ps1.execute();
+            System.out.println("新建用户：gaoqi");
+
+            Tools.sleep(3000);
+
+            ps2.setObject(1, "马士兵");
+            ps2.setObject(2, "123456");
+            ps2.execute();
+            System.out.println("新建用户：马士兵");
+
+            //提交
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void date() {
+        Executor.exec("insert into t_user(name, pwd, regTime, lastLoginTime) value(?, ?, ?, ?)",
+            () -> Arrays.asList("gaoqi",
+                      "123456",
+                      new java.sql.Date(System.currentTimeMillis()),
+                      new java.sql.Timestamp((long)(System.currentTimeMillis() * 1.3))
+                  )
+        );
+        Executor.closeConn();
+    }
+
+    public static void moreDates() {
+        for (int i = 0; i < 1000; i++) {
+            long randTime = (long) (System.currentTimeMillis() * Math.random());
+            int finalI = i;
+            Executor.exec("insert into t_user(name, pwd, regTime, lastLoginTime) value(?, ?, ?, ?)",
+                    () -> Arrays.asList("gaoqi" + (finalI + 1),
+                            "123456",
+                            new java.sql.Date(randTime),
+                            new java.sql.Timestamp(randTime)
+                    )
+            );
+        }
+        Executor.closeConn();
+    }
+
+    /**
+     * 查询日期
+     */
+    public static void enquireDates() {
+
+        try (var conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_jdbc?useSSL=false", "root", "123456")) {
+            var ps = conn.prepareStatement("select * from t_user where regTime > ? and regTime < ?");
+            var start = new java.sql.Date(LocalDateTime.of(2018, 1, 8, 10, 23,35).toInstant(ZoneOffset.ofHours(8)).toEpochMilli());
+            var end = new java.sql.Date(LocalDateTime.of(2018, 6, 18, 10, 23,35).toInstant(ZoneOffset.ofHours(8)).toEpochMilli());
+
+            ps.setObject(1, start);
+            ps.setObject(2, end);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                System.out.println(rs.getInt(1) + " "
+                        + rs.getString(2) + " "
+                        + rs.getString(3) + " "
+                        + rs.getDate(4) + " "
+                        + rs.getTimestamp(5));
+            }
+
+            Tools.shortNewLine();
+
+            var ps2 = conn.prepareStatement("select * from t_user where lastLoginTime > ? and lastLoginTime < ? order by lastLoginTime");
+            var start2 = new Timestamp(LocalDateTime.of(2008, 1, 8, 10, 23,35).toInstant(ZoneOffset.ofHours(8)).toEpochMilli());
+            var end2 = new Timestamp(LocalDateTime.of(2008, 6, 18, 10, 23,35).toInstant(ZoneOffset.ofHours(8)).toEpochMilli());
+
+            ps2.setObject(1, start2);
+            ps2.setObject(2, end2);
+
+            ResultSet rs2 = ps2.executeQuery();
+            while (rs2.next()) {
+                System.out.println(rs2.getInt(1) + " "
+                        + rs2.getString(2) + " "
+                        + rs2.getString(3) + " "
+                        + rs2.getDate(4) + " "
+                        + rs2.getTimestamp(5));
+            }
+
+            //关闭
+            CloseUtils.closeAll(rs2, ps2, rs, ps);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void clear() {
+        Executor.simpleExec("truncate t_user");
+    }
 }
+
+
