@@ -1,8 +1,12 @@
 package com.test.JDBC;
 
 import com.jmc.chatserver.CloseUtils;
+import com.jmc.io.Streams;
 import com.test.Main.Tools;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -10,9 +14,9 @@ import java.util.Arrays;
 
 public class JDBCTest {
     public static void main(String[] args) throws Exception {
-        //clear();
-        enquireDates();
-        //select();
+        clear();
+        bigText();
+        select();
     }
 
     public static void connect() {
@@ -87,11 +91,21 @@ public class JDBCTest {
         //ps.setObject(1, 17);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-            System.out.println(rs.getInt(1) + " "
+            System.out.print(rs.getInt(1) + " "
                 + rs.getString(2) + " "
                 + rs.getString(3) + " "
                 + rs.getDate(4) + " "
-                + rs.getTimestamp(5));
+                + rs.getTimestamp(5) + " ");
+
+            //写rs.gerClob("description")也行
+            String clob = new String(Streams.read(rs.getClob(6).getAsciiStream()));
+            System.out.print("text（");
+            if (clob.length() > 20) {
+                System.out.print(clob.substring(0, 20) + "...");
+            } else {
+                System.out.print(clob);
+            }
+            System.out.print("）");
         }
         CloseUtils.closeAll(rs, ps, conn);
     }
@@ -103,7 +117,7 @@ public class JDBCTest {
      */
     public static void batch() {
         Tools.milliTimer(() -> {
-            Connection conn = conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_jdbc?useSSL=false", "root", "123456");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_jdbc?useSSL=false", "root", "123456");
             /**
              * 设为手动提交（把执行之前的所有语句当成一个事务，某条执行失败可回滚，不会写入数据库）
              * 而默认为自动递交，每条指令都是一个事务，不可回滚，都会尝试写入数据库
@@ -154,7 +168,8 @@ public class JDBCTest {
 
     public static void date() {
         Executor.exec("insert into t_user(name, pwd, regTime, lastLoginTime) value(?, ?, ?, ?)",
-            () -> Arrays.asList("gaoqi",
+            () -> Arrays.asList(
+                      "gaoqi",
                       "123456",
                       new java.sql.Date(System.currentTimeMillis()),
                       new java.sql.Timestamp((long)(System.currentTimeMillis() * 1.3))
@@ -223,6 +238,22 @@ public class JDBCTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void bigText() throws SQLException, FileNotFoundException {
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_jdbc?useSSL=false", "root", "123456");
+
+        var ps = conn.prepareStatement("insert into t_user(name, description) values(?, ?)");
+        ps.setString(1, "gaoqi");
+        //大数据！类型为text
+        //ps.setClob(2, new FileReader(Tools.getJavaFilePath(JDBCTest.class)));
+
+        //神奇的方法
+        ps.setClob(2, new InputStreamReader(new ByteArrayInputStream("Hello World!".getBytes())));
+
+        ps.executeUpdate();
+
+        CloseUtils.closeAll(ps, conn);
     }
 
     public static void clear() {

@@ -47,5 +47,6 @@ public class Executor {
 
     public static void closeConn() {
         Tools.tryThis(() -> conn.close());
+        conn = null;
     }
 }

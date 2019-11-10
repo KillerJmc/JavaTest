@@ -24,7 +24,7 @@ public class Streams {
 		} catch (Exception e) {
 			return null;
 		} finally {
-			CloseUtils.closeAll(in,out);
+			CloseUtils.closeAll(in, out);
 		}
 		
 		return out.toByteArray();
