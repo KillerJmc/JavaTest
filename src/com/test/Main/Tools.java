@@ -4,9 +4,6 @@ import com.jmc.decompile.ClassDecompile;
 import com.jmc.io.Files;
 
 import java.io.File;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,17 +11,17 @@ public class Tools {
 	public interface RunnableThrowsException {
 		void run() throws Exception;
 	}
-	public static String getJavaFilePath(Class<?> c) {
+	public static String getJavaPath(Class<?> c) {
 		return "src/"
 			   + c.getName().replace(".", "/")
 			   + ".java";
 	}
 
-	public static void writeFileToDesktop(byte[] b, String name) {
-		Files.outBytes(b, "C:/Users/Jmc/Desktop/" + name, true);
+	public static void writeFileToDesktop(byte[] b, String fileName) {
+		Files.outBytes(b, "C:/Users/Jmc/Desktop/" + fileName, true);
 	}
-	public static void writeFileToDesktop(String content, String name) {
-		writeFileToDesktop(content.getBytes(), name);
+	public static void writeFileToDesktop(String content, String fileName) {
+		writeFileToDesktop(content.getBytes(), fileName);
 	}
 
 	public static void copyToDesktop(File src) {
@@ -38,53 +35,32 @@ public class Tools {
 	}
 	
 	public static void copyJavaToDesktop(Class<?> c) {
-		copyToDesktop(getJavaFilePath(c));
+		copyToDesktop(getJavaPath(c));
 	}
 	
 	public static void copyClassToDesktop(Class<?> c) {
 		copyToDesktop(Files.findAny(".", c.getSimpleName() + ".class"));
 	}
+
+	public static String getDesktopFilePath(String fileName) {
+		return "C:/Users/Jmc/Desktop/" + fileName;
+	}
 	
-	public static String readFromDesktop(String name) {
-		return Files.read("C:/Users/Jmc/Desktop/" + name);
+	public static String readFromDesktop(String fileName) {
+		return Files.read(getDesktopFilePath(fileName));
 	}
 
-	public static String readHerePath(Class<?> c) {
+	public static String getJavaParentPath(Class<?> c) {
 		return "src/"
 				+ c.getPackageName().replace(".", "/") + "/";
 	}
 
-	public static String readFromHere(Class<?> c, String fileName) {
-		return Files.read(readHerePath(c) + fileName);
+	public static String getFilePath(Class<?> c, String fileName) {
+		return getJavaParentPath(c) + fileName;
 	}
 	
-	public static void backupToExtra() {
-		Files.basicDetails = false;
-		String root = "D:/电脑/Directly/";
-		if (!new File(root).exists()) {
-			System.out.println("未检测到U盘！");
-			return;
-		}
-		
-		String oldPath = root + "Eclipse/Workspace/JavaTest";
-		LocalDate createTime = Instant.ofEpochMilli(new File(oldPath).lastModified())
-			.atOffset(ZoneOffset.ofHours(8)).toLocalDate();
-		String zipPath = root + "Zips/JavaBackup/JavaTest_" + createTime + ".zip";
-		if(Files.zip(oldPath, zipPath)) {
-			Files.delete(oldPath);
-		} else {
-			System.out.println("创建zip失败！");
-			return;
-		}
-		
-		/**
-		 * 最新的工程文件夹
-		 */
-		String srcPath = "C:/Jmc/Eclipse/Workspace/JavaTest";
-		Files.copy(srcPath, root + "Eclipse/Workspace");
-		
-		System.out.println("Success!");
-		Files.basicDetails = true;
+	public static String readFile(Class<?> c, String fileName) {
+		return Files.read(getFilePath(c, fileName));
 	}
 	
 	public static void timer(RunnableThrowsException r) {
@@ -118,7 +94,7 @@ public class Tools {
 
 	public static void pushToUML(String UML_Name, Class<?> c) {
 		StringBuilder sb = new StringBuilder();
-		String path = readHerePath(c) + UML_Name + ".puml";
+		String path = getJavaParentPath(c) + UML_Name + ".puml";
 		sb.append("@startuml\n\n");
 		for (String cName : getClasses(c)) {
 			String str = null;
@@ -156,8 +132,8 @@ public class Tools {
 	}
 	private static List<String> getClasses(Class c) {
 		String packageName = c.getPackage().getName();
-		String path = Tools.readHerePath(c);
-		List<File> fs = Files.findToMap(path, (f) -> true).get("file");
+		String path = Tools.getJavaParentPath(c);
+		List<File> fs = Files.findToMap(path, (f) -> f.getName().endsWith(".java")).get("file");
 		return fs.stream()
 				 .map((f) -> packageName + "." + f.getName().replace(".java", ""))
 				 .collect(Collectors.toList());

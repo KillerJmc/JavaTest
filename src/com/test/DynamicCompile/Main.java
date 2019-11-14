@@ -8,7 +8,7 @@ import com.test.Main.Tools;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		String path = Tools.getJavaFilePath(HelloWorld.class);
+		String path = Tools.getJavaPath(HelloWorld.class);
 		compile(path);
 		compile1();
 	}

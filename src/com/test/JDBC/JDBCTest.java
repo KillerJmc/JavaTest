@@ -4,18 +4,17 @@ import com.jmc.chatserver.CloseUtils;
 import com.jmc.io.Streams;
 import com.test.Main.Tools;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class JDBCTest {
     public static void main(String[] args) throws Exception {
         clear();
-        bigText();
+        blob();
         select();
     }
 
@@ -97,15 +96,30 @@ public class JDBCTest {
                 + rs.getDate(4) + " "
                 + rs.getTimestamp(5) + " ");
 
-            //写rs.gerClob("description")也行
-            String clob = new String(Streams.read(rs.getClob(6).getAsciiStream()));
-            System.out.print("text（");
-            if (clob.length() > 20) {
-                System.out.print(clob.substring(0, 20) + "...");
-            } else {
-                System.out.print(clob);
+            //写rs.gerClob(6)也行
+            Clob c = rs.getClob("description");
+            if (c != null) {
+                String clob = new String(Objects.requireNonNull(Streams.read(c.getAsciiStream())));
+                System.out.print("clob（");
+                if (clob.length() > 20) {
+                    System.out.print(clob.substring(0, 20) + "...");
+                } else {
+                    System.out.print(clob);
+                }
+                System.out.print("）");
             }
-            System.out.print("）");
+
+            Blob b = rs.getBlob("headImg");
+            if (b != null) {
+                String blob = new String(Objects.requireNonNull(Streams.read(b.getBinaryStream())));
+                System.out.print("blob（");
+                if (blob.length() > 20) {
+                    System.out.print(blob.substring(0, 20) + "...");
+                } else {
+                    System.out.print(blob);
+                }
+                System.out.print("）");
+            }
         }
         CloseUtils.closeAll(rs, ps, conn);
     }
@@ -167,30 +181,31 @@ public class JDBCTest {
     }
 
     public static void date() {
-        Executor.exec("insert into t_user(name, pwd, regTime, lastLoginTime) value(?, ?, ?, ?)",
-            () -> Arrays.asList(
-                      "gaoqi",
-                      "123456",
-                      new java.sql.Date(System.currentTimeMillis()),
-                      new java.sql.Timestamp((long)(System.currentTimeMillis() * 1.3))
-                  )
+        JDBCUtil.exec("insert into t_user(name, pwd, regTime, lastLoginTime) value(?, ?, ?, ?)",
+            Arrays.asList(
+                    "gaoqi",
+                    "123456",
+                    new java.sql.Date(System.currentTimeMillis()),
+                    new java.sql.Timestamp((long)(System.currentTimeMillis() * 1.3))
+            )
         );
-        Executor.closeConn();
+        JDBCUtil.close();
     }
 
     public static void moreDates() {
         for (int i = 0; i < 1000; i++) {
             long randTime = (long) (System.currentTimeMillis() * Math.random());
             int finalI = i;
-            Executor.exec("insert into t_user(name, pwd, regTime, lastLoginTime) value(?, ?, ?, ?)",
-                    () -> Arrays.asList("gaoqi" + (finalI + 1),
-                            "123456",
-                            new java.sql.Date(randTime),
-                            new java.sql.Timestamp(randTime)
-                    )
+            JDBCUtil.exec("insert into t_user(name, pwd, regTime, lastLoginTime) value(?, ?, ?, ?)",
+                Arrays.asList(
+                        "gaoqi" + (finalI + 1),
+                        "123456",
+                        new java.sql.Date(randTime),
+                        new java.sql.Timestamp(randTime)
+                )
             );
         }
-        Executor.closeConn();
+        JDBCUtil.close();
     }
 
     /**
@@ -240,24 +255,40 @@ public class JDBCTest {
         }
     }
 
-    public static void bigText() throws SQLException, FileNotFoundException {
+    /**
+     * clob（Character Large Object）：储存大量文本信息
+     */
+    public static void clob() throws SQLException {
         Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_jdbc?useSSL=false", "root", "123456");
 
         var ps = conn.prepareStatement("insert into t_user(name, description) values(?, ?)");
         ps.setString(1, "gaoqi");
-        //大数据！类型为text
+        //大数据！类型为text（文本）
         //ps.setClob(2, new FileReader(Tools.getJavaFilePath(JDBCTest.class)));
 
         //神奇的方法
         ps.setClob(2, new InputStreamReader(new ByteArrayInputStream("Hello World!".getBytes())));
+        ps.executeUpdate();
 
+        CloseUtils.closeAll(ps, conn);
+    }
+
+    /**
+     * blob（Binary Large Object）：储存大量二进制信息
+     */
+    public static void blob() throws SQLException, FileNotFoundException {
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_jdbc?useSSL=false", "root", "123456");
+
+        var ps = conn.prepareStatement("insert into t_user(name, headImg) values(?, ?)");
+        ps.setString(1, "gaoqi");
+        ps.setBlob(2, new FileInputStream("./temp/head.jpg"));
         ps.executeUpdate();
 
         CloseUtils.closeAll(ps, conn);
     }
 
     public static void clear() {
-        Executor.simpleExec("truncate t_user");
+        JDBCUtil.simpleExec("truncate t_user");
     }
 }
 
