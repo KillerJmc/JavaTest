@@ -6,22 +6,20 @@ import com.test.Main.Tools;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Properties;
 
 public class JDBCUtil {
-    private static Connection conn;
-    private static Properties pros;
+    private  Connection conn;
+    private  Properties pros;
 
-    static {
+    public JDBCUtil(Class propertyPosition) {
         pros = new Properties();
-        Tools.tryThis(() -> {
-            pros.load(new FileInputStream(Tools.getFilePath(JDBCUtil.class, "db.properties")));
-        });
+        Tools.tryThis(() -> pros.load(new FileInputStream(Tools.getFilePath(propertyPosition, "db.properties"))));
     }
-
-    public static synchronized Connection getMySQLConn() {
+    
+    public synchronized Connection getMySQLConn() {
         if (conn == null) {
             try {
                 conn = DriverManager.getConnection(
@@ -36,26 +34,92 @@ public class JDBCUtil {
         return conn;
     }
 
-    public static void exec(String sql, List list) {
-        try (var ps = getMySQLConn().prepareStatement(sql)) {
-            for (int i = 1; i <= list.size(); i++) ps.setObject(i, list.get(i - 1));
-            ps.execute();
-            CloseUtils.closeAll(ps);
+    private String readRS(ResultSet rs) {
+        try {
+            int fieldCount = rs.getMetaData().getColumnCount();
+            var sb = new StringBuilder();
+
+            while (rs.next()) {
+                for (int i = 1; i <= fieldCount; i++) {
+                    Object o = rs.getObject(i);
+
+                    if (o == null) {
+                        sb.append("null ");
+                        continue;
+                    }
+
+                    if (o instanceof byte[]) {
+                        var bigText = new String((byte[]) o);
+                        sb.append("BigText（");
+                        if (bigText.length() > 20) {
+                            sb.append(bigText.substring(0, 20) + "...");
+                        } else {
+                            sb.append(bigText);
+                        }
+                        sb.append("）");
+                    } else {
+                        String content = o.toString();
+                        if (content.length() > 30) {
+                            sb.append("BigText（")
+                                    .append(content.substring(0, 20) + "...")
+                                    .append("） ");
+                        } else {
+                            sb.append(content + " ");
+                        }
+                    }
+                }
+                sb.append("\n");
+            }
+            CloseUtils.closeAll(rs);
+            return sb.toString();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+    
+    public String select(String tableName) {
+        try (var ps = getMySQLConn().prepareStatement("select * from " + tableName)) {
+            ResultSet rs = ps.executeQuery();
+            return readRS(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public static void simpleExec(String sql) {
+    public void exec(String sql) {
         try (var stm = getMySQLConn().createStatement()) {
             stm.execute(sql);
-            CloseUtils.closeAll(stm);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static void close() {
+    public ResultSet getResultSet(String sql, Object... params) {
+        try {
+            var ps = getMySQLConn().prepareStatement(sql);
+            for (int i = 1; i <= params.length; i++) ps.setObject(i, params[i - 1]);
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String execWithParams(String sql, Object... params) {
+        try (var ps = getMySQLConn().prepareStatement(sql)) {
+            for (int i = 1; i <= params.length; i++) ps.setObject(i, params[i - 1]);
+            ResultSet rs = ps.executeQuery();
+            return readRS(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void close() {
         Tools.tryThis(() -> conn.close());
         conn = null;
     }

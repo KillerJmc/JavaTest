@@ -4,25 +4,27 @@ import com.jmc.chatserver.CloseUtils;
 import com.jmc.io.Streams;
 import com.test.Main.Tools;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class JDBCTest {
+    private static JDBCUtil jdbcUtil = new JDBCUtil(JDBCTest.class);
+
     public static void main(String[] args) throws Exception {
-        clear();
-        blob();
-        select();
+        simpleSelect();
     }
 
     public static void connect() {
         //建立连接（禁用SSL） url格式：jdbc:mysql://host:post/database
         //这个连接比较耗时（利用Socket对象是远程连接，比较耗时，是管理的一个要点，为了提高效率，一般用连接池管理对象！）
         Tools.milliTimer(() -> {
-            Connection conn = conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_jdbc?useSSL=false", "root", "123456");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_jdbc?useSSL=false", "root", "123456");
             System.out.println(conn);
             System.out.println("建立连接");
             //记得关闭
@@ -54,7 +56,7 @@ public class JDBCTest {
      * @throws Exception
      */
     public static void preparedStatement() throws Exception {
-        Connection conn = conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_jdbc?useSSL=false", "root", "123456");
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_jdbc?useSSL=false", "root", "123456");
 
         //?占位符
         String sql = "insert into t_user(name, pwd) values(?, ?)";
@@ -159,7 +161,9 @@ public class JDBCTest {
              var ps1 = conn.prepareStatement("insert into t_user(name, pwd) value(?, ?)");
              //ps2执行失败会自动回滚
              var ps2 = conn.prepareStatement("insert into t_user(name, pwd) value(?, ?, ?)")) {
-            conn.setAutoCommit(false);
+
+            //设置手动递交将把多个事务合并为一个事务，全部成功或失败
+            //conn.setAutoCommit(false);
 
             ps1.setObject(1, "gaoqi");
             ps1.setObject(2, "123456");
@@ -174,38 +178,32 @@ public class JDBCTest {
             System.out.println("新建用户：马士兵");
 
             //提交
-            conn.commit();
+            //conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public static void date() {
-        JDBCUtil.exec("insert into t_user(name, pwd, regTime, lastLoginTime) value(?, ?, ?, ?)",
-            Arrays.asList(
-                    "gaoqi",
-                    "123456",
-                    new java.sql.Date(System.currentTimeMillis()),
-                    new java.sql.Timestamp((long)(System.currentTimeMillis() * 1.3))
-            )
+        jdbcUtil.execWithParams(
+            "insert into t_user(name, pwd, regTime, lastLoginTime) value(?, ?, ?, ?)",
+            "gaoqi", "123456",
+            new java.sql.Date(System.currentTimeMillis()),
+            new java.sql.Timestamp((long)(System.currentTimeMillis() * 1.3))
         );
-        JDBCUtil.close();
+        jdbcUtil.close();
     }
 
     public static void moreDates() {
         for (int i = 0; i < 1000; i++) {
             long randTime = (long) (System.currentTimeMillis() * Math.random());
             int finalI = i;
-            JDBCUtil.exec("insert into t_user(name, pwd, regTime, lastLoginTime) value(?, ?, ?, ?)",
-                Arrays.asList(
-                        "gaoqi" + (finalI + 1),
-                        "123456",
-                        new java.sql.Date(randTime),
-                        new java.sql.Timestamp(randTime)
-                )
+            jdbcUtil.execWithParams(
+                "insert into t_user(name, pwd, regTime, lastLoginTime) value(?, ?, ?, ?)",
+                "gaoqi" + (finalI + 1), "123456", new java.sql.Date(randTime), new java.sql.Timestamp(randTime)
             );
         }
-        JDBCUtil.close();
+        jdbcUtil.close();
     }
 
     /**
@@ -264,7 +262,7 @@ public class JDBCTest {
         var ps = conn.prepareStatement("insert into t_user(name, description) values(?, ?)");
         ps.setString(1, "gaoqi");
         //大数据！类型为text（文本）
-        //ps.setClob(2, new FileReader(Tools.getJavaFilePath(JDBCTest.class)));
+        //ps.setClob(2, new FileReader(Tools.getJavaPath(JDBCTest.class)));
 
         //神奇的方法
         ps.setClob(2, new InputStreamReader(new ByteArrayInputStream("Hello World!".getBytes())));
@@ -288,7 +286,11 @@ public class JDBCTest {
     }
 
     public static void clear() {
-        JDBCUtil.simpleExec("truncate t_user");
+        jdbcUtil.exec("truncate t_user");
+    }
+
+    public static void simpleSelect() {
+        System.out.println(jdbcUtil.select("t_user"));
     }
 }
 
