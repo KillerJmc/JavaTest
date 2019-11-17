@@ -1,4 +1,4 @@
-package com.ORM.JuniorORM;
+package com.test.ORM.JuniorORM;
 
 import java.sql.Date;
 

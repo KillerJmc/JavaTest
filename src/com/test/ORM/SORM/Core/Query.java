@@ -1,4 +1,4 @@
-package com.ORM.SORM.Core;
+package com.test.ORM.SORM.Core;
 
 import java.util.List;
 

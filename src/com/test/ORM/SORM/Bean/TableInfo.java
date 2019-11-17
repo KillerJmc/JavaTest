@@ -1,4 +1,4 @@
-package com.ORM.SORM.Bean;
+package com.test.ORM.SORM.Bean;
 
 import java.util.Map;
 

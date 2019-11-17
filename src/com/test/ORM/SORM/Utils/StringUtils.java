@@ -1,4 +1,4 @@
-package com.ORM.SORM.Utils;
+package com.test.ORM.SORM.Utils;
 
 /**
  * Package the regular operations of Strings.

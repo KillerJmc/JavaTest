@@ -1,4 +1,4 @@
-package com.ORM.SORM.Core;
+package com.test.ORM.SORM.Core;
 
 /**
  * Be responsible for getting and managing the relations

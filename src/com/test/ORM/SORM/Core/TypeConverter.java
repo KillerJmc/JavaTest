@@ -1,4 +1,4 @@
-package com.ORM.SORM.Core;
+package com.test.ORM.SORM.Core;
 
 /**
  * Be responsible for the conversion between data type and database data type

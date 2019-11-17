@@ -1,4 +1,4 @@
-package com.ORM.SORM.Core;
+package com.test.ORM.SORM.Core;
 
 /**
  * Keep the Management of the Connected Objects according to the configuration information.

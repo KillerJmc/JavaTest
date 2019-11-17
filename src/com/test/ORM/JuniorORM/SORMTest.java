@@ -5,7 +5,7 @@
  * 这样，我们在具体的操作数据库的时候，就不需要再去和复杂的SQL语句打交道，
  * 只要像平时操作对象一样操作它就可以了 。
  */
-package com.ORM.JuniorORM;
+package com.test.ORM.JuniorORM;
 
 import com.test.JDBC.JDBCUtil;
 
