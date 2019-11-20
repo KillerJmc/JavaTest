@@ -1,5 +1,8 @@
 package com.test.ORM.SORM.Bean;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,14 +22,18 @@ public class TableInfo {
 
     /**
      * The only primary key
-     * (we can deal with only one PriKey at the present)
      */
     private ColumnInfo onlyPriKey;
 
-    public TableInfo(String tName, Map<String, ColumnInfo> columns, ColumnInfo onlyPriKey) {
+    /**
+     * The primary keys
+     */
+    private List<ColumnInfo> priKeys;
+
+    public TableInfo(String tName, List<ColumnInfo> priKeys, Map<String, ColumnInfo> columns) {
         this.tName = tName;
+        this.priKeys = priKeys;
         this.columns = columns;
-        this.onlyPriKey = onlyPriKey;
     }
 
     public TableInfo() {
@@ -47,6 +54,14 @@ public class TableInfo {
 
     public void setColumns(Map<String, ColumnInfo> columns) {
         this.columns = columns;
+    }
+
+    public List<ColumnInfo> getPriKeys() {
+        return priKeys;
+    }
+
+    public void setPriKeys(List<ColumnInfo> priKeys) {
+        this.priKeys = priKeys;
     }
 
     public ColumnInfo getOnlyPriKey() {

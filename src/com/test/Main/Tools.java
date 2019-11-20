@@ -50,13 +50,21 @@ public class Tools {
 		return Files.read(getDesktopFilePath(fileName));
 	}
 
-	public static String getJavaParentPath(Class<?> c) {
+	public static String getJavaDirPath(Class<?> c) {
 		return "src/"
 				+ c.getPackageName().replace(".", "/") + "/";
 	}
 
+	public static File getJavaParentFile(Class<?> c) {
+		return new File(getJavaDirPath(c)).getParentFile();
+	}
+
+	public static String getJavaParentPath(Class<?> c) {
+		return getJavaParentFile(c).getAbsolutePath() + "/";
+	}
+
 	public static String getFilePath(Class<?> c, String fileName) {
-		return getJavaParentPath(c) + fileName;
+		return getJavaDirPath(c) + fileName;
 	}
 	
 	public static String readFile(Class<?> c, String fileName) {
@@ -94,7 +102,7 @@ public class Tools {
 
 	public static void pushToUML(String UML_Name, Class<?> c) {
 		StringBuilder sb = new StringBuilder();
-		String path = getJavaParentPath(c) + UML_Name + ".puml";
+		String path = getJavaDirPath(c) + UML_Name + ".puml";
 		sb.append("@startuml\n\n");
 		for (String cName : getClasses(c)) {
 			String str = null;
@@ -132,7 +140,7 @@ public class Tools {
 	}
 	private static List<String> getClasses(Class c) {
 		String packageName = c.getPackage().getName();
-		String path = Tools.getJavaParentPath(c);
+		String path = Tools.getJavaDirPath(c);
 		List<File> fs = Files.findToMap(path, (f) -> f.getName().endsWith(".java")).get("file");
 		return fs.stream()
 				 .map((f) -> packageName + "." + f.getName().replace(".java", ""))
