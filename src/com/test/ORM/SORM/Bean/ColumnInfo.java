@@ -12,7 +12,7 @@ public class ColumnInfo {
     private String name;
 
     /**
-     * The data type of the field
+     * The data type of the field in the database table
      */
     private String dataType;
 

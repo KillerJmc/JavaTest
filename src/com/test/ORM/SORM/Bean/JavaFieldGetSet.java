@@ -51,4 +51,11 @@ public class JavaFieldGetSet {
     public void setSetInfo(String setInfo) {
         this.setInfo = setInfo;
     }
+
+    @Override
+    public String toString() {
+        return "fieldInfo: \n" + fieldInfo
+                + "getInfo: \n" + getInfo
+                + "setInfo: \n" + setInfo;
+    }
 }
