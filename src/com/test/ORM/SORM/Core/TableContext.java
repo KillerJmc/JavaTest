@@ -1,7 +1,10 @@
 package com.test.ORM.SORM.Core;
 
+import com.test.Main.Tools;
 import com.test.ORM.SORM.Bean.ColumnInfo;
 import com.test.ORM.SORM.Bean.TableInfo;
+import com.test.ORM.SORM.Utils.JavaFileUtils;
+import com.test.ORM.SORM.Utils.TryUtils;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -9,6 +12,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.test.ORM.SORM.Utils.StringUtils.firstChar2UpperCase;
 
 /**
  * Be responsible for getting and managing the relations
@@ -23,11 +28,11 @@ public class TableContext {
      * value: table information object
      */
     public static Map<String, TableInfo>
-            tables = new HashMap<String,TableInfo>();
+            tables = new HashMap<>();
     /**
-     * Associate the po class Object with the table information Object, for easy reuse.
+     * Associate the Po class Object with the table information Object, for easy reuse.
      */
-    public static  Map<Class,TableInfo> poClassTableMap = new HashMap<>();
+    public static Map<Class, TableInfo> poClassTableMap = new HashMap<>();
 
     private TableContext(){
 
@@ -75,14 +80,38 @@ public class TableContext {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //update the class structure
+        updateJavaPoFile();
+
+        //load the all classes in the Po package for easy reuse and greater efficiency
+        loadPoTables();
     }
 
     public static Map<String, TableInfo> getTables() {
         return tables;
     }
 
-    public static void main(String[] args) {
-        Map<String,TableInfo>  tables = TableContext.getTables();
-        System.out.println(tables);
+    /**
+     * According to the table structure, update the Java Objects in the Po package.
+     */
+    public static void updateJavaPoFile() {
+        TableContext.getTables()
+                    .forEach((key, tableInfo) ->
+                            JavaFileUtils.createJavaPoFile(tableInfo, new MySQLConverter())
+                    );
+    }
+
+    /**
+     * Load the Classes in the Po package
+     */
+    public static void loadPoTables() {
+        tables.forEach((tableName, tableInfo) -> {
+            TryUtils.tryThis(() -> {
+                Class c = Class.forName(DBManager.getConf().getPoPackage() + "."
+                        + firstChar2UpperCase(tableName));
+                poClassTableMap.put(c, tableInfo);
+            });
+        });
     }
 }

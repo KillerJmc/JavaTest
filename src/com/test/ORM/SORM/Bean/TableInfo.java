@@ -1,7 +1,5 @@
 package com.test.ORM.SORM.Bean;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +15,8 @@ public class TableInfo {
 
     /**
      * The information of all fields
+     * key: columnName
+     * value: columnInfo
      */
     private Map<String, ColumnInfo> columns;
 

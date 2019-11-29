@@ -7,27 +7,27 @@ package com.test.ORM.SORM.Core;
 public class MySQLConverter implements TypeConverter {
     @Override
     public String databaseType2JavaType(String databaseDataType) {
-        if ("varchar".equals(databaseDataType) || "char".equals(databaseDataType)) {
+        if ("varchar".equalsIgnoreCase(databaseDataType) || "char".equalsIgnoreCase(databaseDataType)) {
             return "String";
-        } else if ("int".equals(databaseDataType) ||
-                "tinyint".equals(databaseDataType) ||
-                "smallint".equals(databaseDataType) ||
-                "integer".equals(databaseDataType)) {
+        } else if ("int".equalsIgnoreCase(databaseDataType) ||
+                "tinyint".equalsIgnoreCase(databaseDataType) ||
+                "smallint".equalsIgnoreCase(databaseDataType) ||
+                "integer".equalsIgnoreCase(databaseDataType)) {
             return "Integer";
-        } else if ("bigint".equals(databaseDataType)) {
+        } else if ("bigint".equalsIgnoreCase(databaseDataType)) {
             return "Long";
-        } else if ("double".equals(databaseDataType) ||
-                "float".equals(databaseDataType)) {
+        } else if ("double".equalsIgnoreCase(databaseDataType) ||
+                "float".equalsIgnoreCase(databaseDataType)) {
             return "Double";
-        } else if ("clob".equals(databaseDataType)) {
+        } else if ("clob".equalsIgnoreCase(databaseDataType)) {
             return "java.sql.Clob";
-        } else if ("blob".equals(databaseDataType)) {
+        } else if ("blob".equalsIgnoreCase(databaseDataType)) {
             return "java.sql.Blob";
-        } else if ("date".equals(databaseDataType)) {
+        } else if ("date".equalsIgnoreCase(databaseDataType)) {
             return "java.sql.Date";
-        } else if ("time".equals(databaseDataType)) {
+        } else if ("time".equalsIgnoreCase(databaseDataType)) {
             return "java.sql.Time";
-        } else if ("timestamp".equals(databaseDataType)) {
+        } else if ("timestamp".equalsIgnoreCase(databaseDataType)) {
             return "java.sql.TimeStamp";
         }
         return null;

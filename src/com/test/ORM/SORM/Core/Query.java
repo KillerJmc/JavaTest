@@ -28,7 +28,7 @@ public interface Query {
      * @param id primary key value
      */
     //specify 指定
-    void delete(Class c, int id);
+    void delete(Class c, Object id);
 
     /**
      * delete the record of an Object that is correspond to in the database.

@@ -11,6 +11,10 @@ public class Tools {
 	public interface RunnableThrowsException {
 		void run() throws Exception;
 	}
+	public interface RunnableThrowsAndReturn<T> {
+		T run() throws Exception;
+	}
+
 	public static String getJavaPath(Class<?> c) {
 		return "src/"
 			   + c.getName().replace(".", "/")
@@ -160,5 +164,14 @@ public class Tools {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static<T> T tryAndReturn(RunnableThrowsAndReturn<T> r) {
+		try {
+			return r.run();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

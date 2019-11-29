@@ -2,6 +2,7 @@ package com.test.ORM.SORM.Core;
 
 import com.test.Main.Tools;
 import com.test.ORM.SORM.Bean.Configuration;
+import com.test.ORM.SORM.Utils.TryUtils;
 
 import java.io.FileInputStream;
 import java.sql.Connection;
@@ -19,7 +20,7 @@ public class DBManager {
 
     static {
         var pros = new Properties();
-        Tools.tryThis(() -> pros.load(
+        TryUtils.tryThis(() -> pros.load(
             new FileInputStream(Tools.getJavaParentPath(DBManager.class) + "db.properties")));
         conf = new Configuration();
         conf.setPoPackage(pros.getProperty("poPackage"));
@@ -42,5 +43,12 @@ public class DBManager {
             e.printStackTrace();
         }
         return conn;
+    }
+
+    /**
+     * @return Configuration Object
+     */
+    public static Configuration getConf() {
+        return conf;
     }
 }
