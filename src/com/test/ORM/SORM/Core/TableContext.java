@@ -106,12 +106,10 @@ public class TableContext {
      * Load the Classes in the Po package
      */
     public static void loadPoTables() {
-        tables.forEach((tableName, tableInfo) -> {
-            TryUtils.tryThis(() -> {
-                Class c = Class.forName(DBManager.getConf().getPoPackage() + "."
-                        + firstChar2UpperCase(tableName));
-                poClassTableMap.put(c, tableInfo);
-            });
-        });
+        tables.forEach((tableName, tableInfo) -> TryUtils.tryThis(() -> {
+            Class c = Class.forName(DBManager.getConf().getPoPackage() + "."
+                    + firstChar2UpperCase(tableName));
+            poClassTableMap.put(c, tableInfo);
+        }));
     }
 }

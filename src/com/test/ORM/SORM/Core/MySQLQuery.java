@@ -1,14 +1,12 @@
 package com.test.ORM.SORM.Core;
 
-import com.test.Main.Tools;
 import com.test.ORM.SORM.Bean.ColumnInfo;
+import com.test.ORM.SORM.Po.Emp;
+import com.test.ORM.SORM.Utils.JDBCUtils;
 import com.test.ORM.SORM.Utils.ReflectUtils;
-import com.test.ORM.SORM.Utils.TryUtils;
 
-import java.lang.reflect.Method;
+import java.sql.SQLException;
 import java.util.List;
-
-import static com.test.ORM.SORM.Utils.StringUtils.firstChar2UpperCase;
 
 /**
  * Be responsible for MySQL database query.
@@ -17,7 +15,16 @@ import static com.test.ORM.SORM.Utils.StringUtils.firstChar2UpperCase;
 public class MySQLQuery implements Query {
     @Override
     public int executeDML(String sql, Object... params) {
-        return 0;
+        var conn = DBManager.getConn();
+        int count = 0;
+        try (var ps = conn.prepareStatement(sql)) {
+            JDBCUtils.handleParams(ps, params);
+            count = ps.executeUpdate();
+            System.out.println(ps);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
     }
 
     @Override
@@ -75,5 +82,11 @@ public class MySQLQuery implements Query {
     @Override
     public Number queryNumber(String sql, Object[] params) {
         return null;
+    }
+
+    public static void main(String[] args) {
+        Emp e = new Emp();
+        e.setId(4);
+        new MySQLQuery().delete(e);
     }
 }

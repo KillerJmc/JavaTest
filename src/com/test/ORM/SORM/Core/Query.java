@@ -33,7 +33,7 @@ public interface Query {
     /**
      * delete the record of an Object that is correspond to in the database.
      * (reflect)
-     * @param obj
+     * @param obj the Object whose correspond to its table
      */
     void delete(Object obj);
 

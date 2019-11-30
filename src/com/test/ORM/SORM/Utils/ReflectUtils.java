@@ -12,7 +12,7 @@ public class ReflectUtils {
     /**
      * Invoke the get fn of Object whose associate to the attribute (fieldName)
      * @param fieldName fieldName
-     * @param obj Object
+     * @param obj the Object that from the Po package
      * @return get result
      */
     public static Object invokeGet(String fieldName, Object obj) {
