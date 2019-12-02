@@ -15,11 +15,19 @@ public class ReflectUtils {
      * @param obj the Object that from the Po package
      * @return get result
      */
-    public static Object invokeGet(String fieldName, Object obj) {
+    public static Object invokeGet(Object obj, String fieldName) {
         return TryUtils.tryAndReturn(() -> {
             Class c = obj.getClass();
-            Method m = c.getMethod("get" + firstChar2UpperCase(fieldName), null);
+            Method m = c.getDeclaredMethod("get" + firstChar2UpperCase(fieldName), null);
             return m.invoke(obj, null);
+        });
+    }
+
+    public static void invokeSet(Object obj, String columnName, Object columnValue) {
+        TryUtils.tryThis(() -> {
+            Class c = obj.getClass();
+            Method m = c.getDeclaredMethod("set" + firstChar2UpperCase(columnName), columnValue.getClass());
+            m.invoke(obj, columnValue);
         });
     }
 }

@@ -1,13 +1,13 @@
 package com.test.Optional;
 
-public class Godness {
+public class Goddess {
 	private String name;
 
-	public Godness() {
+	public Goddess() {
 		super();
 	}
 	
-	public Godness(String name) {
+	public Goddess(String name) {
 		super();
 		this.name = name;
 	}

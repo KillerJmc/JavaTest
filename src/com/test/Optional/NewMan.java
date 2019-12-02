@@ -3,27 +3,27 @@ package com.test.Optional;
 import java.util.Optional;
 
 public class NewMan {
-	private Optional<Godness> godness = Optional.empty();
+	private Optional<Goddess> goddess = Optional.empty();
 
 	public NewMan() {
 		
 	}
 
-	public NewMan(Optional<Godness> godness) {
+	public NewMan(Optional<Goddess> goddess) {
 		super();
-		this.godness = godness;
+		this.goddess = goddess;
 	}
 
 	@Override
 	public String toString() {
-		return "NewMan [godness=" + godness + "]";
+		return "NewMan [godness=" + goddess + "]";
 	}
 
-	public Optional<Godness> getGodness() {
-		return godness;
+	public Optional<Goddess> getGoddess() {
+		return goddess;
 	}
 
-	public void setGodness(Optional<Godness> godness) {
-		this.godness = godness;
+	public void setGoddess(Optional<Goddess> goddess) {
+		this.goddess = goddess;
 	}
 }

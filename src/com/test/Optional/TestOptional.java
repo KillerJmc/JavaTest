@@ -25,15 +25,15 @@ public class TestOptional {
 
 	private static void test03() {
 		Optional<Employee> op = Optional.ofNullable(null);
-		
+
 		if (op.isPresent()) {
 			System.out.println(op.get());
 		}
-		
+
 		Employee emp = op.orElse(new Employee("张三", 28, 1000));
 		System.out.println(emp);
 		
-		Employee emp2 = op.orElseGet(() -> new Employee());
+		Employee emp2 = op.orElseGet(Employee::new);
 		System.out.println(emp2);
 	}
 	
@@ -49,19 +49,19 @@ public class TestOptional {
 	}
 	
 	private static void test05() {
-		System.out.println(getGodnessName(null));
-		System.out.println(getGodnessName2(null));
+		System.out.println(getGoddessName(null));
+		System.out.println(getGoddessName2(null));
 		
-		Man man = new Man(new Godness("Jmc"));
-		System.out.println(getGodnessName(man));
+		Man man = new Man(new Goddess("Jmc"));
+		System.out.println(getGoddessName(man));
 		
-		NewMan man2 = new NewMan(Optional.ofNullable(new Godness("Athur")));
-		System.out.println(getGodnessName2(man2));
+		NewMan man2 = new NewMan(Optional.ofNullable(new Goddess("Athur")));
+		System.out.println(getGoddessName2(man2));
 	}
 	
-	private static String getGodnessName(Man man) {
+	private static String getGoddessName(Man man) {
 		if (man != null) {
-			Godness gn = man.getGodness();
+			Goddess gn = man.getGoddess();
 			
 			if (gn != null) {
 				return gn.getName();
@@ -71,11 +71,11 @@ public class TestOptional {
 		return "比利海灵顿";
 	}
 	
-	private static String getGodnessName2(NewMan man) {
+	private static String getGoddessName2(NewMan man) {
 		return Optional.ofNullable(man)
 					   .orElse(new NewMan())
-					   .getGodness()
-					   .orElse(new Godness("香蕉君"))
+					   .getGoddess()
+					   .orElse(new Goddess("香蕉君"))
 					   .getName();
 	}
 }

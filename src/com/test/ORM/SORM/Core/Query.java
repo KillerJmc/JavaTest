@@ -17,6 +17,8 @@ public interface Query {
 
     /**
      * Insert an Object into database.
+     * (Insert only non-null fields of the Object to the database.
+     * And if the Number is null then insert 0)
      * @param obj the Object would be insert
      */
     void insert(Object obj);

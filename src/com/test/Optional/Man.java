@@ -1,27 +1,27 @@
 package com.test.Optional;
 
 public class Man {
-	private Godness godness;
+	private Goddess goddess;
 
 	public Man() {
 		
 	}
 
-	public Man(Godness godness) {
-		this.godness = godness;
+	public Man(Goddess goddess) {
+		this.goddess = goddess;
 	}
 	
-	public Godness getGodness() {
-		return godness;
+	public Goddess getGoddess() {
+		return goddess;
 	}
 
-	public void setGodness(Godness godness) {
-		this.godness = godness;
+	public void setGoddess(Goddess goddess) {
+		this.goddess = goddess;
 	}
 
 	@Override
 	public String toString() {
-		return "Man [godness=" + godness + "]";
+		return "Man [godness=" + goddess + "]";
 	}
 	
 }
