@@ -1,8 +1,6 @@
 package com.test.ORM.SORM.Core;
 
 import com.test.ORM.SORM.Bean.ColumnInfo;
-import com.test.ORM.SORM.Bean.TableInfo;
-import com.test.ORM.SORM.Po.Emp;
 import com.test.ORM.SORM.Utils.CloseUtils;
 import com.test.ORM.SORM.Utils.JDBCUtils;
 import com.test.ORM.SORM.Utils.ReflectUtils;
@@ -113,11 +111,10 @@ public class MySQLQuery implements Query {
         return executeDML(sql.toString(), params.toArray());
     }
 
-    @SuppressWarnings("all")
     @Override
     public List queryRows(String sql, Class c, Object... params) {
         var conn = DBManager.getConn();
-        var list = new ArrayList<Object>();
+        var list = new ArrayList<>();
 
         TryUtils.tryThis(() -> {
             var ps = conn.prepareStatement(sql);
@@ -127,6 +124,7 @@ public class MySQLQuery implements Query {
 
             //multi-lines
             while (rs.next()) {
+                @SuppressWarnings("unchecked")
                 Object rowObj = c.getDeclaredConstructor().newInstance();
 
                 //select name 'username' , pwd, age from emp where id=?, age>18
@@ -148,33 +146,32 @@ public class MySQLQuery implements Query {
     }
 
     @Override
-    public Object queryUniqueRow(String sql, Class c, Object[] params) {
-        return null;
+    public Object queryUniqueRow(String sql, Class c, Object... params) {
+        var list = queryRows(sql, c, params);
+        return list != null ? list.get(0) : null;
     }
 
     @Override
-    public Object queryValue(String sql, Object[] params) {
-        return null;
+    public Object queryValue(String sql, Object... params) {
+        var conn = DBManager.getConn();
+
+        return TryUtils.tryAndReturn(() -> {
+            var ps = conn.prepareStatement(sql);
+            JDBCUtils.handleParams(ps, params);
+            var rs = ps.executeQuery();
+            Object value = null;
+
+            while (rs.next()) {
+                value = rs.getObject(1);
+            }
+
+            CloseUtils.closeAll(rs, ps, conn);
+            return value;
+        });
     }
 
     @Override
-    public Number queryNumber(String sql, Object[] params) {
-        return null;
-    }
-
-    public static void main(String[] args) {
-        new MySQLQuery().queryRows("select id, name, age from emp where age>? and salary<?",
-                Emp.class, 10, 5000).forEach(System.out::println);
-    }
-
-    public static void testDML() {
-        Emp e = new Emp();
-        e.setId(1);
-        e.setName("LiDong");
-        e.setBirthday(new java.sql.Date(System.currentTimeMillis()));
-        e.setBonus(30.0);
-        e.setAge(29);
-        e.setSalary(21.0);
-        new MySQLQuery().update(e, "name", "age", "salary", "bonus");
+    public Number queryNumber(String sql, Object... params) {
+        return (Number) queryValue(sql, params);
     }
 }
