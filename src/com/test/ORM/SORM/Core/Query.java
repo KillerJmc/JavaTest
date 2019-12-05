@@ -15,7 +15,7 @@ import java.util.List;
  * Be responsible for query. (a core class for providing the external service)
  * @author Jmc
  */
-public abstract class Query {
+public abstract class Query implements Cloneable {
     /**
      * Adopt the TemplateMethod, package the JDBC operation into template, for easy reuse
      * @param sql sql Statement
@@ -240,4 +240,9 @@ public abstract class Query {
      * @return Object
      */
     public abstract Object queryPaginate(int pageNum, int lineAmount);
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

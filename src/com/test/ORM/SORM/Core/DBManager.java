@@ -29,6 +29,7 @@ public class DBManager {
         conf.setUrl(pros.getProperty("url"));
         conf.setUser(pros.getProperty("user"));
         conf.setPwd(pros.getProperty("pwd"));
+        conf.setQueryClass(pros.getProperty("queryClass"));
     }
 
     public static Connection getConn() {

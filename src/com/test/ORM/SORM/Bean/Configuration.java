@@ -31,13 +31,19 @@ public class Configuration {
     //持久化对象
     private String poPackage;
 
-    public Configuration(String url, String user, String pwd, String usingDB, String srcPath, String poPackage) {
+    /**
+     * The class used for database query.
+     */
+    private String queryClass;
+
+    public Configuration(String url, String user, String pwd, String usingDB, String srcPath, String poPackage, String queryClass) {
         this.url = url;
         this.user = user;
         this.pwd = pwd;
         this.usingDB = usingDB;
         this.srcPath = srcPath;
         this.poPackage = poPackage;
+        this.queryClass = queryClass;
     }
 
     public Configuration() {
@@ -90,5 +96,13 @@ public class Configuration {
 
     public void setPoPackage(String poPackage) {
         this.poPackage = poPackage;
+    }
+
+    public String getQueryClass() {
+        return queryClass;
+    }
+
+    public void setQueryClass(String queryClass) {
+        this.queryClass = queryClass;
     }
 }
