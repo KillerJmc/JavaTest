@@ -2,6 +2,7 @@ package com.test.ORM.SORM.Core;
 
 import com.test.Main.Tools;
 import com.test.ORM.SORM.Bean.Configuration;
+import com.test.ORM.SORM.Pool.DBCoonPool;
 import com.test.ORM.SORM.Utils.TryUtils;
 
 import java.io.FileInputStream;
@@ -16,7 +17,15 @@ import java.util.Properties;
  * @author Jmc
  */
 public class DBManager {
-    public static Configuration conf;
+    /**
+     * configuration Object
+     */
+    private static Configuration conf;
+
+    /**
+     * connection pool Object
+     */
+    private static DBCoonPool pool;
 
     static {
         var pros = new Properties();
@@ -30,9 +39,24 @@ public class DBManager {
         conf.setUser(pros.getProperty("user"));
         conf.setPwd(pros.getProperty("pwd"));
         conf.setQueryClass(pros.getProperty("queryClass"));
+        conf.setPoolMaxSize(Integer.parseInt(pros.getProperty("poolMaxSize")));
+        conf.setPoolMinSize(Integer.parseInt(pros.getProperty("poolMinSize")));
     }
 
+    /**
+     * Get the connection Object
+     * @return connection Object
+     */
     public static Connection getConn() {
+        if (pool == null) pool = new DBCoonPool();
+        return pool.getConnection();
+    }
+
+    /**
+     * Create a new connection
+     * @return connection Object
+     */
+    public static Connection createConn() {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(
@@ -47,9 +71,18 @@ public class DBManager {
     }
 
     /**
+     * Get the configuration Object
      * @return Configuration Object
      */
     public static Configuration getConf() {
         return conf;
+    }
+
+    /**
+     * Get the connection pool
+     * @return connection pool
+     */
+    public static DBCoonPool getPool() {
+        return pool;
     }
 }

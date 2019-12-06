@@ -31,7 +31,9 @@ public abstract class Query implements Cloneable {
             var rs = ps.executeQuery();
 
             Object o = back.doExecute(conn, ps, rs);
-            CloseUtils.closeAll(rs, ps, conn);
+            CloseUtils.closeAll(rs, ps);
+            //use connection pool to manage
+            DBManager.getPool().closeConnection(conn);
             return o;
         });
     }

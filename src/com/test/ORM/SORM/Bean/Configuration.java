@@ -36,7 +36,17 @@ public class Configuration {
      */
     private String queryClass;
 
-    public Configuration(String url, String user, String pwd, String usingDB, String srcPath, String poPackage, String queryClass) {
+    /**
+     * The max connection amount in the connection pool.
+     */
+    private int poolMaxSize;
+
+    /**
+     * The min connection amount in the connection pool.
+     */
+    private int poolMinSize;
+
+    public Configuration(String url, String user, String pwd, String usingDB, String srcPath, String poPackage, String queryClass, int poolMaxSize, int poolMinSize) {
         this.url = url;
         this.user = user;
         this.pwd = pwd;
@@ -44,6 +54,8 @@ public class Configuration {
         this.srcPath = srcPath;
         this.poPackage = poPackage;
         this.queryClass = queryClass;
+        this.poolMaxSize = poolMaxSize;
+        this.poolMinSize = poolMinSize;
     }
 
     public Configuration() {
@@ -104,5 +116,21 @@ public class Configuration {
 
     public void setQueryClass(String queryClass) {
         this.queryClass = queryClass;
+    }
+
+    public int getPoolMaxSize() {
+        return poolMaxSize;
+    }
+
+    public void setPoolMaxSize(int poolMaxSize) {
+        this.poolMaxSize = poolMaxSize;
+    }
+
+    public int getPoolMinSize() {
+        return poolMinSize;
+    }
+
+    public void setPoolMinSize(int poolMinSize) {
+        this.poolMinSize = poolMinSize;
     }
 }
