@@ -4,6 +4,9 @@
       <w>addr</w>
       <w>chatserver</w>
       <w>dbmd</w>
+      <w>depts</w>
+      <w>emps</w>
+      <w>inno</w>
       <w>jdbc</w>
       <w>jfgs</w>
       <w>objs</w>

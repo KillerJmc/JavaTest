@@ -16,7 +16,7 @@ public class JDBCUtil {
 
     public JDBCUtil(Class propertyPosition) {
         pros = new Properties();
-        Tools.tryThis(() -> pros.load(new FileInputStream(Tools.getFilePath(propertyPosition, "db.properties"))));
+        Tools.tryThis(() -> pros.load(new FileInputStream(Tools.getFilePath(propertyPosition, "com/test/ORM/SORM/db.properties"))));
     }
     
     public synchronized Connection getMySQLConn() {

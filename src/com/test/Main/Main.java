@@ -1,16 +1,14 @@
 package com.test.Main;
 
 public class Main {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		test();
 	}
 
-	private static void test() {
+	public static void test() throws Exception {
 
 	}
-
 }
-
 
 
 

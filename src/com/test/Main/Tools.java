@@ -54,6 +54,10 @@ public class Tools {
 		return Files.read(getDesktopFilePath(fileName));
 	}
 
+	/**
+	 * get Java Dir Path
+	 * Copied from com.test.Main.Tools
+	 */
 	public static String getJavaDirPath(Class<?> c) {
 		return "src/"
 				+ c.getPackageName().replace(".", "/") + "/";
