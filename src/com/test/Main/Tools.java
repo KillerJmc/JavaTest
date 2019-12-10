@@ -78,6 +78,10 @@ public class Tools {
 	public static String readFile(Class<?> c, String fileName) {
 		return Files.read(getFilePath(c, fileName));
 	}
+
+	public static void pushToFile(String src, Class<?> c, String fileName, boolean appendMode) {
+		Files.out(src, Tools.getFilePath(c, fileName), appendMode);
+	}
 	
 	public static void timer(RunnableThrowsException r) {
 		long startTime = System.currentTimeMillis();

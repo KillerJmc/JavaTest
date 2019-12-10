@@ -1,4 +1,4 @@
-package com.test.Annotation;
+package com.test.Annotation.knowledge;
 
 //{} can be bypassed if strs has an only element.
 @MyAnno(age = 12, per = Person.P1, anno2 = @MyAnno2, strs = {"sss", "ddd"})

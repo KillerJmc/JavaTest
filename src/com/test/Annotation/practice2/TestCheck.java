@@ -3,11 +3,8 @@ package com.test.Annotation.practice2;
 import com.jmc.io.Files;
 import com.test.Main.Tools;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 /**
- * 当主方法执行后，会自动检测加了@Check注解的所有方法，判断方法是否有异常，并记录到文件中
+ * 当主方法执行后，会自动检测加了@Check注解的所有方法，判断方法是否有异常，并记录到文件中。
  */
 @SuppressWarnings("all")
 public class TestCheck {
@@ -34,6 +31,6 @@ public class TestCheck {
         }
         sb.append("本次测试一共出现" + n + "次异常");
 
-        Files.out(sb.toString(), Tools.getFilePath(TestCheck.class, "log.txt"), false);
+        Tools.pushToFile(sb.toString(), TestCheck.class, "log.txt", false);
     }
 }

@@ -1,4 +1,4 @@
-package com.test.Annotation;
+package com.test.Annotation.knowledge;
 
 public class Teacher extends Worker {
 }

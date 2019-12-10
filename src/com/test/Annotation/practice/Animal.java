@@ -1,7 +1,7 @@
 package com.test.Annotation.practice;
 
-public class Animal1 {
+public class Animal {
     public void eat() {
-        System.out.println("Animal1 eat");
+        System.out.println("Animal eat");
     }
 }
