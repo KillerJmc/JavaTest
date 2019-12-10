@@ -2,6 +2,7 @@
   <dictionary name="Jmc">
     <words>
       <w>addr</w>
+      <w>anno</w>
       <w>chatserver</w>
       <w>dbmd</w>
       <w>depts</w>
@@ -11,6 +12,7 @@
       <w>jfgs</w>
       <w>objs</w>
       <w>sorm</w>
+      <w>strs</w>
       <w>tprivate</w>
       <w>ˈdezɪɡneɪtɪd</w>
     </words>
