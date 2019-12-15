@@ -106,7 +106,7 @@ public class Test {
 		Class c = cc.toClass();
 		Constructor cons = c.getConstructor(String.class,int.class);
 		Object o = cons.newInstance("Jmc",1234);
-		Method m = c.getDeclaredMethod("msg", null);
+		Method m = c.getDeclaredMethod("msg");
 		m.invoke(o);
 	}
 	
