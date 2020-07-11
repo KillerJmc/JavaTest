@@ -99,7 +99,7 @@ public class Test {
 		cc.addMethod(msg);
 		
 		//输出到文件
-		Files.outBytes(cc.toBytecode(), new File("temp/ThatIsGood.class"), false);
+		Files.out(cc.toBytecode(), new File("temp/ThatIsGood.class"), false);
 		cc.writeFile(new File("temp/").getAbsolutePath());
 		
 		//invoke

@@ -8,6 +8,6 @@ public class EncryptUtil {
 		for (int i = 0; i < in.length; i++) {
 			in[i] ^= 0xff; 
 		}
-		Files.outBytes(in, des, false);
+		Files.out(in, des, false);
 	}
 }

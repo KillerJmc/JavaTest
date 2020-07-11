@@ -22,7 +22,7 @@ public class Tools {
 	}
 
 	public static void writeFileToDesktop(byte[] b, String fileName) {
-		Files.outBytes(b, "C:/Users/Jmc/Desktop/" + fileName, true);
+		Files.out(b, "C:/Users/Jmc/Desktop/" + fileName, true);
 	}
 	public static void writeFileToDesktop(String content, String fileName) {
 		writeFileToDesktop(content.getBytes(), fileName);

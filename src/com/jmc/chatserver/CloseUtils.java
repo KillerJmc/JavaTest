@@ -1,7 +1,5 @@
 package com.jmc.chatserver;
 
-import java.io.*;
-
 /**
 * 功能: 关闭流
 *

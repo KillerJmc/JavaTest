@@ -121,7 +121,7 @@ public class RSAUtil {
 		return encryptedResultHandler(des);
 	}
 	public static boolean encrypt(byte[] b, String PUBLIC_KEY, String nStr, String desPath) {
-		return Files.outBytes(encrypt(b, PUBLIC_KEY, nStr), desPath, false);
+		return Files.out(encrypt(b, PUBLIC_KEY, nStr), desPath, false);
 	}
 	public static boolean encrypt(byte[] b, String PUBLIC_KEY, String nStr, File des) {
 		return encrypt(b, PUBLIC_KEY, nStr, des.getAbsolutePath());
@@ -131,7 +131,7 @@ public class RSAUtil {
 		return encrypt(b, getPublicKey(), getN());
 	}
 	public boolean encrypt(byte[] b, String desPath) {
-		return Files.outBytes(encrypt(b), desPath, false);
+		return Files.out(encrypt(b), desPath, false);
 	}
 	public boolean encrypt(byte[] b, File des) {
 		return encrypt(b, des.getAbsolutePath());
@@ -177,7 +177,7 @@ public class RSAUtil {
 		return mapToBytes(srcStrs.length);
 	}	
 	public static boolean decrypt(byte[] b, String PRIVATE_KEY, String nStr, String desPath) {
-		return Files.outBytes(decrypt(b, PRIVATE_KEY, nStr), desPath, false);
+		return Files.out(decrypt(b, PRIVATE_KEY, nStr), desPath, false);
 	}
 	public static boolean decrypt(byte[] b, String PRIVATE_KEY, String nStr, File des) {
 		return decrypt(b, PRIVATE_KEY, nStr, des.getAbsolutePath());
@@ -187,7 +187,7 @@ public class RSAUtil {
 		return decrypt(b, getPrivateKey(), getN());
 	}
 	public boolean decrypt(byte[] b, String desPath) {
-		return Files.outBytes(b, desPath, false);
+		return Files.out(b, desPath, false);
 	}
 	public boolean decrypt(byte[] b, File des) {
 		return decrypt(b, des.getAbsolutePath());
@@ -271,7 +271,7 @@ public class RSAUtil {
 			
 		Files.out(src, des, false);
 		String zipPath = des.getParent() + "/rsaEncryption.zip";
-		Files.zip(des, zipPath);
+		Files.zip(des, zipPath,false);
 		
 		byte[] b = Files.readToBytes(zipPath);
 		Files.delete(des.getParent());
@@ -297,7 +297,7 @@ public class RSAUtil {
 			 b[i] ^= 10;
 		 }
 		 
-		 Files.outBytes(b, des, false);
+		 Files.out(b, des, false);
 		 Files.unzip(des);
 		 
 		 String desStr = Files.read(des.getParent() + "/rsa.tmp");
