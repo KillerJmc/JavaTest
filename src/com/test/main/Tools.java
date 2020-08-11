@@ -153,7 +153,7 @@ public class Tools {
 	private static List<String> getClasses(Class c) {
 		String packageName = c.getPackage().getName();
 		String path = Tools.getJavaDirPath(c);
-		List<File> fs = Files.findToMap(path, (f) -> f.getName().endsWith(".java")).get("file");
+		List<File> fs = Files.findFiles(path, (f) -> f.getName().endsWith(".java"));
 		return fs.stream()
 				 .map((f) -> packageName + "." + f.getName().replace(".java", ""))
 				 .collect(Collectors.toList());

@@ -10,6 +10,7 @@
  *					2.removeAll方法改为StringBuilder编辑提高效率
  *      2020.5.1    开创stream模式
  *      2020.6.20   解决stream模式方法名称歧义
+ *      2020.8.6    添加encrypt和decrypt方法
  *
  * 功能: String类扩展
  *
@@ -214,4 +215,10 @@ public class Strs
 	public static String getLine(String src, int line) {
 		return getLines(src).get(line - 1);
 	}
+    
+    public static String xor(String src, int key) {
+        byte[] bs = src.getBytes();
+        for (int i = 0; i < bs.length; i++) bs[i] ^= key;
+        return new String(bs);
+    }
 }

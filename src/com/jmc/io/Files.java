@@ -59,6 +59,9 @@
  *		 2020.4.9    将Streams类的流与文件方法移动到本类
  *		 2020.4.17   添加按时间重命名方法
  *		 2020.4.20   完善移动方法，使其能兼容不同分区的移动
+ *       2020.8.7    1.添加findFiles和findDirs方法
+ *                   2.将findToMap方法改名为findAll
+ *                   3.删除findAll第一个参数为File的重载方法
  *
  */
 
@@ -93,7 +96,7 @@ public class Files
     private static List<File> dirList;
 	
     //高级搜索
-    public static Map<String,List<File>> findToMap(String path, FileFilter filter) {
+    public static Map<String,List<File>> findAll(String path, FileFilter filter) {
     	File src = new File(path);
     	if (!src.exists()) {
 			System.out.println("路径不存在！");
@@ -115,7 +118,7 @@ public class Files
     	
     	return map;
     }
-	public static Map<String, List<File>> findToMap(String path, final String... contains) {
+	public static Map<String, List<File>> findAll(String path, final String... contains) {
 		if (contains.length == 0) {
 			System.out.println("搜索参数不能为空！");
 			return null;
@@ -127,12 +130,23 @@ public class Files
 				return Strs.orContains(f.getName() ,contains);
 			}
 		};
-    	Files.findToMap(path, filter);
+    	Files.findAll(path, filter);
 		
 		return map;
 	}
-    public static Map<String, List<File>> findToMap(File dirFile, String... contains) {
-        return findToMap(dirFile.getAbsolutePath(), contains);
+    
+    public static List<File> findFiles(String path, FileFilter filter) {
+        return findAll(path, filter).get("file");
+    }
+    public static List<File> findFiles(String path, String... contains) {
+        return findAll(path, contains).get("file");
+    }
+    
+    public static List<File> findDirs(String path, FileFilter filter) {
+        return findAll(path, filter).get("dir");
+    }
+    public static List<File> findDirs(String path, String... contains) {
+        return findAll(path, contains).get("dir");
     }
 	
 	//搜索文件循环
@@ -155,7 +169,7 @@ public class Files
     	if (content == null) return null;
     	
     	long startTime = System.currentTimeMillis();
-    	Files.findToMap(path, content);
+    	Files.findAll(path, content);
     	StringBuilder sb = new StringBuilder();
 		
 		sb.append("文件夹：\n");
@@ -222,7 +236,7 @@ public class Files
 			return false;
 		}
 		
-		findToMap(dirPath, new FileFilter() {
+		findAll(dirPath, new FileFilter() {
 			@Override
 			public boolean accept(File f) {
 				return Strs.orContains(f.getName(), orContains);
@@ -1155,7 +1169,7 @@ public class Files
 		//开始输出
 		return out(src, des, appendMode);
 	}
-	
+    
 	//设置文件编码
 	public static void setEncoding(File src, String oldCharsetName, String newCharsetName) {
 		byte[] bs = new String(

@@ -11,7 +11,7 @@ import com.jmc.exception.*;
 
 public class Execute 
 {
-	public static String exec(String command) {
+	public static String execToStr(String command) {
 		//新建异常返回字串符
 		String exceptions = "";
 
@@ -68,4 +68,8 @@ public class Execute
 		//返回异常
 		return exceptions;
 	}
+    
+    public static void exec(String command) {
+        System.out.println(execToStr(command));
+    }
 }
