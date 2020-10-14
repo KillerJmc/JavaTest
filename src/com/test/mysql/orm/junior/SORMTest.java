@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class SORMTest {
-    private static JDBCUtil jdbcUtil = new JDBCUtil(SORMTest.class);
+    private static final JDBCUtil jdbcUtil = new JDBCUtil(SORMTest.class);
 
     public static void main(String[] args) throws SQLException {
         pushToObjs();

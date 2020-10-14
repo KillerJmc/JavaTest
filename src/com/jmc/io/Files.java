@@ -1,15 +1,15 @@
 /**
  * 作者: Jmc
- * 时间: 2019.1.12 
+ * 时间: 2019.1.12
  * 功能: 文件操作
- * 更新: 
+ * 更新:
  *       2019.1.25   1.增加“源文件是否为文件夹的判断”
  *                   2.优化提示信息
  *       2019.1.27   1.优化删除文件(删除一个有2100长文件夹只需38秒)
  *                   2.添加多线程
  *       2019.1.28   添加随机存储
  *       2019.1.29   添加大文件通道(删除原有随机存储)
- *       2019.1.31   根据设备彻底优化，从最大程度避免出错            
+ *       2019.1.31   根据设备彻底优化，从最大程度避免出错
  *       2019.2.2    1.加入zip压缩和解压
  *                   2.加入文件的移动和重命名
  *       2019.2.3    1.加入基础提示布尔值
@@ -62,6 +62,8 @@
  *       2020.8.7    1.添加findFiles和findDirs方法
  *                   2.将findToMap方法改名为findAll
  *                   3.删除findAll第一个参数为File的重载方法
+ *       2020.8.18   1.将所有返回布尔值的方法改为返回void且出错时直接抛出运行时异常
+ *                   2.添加deletes参数为文件列表的重载方法
  *
  */
 
@@ -107,9 +109,9 @@ public class Files
     		return null;
     	}
     	
-    	map = new HashMap<String, List<File>>();
-    	fileList = new LinkedList<File>();
-    	dirList = new LinkedList<File>();
+    	map = new HashMap<>();
+    	fileList = new LinkedList<>();
+    	dirList = new LinkedList<>();
     	
     	map.put("file", fileList);
     	map.put("dir", dirList);
@@ -136,7 +138,7 @@ public class Files
 	}
     
     public static List<File> findFiles(String path, FileFilter filter) {
-        return findAll(path, filter).get("file");
+        return Objects.requireNonNull(findAll(path, filter)).get("file");
     }
     public static List<File> findFiles(String path, String... contains) {
         return findAll(path, contains).get("file");
@@ -185,9 +187,9 @@ public class Files
 		}
 		
 		long endTime = System.currentTimeMillis();
-		sb.append("\n共搜索到\n" + dirList.size() + "个文件夹\n"
-				  + fileList.size() + "个文件"
-				  +"\n本次搜索耗时" + (int)(endTime - startTime) / 1000 + "秒\n");
+		sb.append("\n共搜索到\n").append(dirList.size()).append("个文件夹\n")
+		  .append(fileList.size()).append("个文件")
+		  .append("\n本次搜索耗时").append((int) (endTime - startTime) / 1000).append("秒\n");
 		
 		return sb.toString();
     }
@@ -230,10 +232,9 @@ public class Files
     }
 	
 	//“寻找并做”模板
-	private static boolean findDO(Runnable r, String dirPath, final String... orContains) {
+	private static void findDO(Runnable r, String dirPath, final String... orContains) {
 		if (orContains.length == 0) {
-			System.out.println("搜索字符不能为空！");
-			return false;
+			throw new RuntimeException("搜索字符不能为空！");
 		}
 		
 		findAll(dirPath, new FileFilter() {
@@ -250,67 +251,65 @@ public class Files
 		r.run();
 		
 		if (!modified) Files.basicDetails = true;
-		
-		return true;
 	}
 	
 	//寻找复制
-	public static boolean findCopies(String dirPath, final String desPath, String... orContains) {
-		return findDO(new Runnable() {
+	public static void findCopies(String dirPath, final String desPath, String... orContains) {
+		findDO(new Runnable() {
 			@Override
 			public void run() {
 				for (File f : fileList) copy(f, desPath);
 			}
 		}, dirPath, orContains);
 	}
-	public static boolean findCopies(File dirFile, String desPath, String... orContains) {
-		return findRenames(dirFile.getAbsolutePath(), desPath, orContains);
+	public static void findCopies(File dirFile, String desPath, String... orContains) {
+		findCopies(dirFile.getAbsolutePath(), desPath, orContains);
 	}
 	
 	//寻找移动
-	public static boolean findMoves(String dirPath, final String desPath, String... orContains) {
-		return findDO(new Runnable() {
+	public static void findMoves(String dirPath, final String desPath, String... orContains) {
+		findDO(new Runnable() {
 			@Override
 			public void run() {
 				for (File f : fileList) move(f, desPath);
 			}
 		}, dirPath, orContains);
 	}
-	public static boolean findMoves(File dirFile, String desPath, String... orContains) {
-		return findMoves(dirFile.getAbsolutePath(), desPath, orContains);
+	public static void findMoves(File dirFile, String desPath, String... orContains) {
+        findMoves(dirFile.getAbsolutePath(), desPath, orContains);
 	}
 	
 	//寻找重命名
-	public static boolean findRenames(String dirPath, final String newChar, final String... oldChars) {
-		return findDO(new Runnable() {
+	public static void findRenames(String dirPath, final String newChar, final String... oldChars) {
+		findDO(new Runnable() {
 			@Override
 			public void run() {
 				for (File f : fileList) rename(f, Strs.orReplace(f.getName(), newChar, oldChars));
 			}
 		}, dirPath, oldChars);
 	}
-	public static boolean findRenames(File dirFile, String newChar, String... oldChars) {
-		return findRenames(dirFile.getAbsolutePath(), newChar, oldChars);
+	public static void findRenames(File dirFile, String newChar, String... oldChars) {
+		findRenames(dirFile.getAbsolutePath(), newChar, oldChars);
 	}
 	
-	public static boolean findRename(String dirPath, String oldChar, String newChar) {
-		return findRenames(dirPath, newChar, oldChar);
+	public static void findRename(String dirPath, String oldChar, String newChar) {
+		findRenames(dirPath, newChar, oldChar);
 	}
-	public static boolean findRename(File dirFile, String oldChar, String newChar) {
-		return findRename(dirFile.getAbsolutePath(), oldChar, newChar);
+	public static void findRename(File dirFile, String oldChar, String newChar) {
+		findRename(dirFile.getAbsolutePath(), oldChar, newChar);
 	}
 	
 	//寻找删除
-	public static boolean findDels(String dirPath, String... orContains) {
-		return findDO(new Runnable() {
+	public static void findDels(String dirPath, String... orContains) {
+		findDO(new Runnable() {
 			@Override
 			public void run() {
 				for (File f : fileList) f.delete();
 			}
 		}, dirPath, orContains);
 	}
-	public static boolean findDels(File dirFile, String... orContains) {
-		return findDels(dirFile.getAbsolutePath(), orContains);
+	public static void findDels(File dirFile, String... orContains) {
+		findDels(dirFile.getAbsolutePath(), orContains);
 	}
 	
 	//按时间重命名
@@ -324,7 +323,7 @@ public class Files
 				return f.isFile();
 			}
 		});
-		
+
 		Arrays.sort(fs, new Comparator<File>() {
 			@Override
 			public int compare(File f1, File f2) {
@@ -454,12 +453,12 @@ public class Files
 		//文件名
 		String fileName = dirFile.getName();
 		//最小文件夹长度
-		Long MIN_Length = (long)(MIN_MB_SIZE * 1024 * 1024);
+		long MIN_Length = (long) (MIN_MB_SIZE * 1024 * 1024);
 		//长度
 		long length = 0;
 
 		for (int i = 0; i < depth; i++) sb.append("    ");
-		sb.append("├─" + dirFile.getName() + "\n");
+		sb.append("├─").append(dirFile.getName()).append("\n");
 
 		depth++;
 
@@ -472,7 +471,7 @@ public class Files
 			} else {
 				if (depth <= level && f.length() >= MIN_Length) {
 					for (int i = 0; i < depth; i++) sb.append("    ");
-					sb.append("├─" + f.getName() + "\n");
+					sb.append("├─").append(f.getName()).append("\n");
 
 					length += f.length();
 					//在换行前插入文件大小
@@ -524,11 +523,10 @@ public class Files
 	}
 	
     //复制文件
-    public static boolean copy(String source,String destination) {           
+    public static void copy(String source,String destination) {           
         //检查路径正确性
         if (source == null || destination == null) {
-            System.out.println("\n源路径和目标路径不能为空！\n");
-            return false;
+            throw new RuntimeException("\n源路径和目标路径不能为空！\n");
         }       
         
         //把反斜杠替换成斜杠
@@ -544,8 +542,7 @@ public class Files
         
         //深度检查路径正确性
         if (!src.exists()) {
-            System.out.println("\n源文件不存在，复制失败\n");
-            return false;
+            throw new RuntimeException("\n源文件不存在，复制失败\n");
         }             
                        
         //若在复制文件夹就加上文件夹名称
@@ -583,7 +580,7 @@ public class Files
   			try {
   				Thread.sleep(100);
   			} catch (InterruptedException e) {
-  				return false;
+  				throw new RuntimeException("线程池休眠间隔时出错！");
   			}
   		}	
   		
@@ -592,31 +589,27 @@ public class Files
 			if (showOperatingDetails) System.out.println();
   			System.out.println("耗时" + (double)((endTime - startTime) / 1000) + "秒，已完成\n");
   		}	
-  		
-		return true;
     }
-	public static boolean copy(File src, String destination) {
-		return copy(src.getAbsolutePath(),destination);
+	public static void copy(File src, String destination) {
+		copy(src.getAbsolutePath(),destination);
 	}
 	
 	//用追加模式复制
-	public static boolean copyUsingAppendMode(String source, String destination) {
+	public static void copyUsingAppendMode(String source, String destination) {
 		//追加模式
 		SmallCopyThread.appendMode = true;
 		LargeCopyThread.appendMode = true;
 		
 		//开始复制
-		boolean flag = copy(source, destination);
+		copy(source, destination);
 		
 		//复制结束后关闭追加模式
 		SmallCopyThread.appendMode = false;
 		LargeCopyThread.appendMode = false;
 		
-		//返回
-		return flag;
 	}
-	public static boolean copyUsingAppendMode(File src, String destination) {
-		return copyUsingAppendMode(src.getAbsolutePath(),destination);
+	public static void copyUsingAppendMode(File src, String destination) {
+		copyUsingAppendMode(src.getAbsolutePath(),destination);
 	}
        
     //复制文件循环
@@ -650,13 +643,12 @@ public class Files
     }
     
     //移动文件
-    public static boolean move(String srcPath, String desPath) {
+    public static void move(String srcPath, String desPath) {
         //创建源文件
         File src = new File(srcPath);
         //判断源文件是否存在
-        if (srcPath == null || !src.exists()) {
-            System.out.println("\n源文件不存在\n");
-            return false;
+        if (!src.exists()) {
+            throw new RuntimeException("\n源文件不存在\n");
         }        
         
         //目标路径最后加上斜杠
@@ -682,9 +674,8 @@ public class Files
 			if (des.exists()) {
 				delete(srcPath);
 			} else {
-				System.out.println("\n移动失败！");
-				basicDetails = flag;
-				return false;
+                basicDetails = flag;
+				throw new RuntimeException("\n移动失败！");
 			}
 			basicDetails = flag;
 		}
@@ -694,26 +685,22 @@ public class Files
             System.out.println("\n成功将 " + src.getName() 
                                + " 移动到 " + parent.getName() + " 文件夹!\n");
         }
-       
-		return true;
     }
-	public static boolean move(File src, String desPath) {
-		return move(src.getAbsolutePath(),desPath);
+	public static void move(File src, String desPath) {
+		move(src.getAbsolutePath(), desPath);
 	}
 	
     //重命名文件
-    public static boolean rename(String filePath, String newName) {
+    public static void rename(String filePath, String newName) {
         //创建源文件
         File file = new File(filePath);
         //判断源文件是否存在
-        if (filePath == null || !file.exists()) {
-            System.out.println("\n源文件不存在\n");
-            return false;
+        if (!file.exists()) {
+            throw new RuntimeException("\n源文件不存在\n");
         }
         //判断新名称是否存在
         if (newName == null || "".equals(newName)) {
-            System.out.println("\n新名称不存在\n");
-            return false;
+            throw new RuntimeException("\n新名称不存在\n");
         }
         
         //创建目标路径(原路径)
@@ -729,21 +716,18 @@ public class Files
         if(basicDetails) {
             System.out.println("\n成功将 \"" + file.getName() + "\" 重命名为 \"" + newName + "\"\n");
         }
-		
-		return true;
     }
-	public static boolean rename(File src, String newName) {
-		return rename(src.getAbsolutePath(),newName);
+	public static void rename(File src, String newName) {
+		rename(src.getAbsolutePath(),newName);
 	}
     
     //删除文件
-    public static boolean delete(String path) {
+    public static void delete(String path) {
         File f = new File(path);
 		
         //判断要删除的文件是否存在
         if (!f.exists()) {
-            System.out.println("\n要删除的文件不存在！\n");
-            return false;
+            throw new RuntimeException("\n要删除的文件不存在！\n");
         }
 		
         //记录开始时间
@@ -762,13 +746,14 @@ public class Files
         if(basicDetails) {
             System.out.println("\n耗时" + (double)((endTime - startTime) / 1000) + "秒，已完成\n");
         }
-		
-		return true;
     }
-	public static boolean delete(File src) {
-		return delete(src.getAbsolutePath());
+	public static void delete(File src) {
+		delete(src.getAbsolutePath());
 	}
-	public static boolean deletes(File... fs) {
+    public static void deletes(List<File> list) {
+        deletes(list.toArray(new File[0]));
+    }
+	public static void deletes(File... fs) {
 		boolean modified = false;
 		if (basicDetails) basicDetails = false;
 		else modified = true;
@@ -776,8 +761,6 @@ public class Files
 		for (File f : fs) delete(f);
 
 		if (!modified) Files.basicDetails = true;
-		
-		return true;
 	}
 	
     //删除文件循环
@@ -795,15 +778,12 @@ public class Files
     }
 	
     //压缩文件(zip)
-    public static boolean zip(String srcPath,String zipPath, boolean storeMode) {    
-		//返回的布尔值
-		boolean flag = true;
+    public static void zip(String srcPath,String zipPath, boolean storeMode) {    
         //创建源文件
         File src = new File(srcPath);
         //检查路径
         if (srcPath == null || !src.exists()) {
-            System.out.println("\n源文件不存在\n");
-            return false;
+            throw new RuntimeException("\n源文件不存在\n");
         }
         
         //创建目标zip文件
@@ -819,7 +799,7 @@ public class Files
 			out = new ZipOutputStream(
 				new FileOutputStream(zip));
 		} catch (FileNotFoundException e) {
-			return false;
+            throw new RuntimeException("创建zip输出流失败！");
 		}
 		//按照用户需求设置是否为储存模式
 		if (storeMode) out.setMethod(ZipOutputStream.STORED);
@@ -832,13 +812,13 @@ public class Files
             + " 这个" + (src.isFile() ? "文件\n" : "文件夹\n"));
             
         //开始zip创建循环
-        flag = zipLoop(out,src,src.getName(), storeMode);       
+        zipLoop(out,src,src.getName(), storeMode);       
         
         //关闭zip输出流
         try {
 			out.close();
 		} catch (IOException e) {
-			return false;
+			throw new RuntimeException("zip输出流关闭失败！");
 		}
 
   		if(basicDetails) {
@@ -846,30 +826,27 @@ public class Files
 			if (showOperatingDetails) System.out.println();
   			System.out.println("耗时" + (double)((endTime - startTime) / 1000) + "秒，已完成\n");
   		}	
-		
-		//返回
-		return flag;
     }
-	public static boolean zip(File src, String zipPath, boolean storeMode) {
-		return zip(src.getAbsolutePath(), zipPath, storeMode);
+	public static void zip(File src, String zipPath, boolean storeMode) {
+		zip(src.getAbsolutePath(), zipPath, storeMode);
 	}
     
     //压缩文件创建到本目录
-    public static boolean zip(String srcPath, boolean storeMode) {
+    public static void zip(String srcPath, boolean storeMode) {
         //声明原路径
         File src = new File(srcPath);
         //zip生成路径为源路径
         String zipPath = src.getParent()
             + "/" + src.getName() + ".zip";
         //zip开始创建
-        return zip(srcPath, zipPath, storeMode);
+        zip(srcPath, zipPath, storeMode);
     }
-	public static boolean zip(File src, boolean storeMode) {
-		return zip(src.getAbsolutePath(), storeMode);
+	public static void zip(File src, boolean storeMode) {
+		zip(src.getAbsolutePath(), storeMode);
 	}
 
     //zip创建循环
-    private static boolean zipLoop(ZipOutputStream out, File f, String root, boolean storeMode) {
+    private static void zipLoop(ZipOutputStream out, File f, String root, boolean storeMode) {
         //若f是一个文件夹
         if (f.isDirectory()) {
             //展开f
@@ -918,22 +895,20 @@ public class Files
 				out.putNextEntry(entry);
 			} catch (IOException e) {
 				e.printStackTrace();
-				return false;
+                throw new Error("重大异常！");
 			}
 			//输出文件到zip流
             out(f, out, false);
         }
-		return true;
     }
     
     //解压文件(zip)
-    public static boolean unzip(String zipPath, String desPath) {
+    public static void unzip(String zipPath, String desPath) {
         //创建源文件
         File src = new File(zipPath);
         //判断是否存在
         if (!src.exists()) {
-            System.out.println("\nzip文件不存在!\n");
-            return false;
+            throw new RuntimeException("\nzip文件不存在!\n");
         }
         
         //在目标路径最后加上斜杠
@@ -944,7 +919,7 @@ public class Files
 		try {
 			zip = new ZipFile(src);
 		} catch (IOException e) {
-			return false;
+			throw new RuntimeException("ZipFile对象创建失败！");
 		}
 
         //创建entries数组
@@ -987,7 +962,7 @@ public class Files
   			try {
   				Thread.sleep(100);
   			} catch (InterruptedException e) {
-  				return false;
+                throw new RuntimeException("线程池休眠间隔时出错！");
   			}
   		}	
         
@@ -995,7 +970,7 @@ public class Files
 		try {
 			zip.close();
 		} catch (IOException e) {
-			return false;
+            throw new RuntimeException("zipFile关闭时出错！");
 		}
 		
   		if(basicDetails) {
@@ -1003,24 +978,22 @@ public class Files
 			if (showOperatingDetails) System.out.println();
   			System.out.println("耗时" + (double)((endTime - startTime) / 1000) + "秒，已完成\n");
   		}
-       
-		return true;
     }
-	public static boolean unzip(File zip, String desPath) {
-		return unzip(zip.getAbsolutePath(), desPath);
+	public static void unzip(File zip, String desPath) {
+		unzip(zip.getAbsolutePath(), desPath);
 	}
     
     //解压文件到本目录
-    public static boolean unzip(String zipPath) {
+    public static void unzip(String zipPath) {
         //声明原zip路径
         File zip = new File(zipPath);
         //zip父目录为解压目录
         String desPath = zip.getParent();
-        //zip开始创建
-        return unzip(zipPath,desPath);
+        //zip开始解压
+        unzip(zipPath, desPath);
     }
-	public static boolean unzip(File zip) {
-		return unzip(zip.getAbsolutePath());
+	public static void unzip(File zip) {
+		unzip(zip.getAbsolutePath());
 	}
 	
 	//读取到byte数组
@@ -1049,13 +1022,10 @@ public class Files
 	
 	//读取
 	public static String read(File src, String srcCharsetName) {
-		//开始读取
-		String result = new String(
+    	//返回结果
+		return new String(
 			readToBytes(src), Charset.forName(srcCharsetName)
 		);
-
-		//返回结果
-		return result;
 	}
 	public static String read(String path, String srcCharsetName) {
 		//创建源文件
@@ -1105,10 +1075,9 @@ public class Files
 	}
 	
 	//输出byte数组
-	public static boolean out(byte[] b, File des, boolean appendMode) {
+	public static void out(byte[] b, File des, boolean appendMode) {
 		if (b == null) {
-			System.out.println("数组为空！");
-			return false;
+			throw new RuntimeException("数组为空！");
 		}
 		
 		//创建目标文件父目录
@@ -1126,48 +1095,45 @@ public class Files
 			//关闭流
 			out.close();
 		} catch (IOException e) {
-			return false;
+			throw new RuntimeException("输出流写入失败！");
 		}
-		
-		return true;
 	}
-	public static boolean out(byte[] b, String desPath, boolean appendMode) {
+	public static void out(byte[] b, String desPath, boolean appendMode) {
 		//创建目标文件
 		File des = new File(desPath);
 
 		//开始输出
-		return out(b, des, appendMode);
+		out(b, des, appendMode);
 	}
 	
 	//输出字串符
-	public static boolean out(String src, File des, String desCharsetName, boolean appendMode) {
+	public static void out(String src, File des, String desCharsetName, boolean appendMode) {
 		//若字符串为空
 		if (src == null | "".equals(src)) {
-			System.out.println("字符串为空！");
-			return false;
+			throw new RuntimeException("字符串为空！");
 		}
 		
 		//开始输出
-		return out(src.getBytes(Charset.forName(desCharsetName)), des, appendMode);
+		out(src.getBytes(Charset.forName(desCharsetName)), des, appendMode);
 	}
-	public static boolean out(String src, String desPath, String desCharsetName, boolean appendMode) {
+	public static void out(String src, String desPath, String desCharsetName, boolean appendMode) {
 		//创建目标文件
 		File des = new File(desPath);
 		
 		//开始输出
-		return out(src, des, desCharsetName, appendMode);
+		out(src, des, desCharsetName, appendMode);
 	}
 	
 	//默认输出
-	public static boolean out(String src, File des, boolean appendMode) {
-		return out(src, des, Charset.defaultCharset().name(), appendMode);
+	public static void out(String src, File des, boolean appendMode) {
+        out(src, des, Charset.defaultCharset().name(), appendMode);
 	}
-	public static boolean out(String src, String desPath, boolean appendMode) {
+	public static void out(String src, String desPath, boolean appendMode) {
 		//创建目标文件
 		File des = new File(desPath);
 		
 		//开始输出
-		return out(src, des, appendMode);
+		out(src, des, appendMode);
 	}
     
 	//设置文件编码
@@ -1238,14 +1204,14 @@ public class Files
 	//小文件复制通道
 	private static class SmallCopyThread implements Runnable {   
 		//要复制的文件
-		private File src;
+		private final File src;
 		//目标路径
-		private File des;
+		private final File des;
 		//两个文件流
 		private FileInputStream in;
 		private FileOutputStream out;
 		//临时数组
-		private byte[] b = new byte[8192];
+		private final byte[] b = new byte[8192];
 		//追加模式
 		private static boolean appendMode = false;
 
@@ -1283,11 +1249,11 @@ public class Files
 	//Zip输出通道
 	private static class ZipOutputThread implements Runnable {
 		//zip文件
-		private ZipFile zip;
+		private final ZipFile zip;
 		//临时目标文件
-		private File des;
+		private final File des;
 		//entry
-		private ZipEntry entry;
+		private final ZipEntry entry;
 		//两个缓冲文件流
 		private InputStream in;
 		private FileOutputStream out;

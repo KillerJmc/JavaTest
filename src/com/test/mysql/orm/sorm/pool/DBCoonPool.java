@@ -55,7 +55,7 @@ public class DBCoonPool {
     }
 
     /**
-     * Get a connection from the connection pool
+     * Return a connection to the connection pool
      * @param conn connection
      */
     public synchronized void closeConnection(Connection conn) {

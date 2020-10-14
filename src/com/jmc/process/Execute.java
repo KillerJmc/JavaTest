@@ -9,7 +9,7 @@ package com.jmc.process;
 import java.io.*;
 import com.jmc.exception.*;
 
-public class Execute 
+public class Execute
 {
 	public static String execToStr(String command) {
 		//新建异常返回字串符

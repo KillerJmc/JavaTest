@@ -12,33 +12,13 @@ import java.lang.reflect.*;
 
 public class ClassDecompile
 {
-    //配置文件路径
-    private static String path = "/sdcard/class.properties";
-    
     //构造方法
     public ClassDecompile() {}
-    public ClassDecompile(String path) {
-        this.path = path;
-    }
     
     //反编译
-    public static String decompile(String... className) throws Exception {
-        
-        //类名
-        String str;     
-        //类名参数为空时通过properties文件获取
-        if (className.length == 0) {
-            Properties ps = new Properties();           
-            FileInputStream fis = new FileInputStream(path);
-            ps.load(fis);
-            fis.close();
-            str = ps.getProperty("className");
-        } else {
-            str = className[0];
-        }
-
+    public static String decompile(String className) throws Exception {
         //实现类
-        Class c = Class.forName(str);
+        Class c = Class.forName(className);
 
         //实现接口数组,参数数组,构造方法数组和方法数组
         Class[] ins = c.getInterfaces();

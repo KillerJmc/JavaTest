@@ -11,7 +11,7 @@ public class SerializationTest {
     }
 
     private static void backup() throws Exception {
-        var path = Tools.getFilePath(SerializationTest.class, "A.bak");
+        var path = Tools.getPath(SerializationTest.class) + "A.bak";
         var oos = new ObjectOutputStream(new FileOutputStream(path));
         for (int i = 0; i < 10; i++) {
             oos.writeObject(new A(i));
@@ -20,7 +20,7 @@ public class SerializationTest {
     }
 
     private static void recover() throws Exception {
-        var path = Tools.getFilePath(SerializationTest.class, "A.bak");
+        var path = Tools.getPath(SerializationTest.class) + "A.bak";
         var ois = new ObjectInputStream(new FileInputStream(path));
         for (int i = 0; i < 10; i++) {
             System.out.println(ois.readObject());

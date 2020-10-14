@@ -6,6 +6,7 @@
  */
 package com.test.apply.linux;
 
+import com.jmc.io.Files;
 import com.test.main.Tools;
 
 public class TestLL {
@@ -13,8 +14,8 @@ public class TestLL {
 		test();
 	}
 	
-	private static void test() {	
-		String src = Tools.readFile(TestLL.class, "test.txt");
+	private static void test() {
+		String src = Files.read(Tools.getPath(TestLL.class) + "test.txt");
 		int index = src.indexOf("\n");
 		
 		System.out.println("原来：\n" + src);

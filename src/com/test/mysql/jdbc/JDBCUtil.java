@@ -10,13 +10,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class JDBCUtil {
-    private  Connection conn;
-    private  Properties pros;
+import static com.jmc.lang.Tries.tryThis;
 
-    public JDBCUtil(Class propertyPosition) {
+public class JDBCUtil {
+    private Connection conn;
+    private Properties pros;
+
+    public JDBCUtil(Class<?> propertyPosition) {
         pros = new Properties();
-        Tools.tryThis(() -> pros.load(new FileInputStream(Tools.getFilePath(propertyPosition, "com/test/mysql/orm/sorm/db.properties"))));
+        tryThis(() -> pros.load(new FileInputStream("src/com/test/mysql/orm/sorm/db.properties")));
     }
     
     public synchronized Connection getMySQLConn() {
@@ -120,7 +122,7 @@ public class JDBCUtil {
     }
 
     public void close() {
-        Tools.tryThis(() -> conn.close());
+        tryThis(() -> conn.close());
         conn = null;
     }
 }

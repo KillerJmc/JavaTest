@@ -9,6 +9,8 @@ import java.sql.Date;
 
 import com.test.main.Tools;
 
+import static com.jmc.lang.Timers.milliTimer;
+
 public class Client4 {
 	public static void main(String[] args) {
 		//执行一亿次创建
@@ -19,7 +21,7 @@ public class Client4 {
 	
 	private static void testClone(int times) {
 		Sheep2 s = new Sheep2("多利", new Date(23908442098428L));
-		Tools.milliTimer(() -> {
+		milliTimer(() -> {
 			for (int i = 0; i < times; i++) {
 				try {
 					Sheep2 t = (Sheep2) s.clone();
@@ -32,7 +34,7 @@ public class Client4 {
 	}
 	
 	private static void testNormal(int times) {
-		Tools.milliTimer(() -> {
+		milliTimer(() -> {
 			for (int i = 0; i < times; i++) {
 				Sheep2 t = new Sheep2("多利", new Date(23908442098428L));
 			}

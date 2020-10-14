@@ -4,6 +4,8 @@ import com.test.main.Tools;
 
 import java.lang.reflect.Method;
 
+import static com.jmc.lang.Outs.newLine;
+
 /**
  * Annotation
  * 注解可以免去properties文件书写
@@ -19,7 +21,7 @@ public class ReflectTest {
         System.out.println(className);
         System.out.println(methodName);
 
-        Tools.newLine();
+        newLine();
 
         var c2 = Class.forName(className);
         Object o = c2.getDeclaredConstructor().newInstance();

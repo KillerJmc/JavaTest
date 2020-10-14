@@ -13,6 +13,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Objects;
 
+import static com.jmc.lang.Outs.newLine;
+import static com.jmc.lang.Timers.milliTimer;
+
 public class JDBCTest {
     private static JDBCUtil jdbcUtil = new JDBCUtil(JDBCTest.class);
 
@@ -23,7 +26,7 @@ public class JDBCTest {
     public static void connect() {
         //建立连接（禁用SSL） url格式：jdbc:mysql://host:post/database
         //这个连接比较耗时（利用Socket对象是远程连接，比较耗时，是管理的一个要点，为了提高效率，一般用连接池管理对象！）
-        Tools.milliTimer(() -> {
+        milliTimer(() -> {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_jdbc?useSSL=false", "root", "123456");
             System.out.println(conn);
             System.out.println("建立连接");
@@ -73,7 +76,7 @@ public class JDBCTest {
 
         ps.setObject(1, "张三");
         ps.setObject(2, "23873");
-        ps.setObject(3, new java.sql.Date(System.currentTimeMillis()));
+//        ps.setObject(3, new java.sql.Date(System.currentTimeMillis()));
         //ps.execute();
         //运行insert/update/delete操作，返回更新行数
         int count = ps.executeUpdate();
@@ -132,7 +135,7 @@ public class JDBCTest {
      * @throws Exception
      */
     public static void batch() {
-        Tools.milliTimer(() -> {
+        milliTimer(() -> {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_jdbc?useSSL=false", "root", "123456");
             /**
              * 设为手动提交（把执行之前的所有语句当成一个事务，某条执行失败可回滚，不会写入数据库）
@@ -228,7 +231,7 @@ public class JDBCTest {
                         + rs.getTimestamp(5));
             }
 
-            Tools.shortNewLine();
+            newLine();
 
             var ps2 = conn.prepareStatement("select * from t_user where lastLoginTime > ? and lastLoginTime < ? order by lastLoginTime");
             var start2 = new Timestamp(LocalDateTime.of(2008, 1, 8, 10, 23,35).toInstant(ZoneOffset.ofHours(8)).toEpochMilli());

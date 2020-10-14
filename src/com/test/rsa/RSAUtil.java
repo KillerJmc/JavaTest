@@ -120,21 +120,21 @@ public class RSAUtil {
 		String des = strs2Str(mapToStrs(b.length));
 		return encryptedResultHandler(des);
 	}
-	public static boolean encrypt(byte[] b, String PUBLIC_KEY, String nStr, String desPath) {
-		return Files.out(encrypt(b, PUBLIC_KEY, nStr), desPath, false);
+	public static void encrypt(byte[] b, String PUBLIC_KEY, String nStr, String desPath) {
+		Files.out(encrypt(b, PUBLIC_KEY, nStr), desPath, false);
 	}
-	public static boolean encrypt(byte[] b, String PUBLIC_KEY, String nStr, File des) {
-		return encrypt(b, PUBLIC_KEY, nStr, des.getAbsolutePath());
+	public static void encrypt(byte[] b, String PUBLIC_KEY, String nStr, File des) {
+		encrypt(b, PUBLIC_KEY, nStr, des.getAbsolutePath());
 	}
 	
 	public byte[] encrypt(byte[] b) {
 		return encrypt(b, getPublicKey(), getN());
 	}
-	public boolean encrypt(byte[] b, String desPath) {
-		return Files.out(encrypt(b), desPath, false);
+	public void encrypt(byte[] b, String desPath) {
+		Files.out(encrypt(b), desPath, false);
 	}
-	public boolean encrypt(byte[] b, File des) {
-		return encrypt(b, des.getAbsolutePath());
+	public void encrypt(byte[] b, File des) {
+		encrypt(b, des.getAbsolutePath());
 	}
 	
 	/**
@@ -176,21 +176,21 @@ public class RSAUtil {
 		
 		return mapToBytes(srcStrs.length);
 	}	
-	public static boolean decrypt(byte[] b, String PRIVATE_KEY, String nStr, String desPath) {
-		return Files.out(decrypt(b, PRIVATE_KEY, nStr), desPath, false);
+	public static void decrypt(byte[] b, String PRIVATE_KEY, String nStr, String desPath) {
+		Files.out(decrypt(b, PRIVATE_KEY, nStr), desPath, false);
 	}
-	public static boolean decrypt(byte[] b, String PRIVATE_KEY, String nStr, File des) {
-		return decrypt(b, PRIVATE_KEY, nStr, des.getAbsolutePath());
+	public static void decrypt(byte[] b, String PRIVATE_KEY, String nStr, File des) {
+		decrypt(b, PRIVATE_KEY, nStr, des.getAbsolutePath());
 	}
 	
 	public byte[] decrypt(byte[] b) {
 		return decrypt(b, getPrivateKey(), getN());
 	}
-	public boolean decrypt(byte[] b, String desPath) {
-		return Files.out(b, desPath, false);
+	public void decrypt(byte[] b, String desPath) {
+		Files.out(b, desPath, false);
 	}
-	public boolean decrypt(byte[] b, File des) {
-		return decrypt(b, des.getAbsolutePath());
+	public void decrypt(byte[] b, File des) {
+		decrypt(b, des.getAbsolutePath());
 	}
 	
 	/**

@@ -13,7 +13,6 @@ public class StarHandler implements InvocationHandler {
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		Object o = null;
-		
 		if (method.getName().equals("sing")) {
 			o = method.invoke(realStar, args);
 		}
@@ -22,9 +21,9 @@ public class StarHandler implements InvocationHandler {
 	}
 }
 
-/**
+/*
  * 代码生成的真实代理类结构
- 	public class StarProxy implements Star {
+ 	public class StarProxy implements Star extends Proxy {
  		StarHandler handler;
  		
  		public StarProxy(StarHandler handler) {
@@ -32,7 +31,7 @@ public class StarHandler implements InvocationHandler {
  		}
  		
  		public void bookTicket() {
- 			handler.invoke(this, 当前方法，args);
+ 			handler.invoke(this, 当前方法, args);
  		}
  		
  		...（以下其他方法里面均为invoke方法，全部汇总到StarHandler）

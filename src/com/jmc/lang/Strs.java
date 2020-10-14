@@ -11,6 +11,8 @@
  *      2020.5.1    开创stream模式
  *      2020.6.20   解决stream模式方法名称歧义
  *      2020.8.6    添加encrypt和decrypt方法
+ *      2020.8.30   添加linesToStr方法
+ *      2020.9.5    添加collectAll方法
  *
  * 功能: String类扩展
  *
@@ -23,7 +25,7 @@ import java.util.*;
 public class Strs 
 {
 	private static StringBuilder sb = new StringBuilder();
-	private static Strs instance = new Strs();
+	private static final Strs instance = new Strs();
     
     private Strs() {
         
@@ -91,7 +93,7 @@ public class Strs
     
     public Strs _orReplace(String newChar, String... oldChars) {
         sb = new StringBuilder(orReplace(sb.toString(), newChar, oldChars));
-        return this.instance;
+        return instance;
     }
 	
     public static String orReplace(String src, String newChar, String... oldChars) {
@@ -104,7 +106,7 @@ public class Strs
     
     public Strs _removeAll(String startsWith, String endsWith) {
         sb = new StringBuilder(removeAll(sb.toString(), startsWith, endsWith));
-        return this.instance;
+        return instance;
     }
 
     public static String removeAll(String src, String startsWith, String endsWith) {
@@ -120,10 +122,35 @@ public class Strs
         }
         return sb.toString();
     }
-    
+
+    public static List<String> collectAll(String src, String startsWith, String endsWith) {
+        List<String> rList = new ArrayList<>();
+        for (String t : collectAllContains(src, startsWith, endsWith)) {
+            rList.add(t.replace(startsWith, "").replace(endsWith, ""));
+        }
+        return rList;
+    }
+
+    public static List<String> collectAllContains(String src, String startsWith, String endsWith) {
+        StringBuilder sb = new StringBuilder(src);
+        List<String> rList = new ArrayList<>();
+        while (true) {
+            int startIdx = sb.indexOf(startsWith);
+            int endIdx = sb.indexOf(endsWith, startIdx);
+            if (startIdx != -1 && endIdx != -1) {
+                rList.add(sb.substring(startIdx, endIdx + endsWith.length()));
+                sb.delete(startIdx, endIdx + endsWith.length());
+            } else {
+                break;
+            }
+        }
+        return rList;
+    }
+
+
     public Strs _substrings(String beginStr, String endStr) {
         sb = new StringBuilder(substrings(sb.toString(), beginStr, endStr));
-        return this.instance;
+        return instance;
     }
 
     public static String substrings(String src, String beginStr, String endStr) {
@@ -135,7 +162,7 @@ public class Strs
     
     public Strs _substringsContains(String beginStr, String endStr) {
         sb = new StringBuilder(substringsContains(sb.toString(), beginStr, endStr));
-        return this.instance;
+        return instance;
     }
 
     public static String substringsContains(String src, String beginStr, String endStr) {
@@ -202,16 +229,25 @@ public class Strs
 		return false;
 	}
 	
-	public static List<String> getLines(String src, String contains) {
+	public static List<String> getLines(String src, String... contains) {
 		List<String> l = new ArrayList<>();
 		String[] split = src.split("\n");
-		for (String s : split) if (s.contains(contains)) l.add(s);
+		for (String s : split) for (String cs : contains) if (s.contains(cs)) l.add(s);
 		return l;
 	}
 	
 	public static List<String> getLines(String src) {
 		return getLines(src, "");
 	}
+    
+    public static String linesToStr(List<String> list) {
+        StringBuilder sb = new StringBuilder();
+        for (String t : list) {
+            sb.append(t).append("\n");
+        }
+        return sb.toString();
+    }
+    
 	public static String getLine(String src, int line) {
 		return getLines(src).get(line - 1);
 	}

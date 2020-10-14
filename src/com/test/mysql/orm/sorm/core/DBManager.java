@@ -19,7 +19,7 @@ public class DBManager {
     /**
      * configuration Object
      */
-    private static Configuration conf;
+    private static final Configuration conf;
 
     /**
      * connection pool Object

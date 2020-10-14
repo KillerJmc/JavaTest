@@ -29,6 +29,5 @@ public class Client3 {
 		System.out.println(s2);
 		System.out.println(s2.getName());
 		System.out.println(s2.getBirthday());
-		Tools.copyClassToDesktop(Sheep3.class);
 	}
 }

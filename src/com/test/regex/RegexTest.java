@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.jmc.lang.Outs.newLine;
 import static com.test.main.Tools.*;
 
 public class RegexTest {
@@ -28,7 +29,7 @@ public class RegexTest {
         //或者
         System.out.println(Pattern.matches("\\w+", "asdfadf233232"));
 
-        shortNewLine();
+        newLine();
 
         //该方法扫描输入的序列，寻找与该模式匹配的下一个子序列，并打印
         /*System.out.println(m.find());

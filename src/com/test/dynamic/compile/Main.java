@@ -8,7 +8,7 @@ import com.test.main.Tools;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		String path = Tools.getJavaPath(HelloWorld.class);
+		String path = "D:\\Programs\\Projects\\IdeaProjects\\JavaTest\\src\\com\\test\\dynamic\\compile\\HelloWorld.java";
 		compile(path);
 		compile1();
 	}

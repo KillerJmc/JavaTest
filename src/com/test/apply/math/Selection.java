@@ -6,7 +6,7 @@
  */
 package com.test.apply.math;
 
-public class Math01 {
+public class Selection {
 	public static void main(String[] args) {
 		calculate();
 	}

@@ -6,10 +6,19 @@
  
 package com.jmc.array;
 
+import java.util.*;
+
 public class Rand
 {
+    private static final Random r = new Random(System.currentTimeMillis());
+    
+    public static int nextInt(int min, int max) {
+        if (max < min) return -1;
+        return r.nextInt(max - min + 1) + min;
+    }
+    
 	//生成不同的随机数
-    public static int[] getDiffRand(int min,int max,int n){
+    public static int[] getDiffRand(int min, int max, int n){
 		//如果参数不合法就返回
         if (max < min || n > max - min + 1) return null;
 
@@ -28,7 +37,7 @@ public class Rand
 		//当已填入的数字个数小于用户指定的个数
         while (amount < n) {         
 			//生成用户指定范围的一个随机数
-            int result = (int)(Math.random() * (max - min + 1) + min);
+            int result = nextInt(min, max);
 			//是否为新数字
             boolean flag = true;
 

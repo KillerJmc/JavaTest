@@ -1,20 +1,32 @@
 package com.test.main;
 
+import com.jmc.array.Rand;
 import com.jmc.io.Files;
+import com.test.phone.SrcHandler;
 
-import java.io.File;
-import java.util.List;
+import static com.jmc.process.Execute.*;
+import static com.jmc.lang.Strs.*;
+import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.function.BiConsumer;
+
+import static com.jmc.io.Files.*;
 
 public class Main {
+
 	public static void main(String[] args) throws Exception {
-		test();
+	    test();
 	}
 
-	public static void test() throws Exception {
-		int i = 3;
-		System.out.println("i = " + i);
+    private static void test() {
+
 	}
 }
+
+
+
 
 
 
