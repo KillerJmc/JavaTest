@@ -2,7 +2,7 @@ package com.test.interview.ref;
 
 
 /**
- * 强引用：很强的引用，只有没有任何引用指向它，才会被回收
+ * 强引用：普通引用，是一种很强的引用，只有没有任何引用指向它，才会被回收
  */
 public class HardRefTest {
     public static void main(String[] args) {
