@@ -1,7 +1,7 @@
 package com.test.crypt;
 
 import com.jmc.io.Files;
-import com.test.classloader.FileSystemClassLoader;
+import com.test.classloader.former.FileSystemClassLoader;
 
 public class DecryptUtil {
 	public static String rootDir;

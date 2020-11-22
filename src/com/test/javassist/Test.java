@@ -27,9 +27,15 @@ public class Test {
 						getCP().get(String.class.getName())
 						,getCP().get(Object.class.getName())
 				});
-		cm.insertBefore("System.out.println(\"病毒袭击开始\");");
-		cm.insertAfter("System.out.println(\"病毒袭击结束\");");
-		cm.insertAt(6, "System.out.println(\"病毒正在猛烈袭击\");");
+		cm.insertBefore("""
+  			System.out.println("病毒袭击开始");
+		""");
+		cm.insertAfter("""
+  			System.out.println("病毒袭击结束");
+		""");
+		cm.insertAt(6, """
+  			System.out.println("病毒正在猛烈袭击");
+		""");
 		
 		Class c = cc.toClass();
 		Method m = c.getDeclaredMethod("saySth", String.class,Object.class);
@@ -95,7 +101,9 @@ public class Test {
 		
 		//方法
 		CtMethod msg = CtMethod.make("public void msg(){}", cc);
-		msg.setBody("{System.out.println(\"姓名：\" + name + \"学号：\" + id);}");
+		msg.setBody("""
+  			{System.out.println("姓名：" + name + "学号：" + id);}
+		""");
 		cc.addMethod(msg);
 		
 		//输出到文件

@@ -1,4 +1,6 @@
-package com.test.classloader;
+package com.test.classloader.former;
+
+import com.test.classloader.former.FileSystemClassLoader;
 
 public class Main {
 	public static void main(String[] args) throws Exception {
@@ -6,7 +8,7 @@ public class Main {
 	}
 	
 	public static void test01() throws Exception {
-		FileSystemClassLoader loader = 
+		FileSystemClassLoader loader =
 			new FileSystemClassLoader("C:/Jmc/Temp/ClassLoaderTest",false);
 		Class<?> c = loader.loadClass("com.a.c.HellWorld");
 		Class<?> c1 = loader.loadClass("com.test.classloader.Main");

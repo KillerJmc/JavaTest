@@ -39,7 +39,9 @@ public class Main {
 		System.out.println("-----------------------------------------");
 		
 		//导入其他的包，使用其他包中的java类
-		engine.eval("var x = java.util.Arrays.asList(\"云霄一中\",\"将军山学校\",\"元光小学\")");
+		engine.eval("""
+  			var x = java.util.Arrays.asList("云霄一中","将军山学校","元光小学")"
+  		""");
 		List<String> list = (List<String>) engine.get("x"); 
 		for (String temp : list) {
 			System.out.println(temp);

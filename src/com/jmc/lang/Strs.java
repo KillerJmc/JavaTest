@@ -13,6 +13,7 @@
  *      2020.8.6    添加encrypt和decrypt方法
  *      2020.8.30   添加linesToStr方法
  *      2020.9.5    添加collectAll方法
+ *      2020.11.18  添加format方法
  *
  * 功能: String类扩展
  *
@@ -20,15 +21,17 @@
  
 package com.jmc.lang;
 
+import com.test.mysql.orm.sorm.utils.StringUtils;
+
 import java.util.*;
 
 public class Strs 
 {
 	private static StringBuilder sb = new StringBuilder();
 	private static final Strs instance = new Strs();
-    
+
     private Strs() {
-        
+
     }
     
     public static Strs stream(String src) {
@@ -256,5 +259,22 @@ public class Strs
         byte[] bs = src.getBytes();
         for (int i = 0; i < bs.length; i++) bs[i] ^= key;
         return new String(bs);
+    }
+
+    public static String format(String src, Object... args) {
+        if (args.length == 0) return src;
+
+        String[] a = src.split("#");
+        StringBuilder result = new StringBuilder();
+
+        // 如果长度相等（最后#后面无内容），或长度差一（最后#后面有内容则split结果多一），则合法
+        if (!(args.length == a.length || args.length == a.length - 1))
+            throw new IllegalArgumentException("参数数量不匹配(src -> " + a.length + ", args -> " + args.length + ")");
+
+        for (int i = 0; i < a.length; i++) {
+            result.append(a[i]);
+            if (i != args.length) result.append(args[i]);
+        }
+        return result.toString();
     }
 }

@@ -12,7 +12,6 @@ public enum SingletonDemo05 {
 	INSTANCE;
 	
 	//添加自己需要的操作!
-	@SuppressWarnings("all")
 	private void singletonOperation() {
 		
 	}
