@@ -1,5 +1,7 @@
 package com.jmc.lang;
 
+import static com.jmc.lang.Tries.*;
+
 public class Timers {
     public static void secondTimer(RunnableThrowsException r, String name) {
         long startTime = System.currentTimeMillis();

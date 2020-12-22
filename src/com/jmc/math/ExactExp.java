@@ -1,7 +1,6 @@
 package com.jmc.math;
 
 import com.jmc.lang.Strs;
-import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -124,16 +123,16 @@ public class ExactExp {
                 continue;
             }
 
-            var latter = !s.equals("√") ? stack.pop() : null;
-            var former = stack.pop();
+            var b = !s.equals("√") ? stack.pop() : null;
+            var a = stack.pop();
 
             stack.push(switch(s) {
-                case "+" -> former.add(latter);
-                case "-" -> former.subtract(latter);
-                case "*" -> former.multiply(latter);
-                case "/" -> former.divide(latter, DIVIDE_SCALE, RoundingMode.HALF_UP);
-                case "^" -> former.pow(latter.intValueExact());
-                case "√" -> former.sqrt(MathContext.DECIMAL128);
+                case "+" -> a.add(b);
+                case "-" -> a.subtract(b);
+                case "*" -> a.multiply(b);
+                case "/" -> a.divide(b, DIVIDE_SCALE, RoundingMode.HALF_UP);
+                case "^" -> a.pow(b.intValueExact());
+                case "√" -> a.sqrt(MathContext.DECIMAL128);
                 default -> throw new IllegalStateException("Unexpected value: " + s);
             });
         }

@@ -26,4 +26,12 @@ public class Tries {
         }
         return null;
     }
+
+    public interface RunnableThrowsAndReturn<T> {
+        T run() throws Exception;
+    }
+
+    public interface RunnableThrowsException {
+        void run() throws Exception;
+    }
 }
