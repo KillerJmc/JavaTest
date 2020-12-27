@@ -1,10 +1,8 @@
 package com.test.annotation.practice;
 
-import com.test.main.Tools;
-
 import java.lang.reflect.Method;
 
-import static com.jmc.lang.Outs.newLine;
+import static com.jmc.lang.extend.Outs.newLine;
 
 /**
  * Annotation

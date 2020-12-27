@@ -19,9 +19,7 @@
  *
  */
  
-package com.jmc.lang;
-
-import com.test.mysql.orm.sorm.utils.StringUtils;
+package com.jmc.lang.extend;
 
 import java.util.*;
 

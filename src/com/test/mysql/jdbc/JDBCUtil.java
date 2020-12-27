@@ -1,7 +1,6 @@
 package com.test.mysql.jdbc;
 
 import com.jmc.chatserver.CloseUtils;
-import com.test.main.Tools;
 
 import java.io.FileInputStream;
 import java.sql.Connection;
@@ -10,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import static com.jmc.lang.Tries.tryThis;
+import static com.jmc.lang.extend.Tries.tryThis;
 
 public class JDBCUtil {
     private Connection conn;

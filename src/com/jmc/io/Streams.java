@@ -16,25 +16,18 @@ package com.jmc.io;
 
 import com.jmc.chatserver.*;
 import java.io.*;
-import java.util.*;
-import com.jmc.lang.*;
 import java.nio.charset.*;
 
 public class Streams {
 	public static byte[] read(InputStream in) {
-		int i = 0;
-		byte[] b = new byte[8192];
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		var out = new ByteArrayOutputStream();
 
-		try {
-			while ((i = in.read(b)) != -1) {
-				out.write(b, 0, i);
-			}
+		try (in) {
+			in.transferTo(out);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			CloseUtils.closeAll(in);
 		}
+
 		return out.toByteArray();
 	}
 	
@@ -46,13 +39,8 @@ public class Streams {
 	}
 	
 	public static void out(InputStream in, OutputStream out, boolean closeOut) {
-		int i = 0;
-		byte[] b = new byte[8192];
 		try {
-			while ((i = in.read(b)) != -1) {
-				out.write(b, 0, i);
-			}
-			out.flush();
+			in.transferTo(out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

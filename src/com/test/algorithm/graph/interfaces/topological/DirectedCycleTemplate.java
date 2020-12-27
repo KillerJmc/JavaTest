@@ -1,4 +1,4 @@
-package com.test.algorithm.graph;
+package com.test.algorithm.graph.interfaces.topological;
 
 import com.test.algorithm.graph.impl.DiGraph;
 

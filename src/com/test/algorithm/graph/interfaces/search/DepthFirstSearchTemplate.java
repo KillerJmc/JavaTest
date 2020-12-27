@@ -1,4 +1,4 @@
-package com.test.algorithm.graph;
+package com.test.algorithm.graph.interfaces.search;
 
 import com.test.algorithm.graph.impl.Graph;
 

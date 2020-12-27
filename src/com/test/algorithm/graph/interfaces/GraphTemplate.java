@@ -1,4 +1,4 @@
-package com.test.algorithm.graph;
+package com.test.algorithm.graph.interfaces;
 
 import com.test.algorithm.list.linked.impl.LinkedQueue;
 

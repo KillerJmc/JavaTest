@@ -1,6 +1,6 @@
 package com.test.main;
 
-import static com.jmc.lang.Tries.*;
+import static com.jmc.lang.extend.Tries.*;
 
 public class Tools {
 	public static String getPath(Class<?> c) {
@@ -17,15 +17,5 @@ public class Tools {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static void newLine() {
-		System.out.println("-".repeat(60));
-	}
-
-	public static void newLine(RunnableThrowsException r) {
-		newLine();
-		try { r.run(); } catch (Exception e) { e.printStackTrace(); }
-		newLine();
 	}
 }

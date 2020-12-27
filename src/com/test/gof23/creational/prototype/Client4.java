@@ -7,9 +7,7 @@ package com.test.gof23.creational.prototype;
 
 import java.sql.Date;
 
-import com.test.main.Tools;
-
-import static com.jmc.lang.Timers.milliTimer;
+import static com.jmc.lang.timer.Timers.milliTimer;
 
 public class Client4 {
 	public static void main(String[] args) {

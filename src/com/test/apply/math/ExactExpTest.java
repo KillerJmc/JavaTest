@@ -1,8 +1,8 @@
 package com.test.apply.math;
 
-import com.jmc.lang.Strs;
-import com.jmc.lang.Timers;
-import com.jmc.math.ExactExp;
+import com.jmc.lang.extend.Strs;
+import com.jmc.lang.math.ExactExp;
+import com.jmc.lang.timer.Timers;
 
 import java.math.BigDecimal;
 import java.math.MathContext;

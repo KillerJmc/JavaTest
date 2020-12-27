@@ -1,6 +1,7 @@
-package com.test.algorithm.graph.impl;
+package com.test.algorithm.graph.impl.path;
 
-import com.test.algorithm.graph.DepthFirstPathsTemplate;
+import com.test.algorithm.graph.impl.Graph;
+import com.test.algorithm.graph.interfaces.path.DepthFirstPathsTemplate;
 import com.test.algorithm.list.linked.impl.LinkedStack;
 
 public class DepthFirstPaths extends DepthFirstPathsTemplate {

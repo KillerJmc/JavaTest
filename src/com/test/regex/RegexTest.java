@@ -4,8 +4,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.jmc.lang.Outs.newLine;
-import static com.test.main.Tools.*;
+import static com.jmc.lang.extend.Outs.newLine;
 
 public class RegexTest {
     public static void main(String[] args) {

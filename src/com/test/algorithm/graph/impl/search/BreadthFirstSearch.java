@@ -1,7 +1,7 @@
-package com.test.algorithm.graph.impl;
+package com.test.algorithm.graph.impl.search;
 
-import com.test.algorithm.graph.BreadthFirstSearchTemplate;
-import com.test.algorithm.list.linked.impl.LinkedQueue;
+import com.test.algorithm.graph.impl.Graph;
+import com.test.algorithm.graph.interfaces.search.BreadthFirstSearchTemplate;
 import com.test.algorithm.list.sequence.impl.SequenceQueue;
 
 public class BreadthFirstSearch extends BreadthFirstSearchTemplate {

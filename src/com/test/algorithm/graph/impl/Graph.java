@@ -1,6 +1,6 @@
 package com.test.algorithm.graph.impl;
 
-import com.test.algorithm.graph.GraphTemplate;
+import com.test.algorithm.graph.interfaces.GraphTemplate;
 import com.test.algorithm.list.linked.impl.LinkedQueue;
 
 public class Graph implements GraphTemplate {

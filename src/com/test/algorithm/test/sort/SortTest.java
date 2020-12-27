@@ -1,6 +1,6 @@
 package com.test.algorithm.test.sort;
 
-import com.jmc.lang.Timers;
+import com.jmc.lang.timer.Timers;
 import com.test.algorithm.sort.Sort;
 import com.test.main.Tools;
 

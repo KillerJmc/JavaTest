@@ -1,15 +1,16 @@
 package com.test.algorithm.test.list.linked;
 
+import com.jmc.lang.math.ExactExp;
 import com.jmc.lang.reflect.ReflectUtils;
-import com.jmc.math.ExactExp;
 import com.test.algorithm.list.linked.impl.LinkedStack;
-import com.test.main.Tools;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import static com.jmc.lang.Bools.orEquals;
+import static com.jmc.lang.extend.Bools.orEquals;
+import static com.jmc.lang.extend.Outs.newLine;
+
 
 public class LinkedStackTest {
     @Test
@@ -20,7 +21,7 @@ public class LinkedStackTest {
         s.push("OKSir");
 
         for (var str : s) System.out.println(str);
-        Tools.newLine();
+        newLine();
         while (!s.isEmpty()) System.out.println(s.pop());
         System.out.println(s.size());
     }

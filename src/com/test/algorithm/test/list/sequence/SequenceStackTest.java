@@ -1,8 +1,9 @@
 package com.test.algorithm.test.list.sequence;
 
 import com.test.algorithm.list.sequence.impl.SequenceStack;
-import com.test.main.Tools;
 import org.junit.Test;
+
+import static com.jmc.lang.extend.Outs.newLine;
 
 public class SequenceStackTest {
     @Test
@@ -13,7 +14,7 @@ public class SequenceStackTest {
         s.push("OKSir");
 
         for (var str : s) System.out.println(str);
-        Tools.newLine();
+        newLine();
         while (!s.isEmpty()) System.out.println(s.pop());
         System.out.println(s.size());
     }

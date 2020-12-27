@@ -1,6 +1,6 @@
-package com.jmc.lang;
+package com.jmc.lang.extend;
 
-import static com.jmc.lang.Tries.*;
+import static com.jmc.lang.extend.Tries.*;
 
 public class Outs {
     public static void newLine() {

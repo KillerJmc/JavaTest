@@ -1,11 +1,11 @@
 package com.test.algorithm.test.list.linked;
 
-import com.jmc.lang.Timers;
+import com.jmc.lang.timer.Timers;
 import com.test.algorithm.list.linked.impl.DoublyLinkedList;
 import com.test.algorithm.list.sequence.impl.SequenceList;
 import org.junit.Test;
 
-import static com.test.main.Tools.newLine;
+import static com.jmc.lang.extend.Outs.newLine;
 
 public class DoublyLinkedListTest {
     public void print(DoublyLinkedList<?> l) {

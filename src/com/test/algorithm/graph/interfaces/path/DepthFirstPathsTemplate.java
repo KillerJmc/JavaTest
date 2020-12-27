@@ -1,4 +1,4 @@
-package com.test.algorithm.graph;
+package com.test.algorithm.graph.interfaces.path;
 
 import com.test.algorithm.graph.impl.Graph;
 import com.test.algorithm.list.linked.impl.LinkedStack;

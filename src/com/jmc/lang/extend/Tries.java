@@ -1,4 +1,4 @@
-package com.jmc.lang;
+package com.jmc.lang.extend;
 
 public class Tries {
     public static void tryThis(RunnableThrowsException r) {

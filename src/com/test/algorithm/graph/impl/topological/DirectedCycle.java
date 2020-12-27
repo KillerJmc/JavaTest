@@ -1,6 +1,7 @@
-package com.test.algorithm.graph.impl;
+package com.test.algorithm.graph.impl.topological;
 
-import com.test.algorithm.graph.DirectedCycleTemplate;
+import com.test.algorithm.graph.impl.DiGraph;
+import com.test.algorithm.graph.interfaces.topological.DirectedCycleTemplate;
 
 public class DirectedCycle extends DirectedCycleTemplate {
     private boolean hasCycle;

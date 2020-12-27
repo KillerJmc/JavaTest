@@ -3,7 +3,7 @@ package com.test.algorithm.test.list.sequence;
 import com.test.algorithm.list.sequence.impl.SequenceSymbolTable;
 import org.junit.Test;
 
-import static com.test.main.Tools.newLine;
+import static com.jmc.lang.extend.Outs.newLine;
 
 public class SequenceSymbolTableTest {
     @Test

@@ -1,11 +1,10 @@
 package com.test.algorithm.test.tree;
 
 import com.test.algorithm.list.linked.impl.LinkedQueue;
-import com.test.algorithm.list.sequence.impl.SequenceQueue;
 import com.test.algorithm.tree.impl.BinaryTree;
 import org.junit.Test;
 
-import static com.test.main.Tools.newLine;
+import static com.jmc.lang.extend.Outs.newLine;
 
 public class BinaryTreeTest {
     @Test

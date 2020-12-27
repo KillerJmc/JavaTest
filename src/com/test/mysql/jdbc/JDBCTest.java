@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Objects;
 
-import static com.jmc.lang.Outs.newLine;
-import static com.jmc.lang.Timers.milliTimer;
+import static com.jmc.lang.extend.Outs.newLine;
+import static com.jmc.lang.timer.Timers.milliTimer;
 
 public class JDBCTest {
     private static JDBCUtil jdbcUtil = new JDBCUtil(JDBCTest.class);

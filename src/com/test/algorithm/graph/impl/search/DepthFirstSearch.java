@@ -1,6 +1,7 @@
-package com.test.algorithm.graph.impl;
+package com.test.algorithm.graph.impl.search;
 
-import com.test.algorithm.graph.DepthFirstSearchTemplate;
+import com.test.algorithm.graph.impl.Graph;
+import com.test.algorithm.graph.interfaces.search.DepthFirstSearchTemplate;
 
 public class DepthFirstSearch extends DepthFirstSearchTemplate {
     private final boolean[] marked;

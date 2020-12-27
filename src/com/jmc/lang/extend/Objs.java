@@ -1,4 +1,4 @@
-package com.jmc.lang;
+package com.jmc.lang.extend;
 
 /**
  * 作者：Jmc
@@ -63,6 +63,7 @@ public class Objs
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static<T> T readObj(byte[] b, Class<T> c) {
 		ObjectInputStream in = null;
 

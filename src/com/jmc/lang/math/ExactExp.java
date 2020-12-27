@@ -1,11 +1,14 @@
-package com.jmc.math;
+package com.jmc.lang.math;
 
-import com.jmc.lang.Strs;
+import com.jmc.lang.extend.Strs;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 
 /**
  * 精准计算表达式的结果
@@ -30,6 +33,7 @@ public class ExactExp {
         "/", 2,
         "^", 3,
         "√", 3,
+        "!", 3,
         "(", 0,
         ")", 0,
         "#", 0
@@ -123,8 +127,8 @@ public class ExactExp {
                 continue;
             }
 
-            var b = !s.equals("√") ? stack.pop() : null;
-            var a = stack.pop();
+            BigDecimal b = !s.equals("√") && !s.equals("!") ? stack.pop() : null;
+            BigDecimal a = stack.pop();
 
             stack.push(switch(s) {
                 case "+" -> a.add(b);
@@ -133,6 +137,7 @@ public class ExactExp {
                 case "/" -> a.divide(b, DIVIDE_SCALE, RoundingMode.HALF_UP);
                 case "^" -> a.pow(b.intValueExact());
                 case "√" -> a.sqrt(MathContext.DECIMAL128);
+                case "!" -> new BigDecimal(Maths.factorial(a.intValueExact()));
                 default -> throw new IllegalStateException("Unexpected value: " + s);
             });
         }
@@ -145,14 +150,11 @@ public class ExactExp {
      * @return 精度为16的BigDecimal
      */
     public static BigDecimal getResult(String exp) {
-        var result = getResult(exp, 16);
+        BigDecimal result = getResult(exp, 16);
 
         boolean hasDecimal = result.toString().charAt(result.toString().indexOf(".") + 1) != '0';
         if (hasDecimal) return result;
         return getResult(exp, 0);
-    }
-    public static BigDecimal getResult(String exp, Object... args) {
-        return getResult(Strs.format(exp, args));
     }
 
     /**

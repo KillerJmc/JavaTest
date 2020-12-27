@@ -1,10 +1,18 @@
 package com.test.algorithm.test.graph;
 
 import com.test.algorithm.graph.impl.*;
-import com.test.algorithm.tree.impl.UF_Tree_Weighted;
+import com.test.algorithm.graph.impl.path.DepthFirstPaths;
+import com.test.algorithm.graph.impl.path.DijkstraSP;
+import com.test.algorithm.graph.impl.search.BreadthFirstSearch;
+import com.test.algorithm.graph.impl.search.DepthFirstSearch;
+import com.test.algorithm.graph.impl.topological.DepthFirstOrder;
+import com.test.algorithm.graph.impl.topological.DirectedCycle;
+import com.test.algorithm.graph.impl.topological.TopoLogical;
+import com.test.algorithm.graph.impl.weight.Edge;
+import com.test.algorithm.graph.impl.weight.EdgeWeightedGraph;
+import com.test.algorithm.graph.impl.weight.KruskalMST;
+import com.test.algorithm.graph.impl.weight.PrimMST;
 import org.junit.Test;
-
-import java.util.List;
 
 public class GraphTest {
     private final Graph g = new Graph(13) {{
@@ -88,5 +96,79 @@ public class GraphTest {
 
         var directedCycle = new DirectedCycle(g);
         System.out.println(directedCycle.hasCycle());
+    }
+
+    @Test
+    public void test6() {
+        var g = new DiGraph(6) {{
+            addEdge(
+            1, 3, 0, 2,
+                0, 3, 2, 4,
+                3, 4, 4, 5
+            );
+        }};
+        var dfo = new DepthFirstOrder(g);
+        System.out.println(dfo.reversePost());
+    }
+
+    @Test
+    public void test7() {
+        var g = new DiGraph(6) {{
+            addEdge(
+            1, 3, 0, 2,
+                0, 3, 2, 4,
+                3, 4, 4, 5
+            );
+        }};
+
+        var topo = new TopoLogical(g);
+        System.out.println(topo.isCycle() ? "有环" : "无环");
+        System.out.println(topo.order());
+    }
+
+
+    EdgeWeightedGraph eg = new EdgeWeightedGraph(8) {{
+        addEdge(
+            4, 5, 0.35, 4, 7, 0.37, 5, 7, 0.28,
+                0, 7, 0.16, 1, 5, 0.32, 0, 4, 0.38,
+                2, 3, 0.17, 1, 7, 0.19, 0, 2, 0.26,
+                1, 2, 0.36, 1, 3, 0.29, 2, 7, 0.34,
+                6, 2, 0.40, 3, 6, 0.52, 6, 0, 0.58,
+                6, 4, 0.93
+        );
+    }};
+
+    @Test
+    public void test8() {
+        var primMST = new PrimMST(eg);
+        for (Edge e : primMST.edges()) {
+            System.out.println(e);
+        }
+    }
+
+    @Test
+    public void test9() {
+        var kruskalMST = new KruskalMST(eg);
+        for (Edge e : kruskalMST.edges()) {
+            System.out.println(e);
+        }
+    }
+
+    @Test
+    public void test10() {
+        var eg2 = new EdgeWeightDiGraph(8) {{
+            addEdge(
+                4, 5, 0.35, 5, 4, 0.35, 4, 7, 0.37,
+                    5, 7, 0.28, 7, 5, 0.28, 5, 1, 0.32,
+                    0, 4, 0.38, 0, 2, 0.26, 7, 3, 0.39,
+                    1, 3, 0.29, 2, 7, 0.34, 6, 2, 0.40,
+                    3, 6, 0.52, 6, 0, 0.58, 6, 4, 0.93
+            );
+        }};
+
+        var dijkstraSP = new DijkstraSP(eg2, 0);
+        for (var e : dijkstraSP.pathTo(6)) {
+            System.out.println(e);
+        }
     }
 }

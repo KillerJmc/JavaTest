@@ -1,4 +1,4 @@
-package com.jmc.lang;
+package com.jmc.lang.extend;
 /**
  * 作者：Jmc
  * 时间：2020.8.18
