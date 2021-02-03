@@ -1,6 +1,10 @@
 package com.test.algorithm.sort;
 
-import com.jmc.array.Rand;
+import com.jmc.lang.extend.Rand;
+import com.test.algorithm.list.sequence.impl.DoubleArray;
+import com.test.algorithm.list.sequence.impl.IntArray;
+
+import java.util.Arrays;
 
 import static com.test.algorithm.utils.ArrayUtils.*;
 
@@ -140,6 +144,70 @@ public class Sort {
                     swap(a, k, k - 1);
                 else
                     break;
+    }
+
+    /**
+     * <p>二分插入排序（最好时间复杂度：2 * log2 n（每次找到最右边的数，无交换）, 其中log2 n! ~ 30n(n->∞)，即O(n)
+     * 最坏时间复杂度：(n^2 - n) / 2 + 2 * log2 n!,
+     * 因此原式 ~ n^2 / 2 + 59.5 n , 即O(n^2)）
+     *
+     * <p>排序稳定
+     *
+     * <p>这相比直接插入排序，没有减少元素交换次数，但是大大减少了比较的次数，因此性能提升明显，成为O(n^2)排序中最快的排序算法
+     *
+     * @param a 数组
+     * @param <T> 数组元素必须是可排序元素
+     */
+    public static <T extends Comparable<T>> void binaryInsertionSort(T[] a) {
+        for (int i = 1; i < a.length; i++) {
+            int lo = 0, hi = i - 1, mid;
+            T k = a[i];
+            while (hi >= lo) {
+                mid = (lo + hi) / 2;
+                if (greater(a[mid], k)) {
+                    if (mid == 0 || less(a[mid - 1], k)) {
+                        System.arraycopy(a, lo, a, lo + 1, i - lo);
+                        a[lo] = k;
+                        break;
+                    } else {
+                        hi = mid - 1;
+                    }
+                } else {
+                    lo = mid + 1;
+                }
+            }
+        }
+    }
+
+    /**
+     * <p>二分插入排序（最好时间复杂度：2 * log2 n（每次找到最右边的数，无交换）, 其中log2 n! ~ 30n(n->∞)，即O(n)
+     * 最坏时间复杂度：(n^2 - n) / 2 + 2 * log2 n!,
+     * 因此原式 ~ n^2 / 2 + 59.5 n , 即O(n^2)）
+     *
+     * <p>排序稳定
+     *
+     * <p>这相比直接插入排序，没有减少元素交换次数，但是大大减少了比较的次数，因此性能提升明显，成为O(n^2)排序中最快的排序算法
+     *
+     * @param a 整型数组
+     */
+    public static void binaryInsertionSort(int[] a) {
+        for (int i = 1; i < a.length; i++) {
+            int lo = 0, hi = i - 1, mid, k = a[i];
+            while (hi >= lo) {
+                mid = (lo + hi) / 2;
+                if (a[mid] >= k) {
+                    if (mid == 0 || a[mid - 1] < k) {
+                        System.arraycopy(a, lo, a, lo + 1, i - lo);
+                        a[lo] = k;
+                        break;
+                    } else {
+                        hi = mid - 1;
+                    }
+                } else {
+                    lo = mid + 1;
+                }
+            }
+        }
     }
 
     /**
@@ -315,7 +383,7 @@ public class Sort {
 
             while (true) {
                 while (left < right && !(a[--right] < a[lo]));
-                while (left < right && !(a[++left] < a[lo]));
+                while (left < right && !(a[++left] > a[lo]));
 
                 if (left == right) {
                     swap(a, lo, right);
@@ -392,7 +460,7 @@ public class Sort {
     }
 
     /**
-     * 堆排序
+     * 堆排序（最优，最坏时间复杂度均为O(nlogn)）
      * @param a 整型数组
      */
     public static void heapSort(int[] a) {
@@ -422,6 +490,154 @@ public class Sort {
                 swap(heap, x, x = maxIdx);
             else
                 return;
+        }
+    }
+
+    /**
+     * 桶排序 （时间复杂度O(n)，空间复杂度较高，是以空间换时间，仅适合对数据较均匀的整数，浮点数数组排序）
+     * @param a 整型数组
+     */
+    public static void bucketSort(int[] a) {
+        int max = a[0], min = max;
+        for (var t : a) {
+            if (t > max) max = t;
+            if (t < min) min = t;
+        }
+
+        int eachRange = max - min < 100000 ? 1 :
+            max - min < 1000000 ? 10 :
+            max - min < 10000000 ? 100 : 1000;
+        int bucketCount = (max - min) / eachRange + 1;
+
+        IntArray[] buckets = new IntArray[bucketCount];
+        for (int i = 0; i < buckets.length; i++) buckets[i] = new IntArray();
+
+        for (var t : a) {
+            int bucketIdx = (t - min) / eachRange;
+            buckets[bucketIdx].insert(t);
+        }
+
+        int p = 0;
+        for (var tmp : buckets) {
+            if (tmp.size() == 0) continue;
+            var bucket = tmp.getArray();
+            if (bucket.length > 1) bucketSort(bucket);
+            for (var t : bucket) a[p++] = t;
+        }
+    }
+
+    /**
+     * 桶排序（时间复杂度O(n)，空间复杂度较高，是以空间换时间，仅适合对数据较均匀的整数，浮点数数组排序）
+     * 此次递归实现排序是稳定的，正常情况下桶排序是否稳定取决与对每个桶的排序算法的稳定性
+     * @param a 浮点型数组
+     */
+    public static void bucketSort(double[] a) {
+        double max = a[0], min = max;
+        for (var t : a) {
+            if (t > max) max = t;
+            if (t < min) min = t;
+        }
+
+        int eachRange = max - min < 100000 ? 1 :
+            max - min < 1000000 ? 10 :
+            max - min < 10000000 ? 100 : 1000;
+        int bucketCount = (int) ((max - min) / eachRange + 1);
+
+        DoubleArray[] buckets = new DoubleArray[bucketCount];
+        for (int i = 0; i < buckets.length; i++) buckets[i] = new DoubleArray();
+
+        for (var t : a) {
+            int bucketIdx = (int) ((t - min) / eachRange);
+            buckets[bucketIdx].insert(t);
+        }
+
+        int p = 0;
+        for (var tmp : buckets) {
+            if (tmp.size() == 0) continue;
+            var bucket = tmp.getArray();
+            if (bucket.length > 1) bucketSort(bucket);
+            for (var t : bucket) a[p++] = t;
+        }
+    }
+
+    /**
+     * 计数排序（时间复杂度O(n)，空间复杂度较高，是桶排序的延伸，仅适合对范围较小的整数数组排序）
+     * 经过优化，排序稳定
+     * @param a 整型数组
+     */
+    public static void countingSort(int[] a) {
+        int max = a[0], min = max;
+        for (var t : a) {
+            if (t > max) max = t;
+            if (t < min) min = t;
+        }
+
+        int[] count = new int[max - min + 1];
+        for (var t : a) count[t - min]++;
+
+        // 保证稳定性
+        // count数组表示对应元素（多个）在原数组中的最后一个这种元素的位置
+        for (int i = 1; i < count.length; i++) count[i] += count[i - 1];
+
+        int[] tmp = Arrays.copyOf(a, a.length);
+        for (int i = tmp.length - 1; i >= 0; i--) a[count[tmp[i] - min]-- - 1] = tmp[i];
+    }
+
+    /**
+     * 基数排序（时间复杂度O(n)，是计数排序的延伸，省空间，仅适合对范围较小的正整数数组排序）
+     * 经优化后排序稳定
+     * @param a 正整型数组
+     */
+    public static void radixSort(int[] a) {
+        int max = a[0];
+        for (var t : a) if (t > max) max = t;
+
+        int maxDigits = 0;
+        while (max != 0) {
+            max /= 10;
+            maxDigits++;
+        }
+
+        int digit = 1;
+        int[] count = new int[10];
+
+        while (maxDigits-- > 0) {
+            for (var t : a) count[t / digit % 10]++;
+            for (int i = 1; i < count.length; i++) count[i] += count[i - 1];
+
+            int[] tmp = Arrays.copyOf(a, a.length);
+            for (int i = tmp.length - 1; i >= 0; i--) a[count[tmp[i] / digit % 10]-- - 1] = tmp[i];
+
+            digit *= 10;
+            Arrays.fill(count, 0);
+        }
+    }
+
+    /**
+     * 优化的基数排序（时间复杂度O(n)，省空间，适用于于范围大但长度不长的正整数排序）
+     * 排序稳定
+     * @param a 正整型数组
+     */
+    public static void advancedRadixSort(int[] a) {
+        int radix = 1 << 10;
+        int[] count, pow;
+
+        int max = a[0];
+        for (var t : a) if (t > max) max = t;
+
+        if (max <= 1 << 10) {       count = new int[radix]; pow = new int[] {0}; }
+        else if (max <= 1 << 20) {  count = new int[radix]; pow = new int[] {0, 10}; }
+        else if (max <= 1 << 30) {  count = new int[radix]; pow = new int[] {0, 10, 20}; }
+        else {  radix = 1 << 11;    count = new int[radix]; pow = new int[] {0, 10, 20}; }
+
+        for (int k : pow) {
+            for (var t : a) count[t >> k & (radix - 1)]++;
+            for (int i = 1; i < count.length; i++) count[i] += count[i - 1];
+
+            int[] tmp = Arrays.copyOf(a, a.length);
+            for (int i = tmp.length - 1; i >= 0; i--) a[count[tmp[i] >> k & (radix - 1)]-- - 1] = tmp[i];
+
+            Arrays.fill(count, 0);
         }
     }
 }

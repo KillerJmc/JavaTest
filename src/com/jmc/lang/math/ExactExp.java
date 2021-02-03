@@ -1,7 +1,5 @@
 package com.jmc.lang.math;
 
-import com.jmc.lang.extend.Strs;
-
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -153,8 +151,7 @@ public class ExactExp {
         BigDecimal result = getResult(exp, 16);
 
         boolean hasDecimal = result.toString().charAt(result.toString().indexOf(".") + 1) != '0';
-        if (hasDecimal) return result;
-        return getResult(exp, 0);
+        return hasDecimal ? result : getResult(exp, 0);
     }
 
     /**
@@ -167,8 +164,5 @@ public class ExactExp {
         String[] infixExp = split(exp);
         String[] suffixExp = transToSuffixExp(infixExp);
         return calculate(suffixExp).setScale(scale, RoundingMode.HALF_UP);
-    }
-    public static BigDecimal getResult(String exp, int scale, Object... args) {
-        return getResult(Strs.format(exp, args), scale);
     }
 }

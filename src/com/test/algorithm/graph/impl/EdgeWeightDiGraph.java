@@ -1,22 +1,20 @@
 package com.test.algorithm.graph.impl;
 
+import com.jmc.array.Arrs;
 import com.test.algorithm.graph.impl.weight.DirectedEdge;
-import com.test.algorithm.graph.impl.weight.Edge;
 import com.test.algorithm.graph.interfaces.EdgeWeightDiGraphTemplate;
 import com.test.algorithm.list.linked.impl.LinkedQueue;
 
 public class EdgeWeightDiGraph implements EdgeWeightDiGraphTemplate {
     private final int V;
     private int E;
-    private LinkedQueue<DirectedEdge>[] adj;
+    private final LinkedQueue<DirectedEdge>[] adj;
 
     @SuppressWarnings("unchecked")
     public EdgeWeightDiGraph(int V) {
         this.V = V;
         this.E = 0;
-        this.adj = new LinkedQueue[V];
-
-        for (int i = 0; i < adj.length; i++) adj[i] = new LinkedQueue<>();
+        this.adj = Arrs.newInstance(LinkedQueue.class, V);
     }
 
     @Override

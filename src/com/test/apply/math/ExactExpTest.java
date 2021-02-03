@@ -1,6 +1,5 @@
 package com.test.apply.math;
 
-import com.jmc.lang.extend.Strs;
 import com.jmc.lang.math.ExactExp;
 import com.jmc.lang.timer.Timers;
 
@@ -18,7 +17,7 @@ public class ExactExpTest {
 
     public static void useExp(int n) {
         // n! ~ √(2Πn) * (n / e) ^ n
-        String exp = Strs.format("√(2 * # * #) * (# / #) ^ #", Math.PI, n, n, Math.E, n);
+        String exp = "√(2 * %.16f * %d) * (%d / %.16f) ^ %d".formatted(Math.PI, n, n, Math.E, n);
         var result = ExactExp.getResult(exp, 0);
 
         System.out.println(result);

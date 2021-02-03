@@ -37,8 +37,35 @@ public class Maths {
      * @param n 底数
      * @return 阶乘结果的位数
      */
-    public static long factorialLength(long n) {
+    public static long factorialLength(int n) {
         // lg n! = lg 2Πn / 2 + n lg n / e
-        return n > Long.MAX_VALUE / 18 ? -1 : (long) (Math.log10(2 * Math.PI * n) / 2 + n * Math.log10(n / Math.E)) + 1;
+        return (long) (Math.log10(2 * Math.PI * n) / 2 + n * Math.log10(n / Math.E)) + 1;
+    }
+
+    /**
+     * 计算阶乘近似值
+     * @param n 底数
+     * @return 阶乘近似结果的字符串
+     */
+    public static String approxFactorial(int n) {
+        double d = 1;
+        long pow = factorialLength(n) - 1;
+
+        while (n > 1) {
+            d = d * n--;
+
+            d /= d >= 10000000000L        ?        10000000000L        :
+                 d >= 1000000000          ?        1000000000          :
+                 d >= 100000000           ?        100000000           :
+                 d >= 10000000            ?        10000000            :
+                 d >= 1000000             ?        1000000             :
+                 d >= 100000              ?        100000              :
+                 d >= 10000               ?        10000               :
+                 d >= 1000                ?        1000                :
+                 d >= 100                 ?        100                 :
+                 d >= 10                  ?        10                  :                  1;
+        }
+
+        return (int) d + " * 10 ^ " + pow;
     }
 }

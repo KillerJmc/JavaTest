@@ -1,17 +1,22 @@
 package com.jmc.lang.extend;
 
-/**
- * 作者：Jmc
- * 时间：2020.3.26
- * 功能：Object类扩展
- *
- */
 import com.jmc.chatserver.*;
 import com.jmc.io.*;
 import java.io.*;
 
+
+/**
+ * <p>作者：Jmc
+ * <p>时间：2020.3.26
+ * <p>功能：Object类扩展
+ */
 public class Objs 
 {
+	public static boolean orEquals(Object o, Object... a) {
+		for (var t : a) if (o.equals(t)) return true;
+		return false;
+	}
+
 	//不支持数组
 	public static boolean nullOrEmpty(Object... objs) {
 		for (Object o : objs) {

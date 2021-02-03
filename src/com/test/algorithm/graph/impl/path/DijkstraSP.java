@@ -8,6 +8,7 @@ import com.test.algorithm.tree.impl.IndexMinPriorityQueue;
 
 import java.util.Arrays;
 
+
 public class DijkstraSP extends DijkstraSPTemplate {
     private final DirectedEdge[] edgeTo;
     private final double[] distTo;
@@ -18,6 +19,7 @@ public class DijkstraSP extends DijkstraSPTemplate {
         this.distTo = new double[g.V()];
         Arrays.fill(distTo, Double.POSITIVE_INFINITY);
         this.pq = new IndexMinPriorityQueue<>(g.E());
+
         distTo[v] = 0;
         pq.insert(v, 0.0);
         while (!pq.isEmpty()) relax(g, pq.delMin());
@@ -27,10 +29,10 @@ public class DijkstraSP extends DijkstraSPTemplate {
     protected void relax(EdgeWeightDiGraph g, int v) {
         for (var e : g.adj(v)) {
             int w = e.to();
-            if (distTo(v) + e.weight() < distTo(w)) {
-                distTo[w] = distTo(v) + e.weight();
+            if (distTo[v] + e.weight() < distTo[w]) {
+                distTo[w] = distTo[v] + e.weight();
                 edgeTo[w] = e;
-                pq.insert(w, distTo(w));
+                pq.insert(w, distTo[w]);
             }
         }
     }
@@ -42,7 +44,7 @@ public class DijkstraSP extends DijkstraSPTemplate {
 
     @Override
     public boolean hasPathTo(int v) {
-        return distTo[v] < Double.POSITIVE_INFINITY;
+        return distTo(v) != Double.POSITIVE_INFINITY;
     }
 
     @Override
@@ -50,10 +52,8 @@ public class DijkstraSP extends DijkstraSPTemplate {
         if (!hasPathTo(v)) return null;
 
         var edges = new LinkedQueue<DirectedEdge>();
-        while (true) {
-            var e = edgeTo[v];
-            if (e == null) break;
-
+        DirectedEdge e;
+        while ((e = edgeTo[v]) != null) {
             edges.add(e);
             v = e.from();
         }

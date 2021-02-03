@@ -3,6 +3,7 @@ package com.test.algorithm.test.graph;
 import com.test.algorithm.graph.impl.*;
 import com.test.algorithm.graph.impl.path.DepthFirstPaths;
 import com.test.algorithm.graph.impl.path.DijkstraSP;
+import com.test.algorithm.graph.impl.path.SingleDijkstraSP;
 import com.test.algorithm.graph.impl.search.BreadthFirstSearch;
 import com.test.algorithm.graph.impl.search.DepthFirstSearch;
 import com.test.algorithm.graph.impl.topological.DepthFirstOrder;
@@ -167,6 +168,24 @@ public class GraphTest {
         }};
 
         var dijkstraSP = new DijkstraSP(eg2, 0);
+        for (var e : dijkstraSP.pathTo(6)) {
+            System.out.println(e);
+        }
+    }
+
+    @Test
+    public void test11() {
+        var g = new SingleDijkstraSP.Graph(8) {{
+            addEdge(
+                4, 5, 0.35, 5, 4, 0.35, 4, 7, 0.37,
+                    5, 7, 0.28, 7, 5, 0.28, 5, 1, 0.32,
+                    0, 4, 0.38, 0, 2, 0.26, 7, 3, 0.39,
+                    1, 3, 0.29, 2, 7, 0.34, 6, 2, 0.40,
+                    3, 6, 0.52, 6, 0, 0.58, 6, 4, 0.93
+            );
+        }};
+
+        var dijkstraSP = new SingleDijkstraSP.DijkstraSP(g, 0);
         for (var e : dijkstraSP.pathTo(6)) {
             System.out.println(e);
         }

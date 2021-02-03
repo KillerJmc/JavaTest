@@ -96,6 +96,13 @@ public class BinaryTreeTest {
             put('H', 8);
             put('C', 3);
         }};
+        tree.delete('E');
+        newLine(() -> {
+            var keys = tree.midErgodic();
+            for (var key : keys) {
+                System.out.println(key + " -> " + tree.get(key));
+            }
+        });
         System.out.println(tree.maxDepth());
     }
 

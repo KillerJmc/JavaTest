@@ -19,12 +19,7 @@ public class Bools
         return false;
     }
     
-    public static boolean in(double t, double former, double latter) {
-        return t >= former && t <= latter;
-    }
-
-    public static boolean orEquals(Object o, Object... a) {
-        for (var t : a) if (o.equals(t)) return true;
-        return false;
+    public static boolean in(double t, double start, double end) {
+        return t >= start && t <= end;
     }
 }
