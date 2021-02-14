@@ -1,8 +1,8 @@
-package com.test.algorithm.graph.impl;
+package com.test.algorithm.graph.impl.graphs;
 
 import com.jmc.array.Arrs;
-import com.test.algorithm.graph.impl.weight.DirectedEdge;
-import com.test.algorithm.graph.interfaces.EdgeWeightDiGraphTemplate;
+import com.test.algorithm.graph.impl.edges.DirectedEdge;
+import com.test.algorithm.graph.interfaces.graphs.EdgeWeightDiGraphTemplate;
 import com.test.algorithm.list.linked.impl.LinkedQueue;
 
 public class EdgeWeightDiGraph implements EdgeWeightDiGraphTemplate {

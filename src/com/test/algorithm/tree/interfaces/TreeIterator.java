@@ -1,4 +1,4 @@
-package com.test.algorithm.tree;
+package com.test.algorithm.tree.interfaces;
 
 import com.test.algorithm.list.sequence.impl.SequenceQueue;
 

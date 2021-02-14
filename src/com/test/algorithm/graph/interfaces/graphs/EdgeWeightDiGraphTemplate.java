@@ -1,6 +1,6 @@
-package com.test.algorithm.graph.interfaces;
+package com.test.algorithm.graph.interfaces.graphs;
 
-import com.test.algorithm.graph.impl.weight.DirectedEdge;
+import com.test.algorithm.graph.impl.edges.DirectedEdge;
 import com.test.algorithm.list.linked.impl.LinkedQueue;
 
 public interface EdgeWeightDiGraphTemplate {

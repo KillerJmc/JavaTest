@@ -1,6 +1,7 @@
 package com.test.algorithm.test.sort;
 
 import com.jmc.lang.timer.Timers;
+import com.jmc.reference.MethodRef;
 import com.test.algorithm.sort.Sort;
 import com.test.main.Tools;
 
@@ -60,23 +61,19 @@ public class SortTest {
         System.out.println("-----------------------------------");
     }
 
-    public static void objectSortTimer(int pow, String name, Sort.InvokeSortMethod m) {
+    public static void objectSortTimer(int pow, String name, MethodRef.Void1<Integer[]> sortMethod) {
         if (pow > 8) throw new Error();
         int n = (int) Math.pow(10, pow);
         var a = IntStream.rangeClosed(1, n).boxed().toArray(Integer[]::new);
         reverse(a);
-        Timers.milliTimer(() -> m.sort(a), "Object -> " + name);
+        Timers.milliTimer(() -> sortMethod.invoke(a), "Object -> " + name);
     }
 
-    public static void intSortTimer(int pow, String name, InvokeIntMethod m) {
+    public static void intSortTimer(int pow, String name, MethodRef.Void1<int[]> sortMethod) {
         if (pow > 8) throw new Error();
         int n = (int) Math.pow(10, pow);
         var a = IntStream.rangeClosed(1, n).toArray();
         reverse(a);
-        Timers.milliTimer(() -> m.sort(a), "Int -> " + name);
-    }
-
-    public interface InvokeIntMethod {
-        void sort(int[] a);
+        Timers.milliTimer(() -> sortMethod.invoke(a), "Int -> " + name);
     }
 }

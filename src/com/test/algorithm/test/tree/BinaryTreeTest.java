@@ -17,13 +17,13 @@ public class BinaryTreeTest {
 
         System.out.println(tree.get(2));
 
-        tree.delete(2);
+        tree.remove(2);
         System.out.println(tree.size());
         System.out.println(tree.get(2));
 
         newLine();
 
-        tree.delete(3);
+        tree.remove(3);
         tree.put(1, "666");
         System.out.println("1 -> " + tree.get(1));
         System.out.println("2 -> " + tree.get(2));
@@ -33,13 +33,37 @@ public class BinaryTreeTest {
 
     @Test
     public void test2() {
-        var tree = new BinaryTree<Integer, String>();
-        tree.put(2, "Lucy");
-        tree.put(1, "Jmc");
-        tree.put(3, "Jerry");
-        System.out.println(tree.max());
-        System.out.println(tree.min());
+        var tree = new BinaryTree<Character, Integer>() {{
+            put('E', 5);
+            put('B', 2);
+            put('G', 7);
+            put('A', 1);
+            put('D', 4);
+            put('F', 6);
+            put('H', 8);
+            put('C', 3);
+        }};
 
+        var it = tree.iterator();
+        newLine(() -> {
+            var keys = it.preOrder();
+            System.out.println(keys);
+        });
+
+        newLine(() -> {
+            var keys = it.midOrder();
+            System.out.println(keys);
+        });
+
+        newLine(() -> {
+            var keys = it.postOrder();
+            System.out.println(keys);
+        });
+
+        newLine(() -> {
+            var keys = it.laser();
+            System.out.println(keys);
+        });
     }
 
     @Test
@@ -54,56 +78,11 @@ public class BinaryTreeTest {
             put('H', 8);
             put('C', 3);
         }};
-
+        tree.remove('E');
         newLine(() -> {
-            var keys = tree.preErgodic();
-            for (var key : keys) {
-                System.out.println(key + " -> " + tree.get(key));
-            }
+            var keys = tree.iterator().midOrder();
+            System.out.println(keys);
         });
-
-        newLine(() -> {
-            var keys = tree.midErgodic();
-            for (var key : keys) {
-                System.out.println(key + " -> " + tree.get(key));
-            }
-        });
-
-        newLine(() -> {
-            var keys = tree.afterErgodic();
-            for (var key : keys) {
-                System.out.println(key + " -> " + tree.get(key));
-            }
-        });
-
-        newLine(() -> {
-            var keys = tree.laserErgodic();
-            for (var key : keys) {
-                System.out.println(key + " -> " + tree.get(key));
-            }
-        });
-    }
-
-    @Test
-    public void test4() {
-        var tree = new BinaryTree<Character, Integer>() {{
-            put('E', 5);
-            put('B', 2);
-            put('G', 7);
-            put('A', 1);
-            put('D', 4);
-            put('F', 6);
-            put('H', 8);
-            put('C', 3);
-        }};
-        tree.delete('E');
-        newLine(() -> {
-            var keys = tree.midErgodic();
-            for (var key : keys) {
-                System.out.println(key + " -> " + tree.get(key));
-            }
-        });
-        System.out.println(tree.maxDepth());
     }
 
     private static class Node<T> {
@@ -116,14 +95,14 @@ public class BinaryTreeTest {
         }
     }
 
-    private static void midPrint(Node<String> x) {
+    private static void midOrder(Node<String> x) {
         if (x == null) return;
 
-        if (x.left != null) midPrint(x.left);
+        if (x.left != null) midOrder(x.left);
 
         System.out.print(x.item + " ");
 
-        if (x.right != null) midPrint(x.right);
+        if (x.right != null) midOrder(x.right);
     }
 
     // 解决折纸问题
@@ -141,12 +120,12 @@ public class BinaryTreeTest {
             size -= 2;
         }
 
-        midPrint(root);
+        midOrder(root);
         System.out.println();
     }
 
     @Test
-    public void test5() {
+    public void test4() {
         for (int i = 1; i <= 4; i++)
             printFoldResult(i);
     }

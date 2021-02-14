@@ -1,6 +1,6 @@
 package com.test.algorithm.graph.impl.topological;
 
-import com.test.algorithm.graph.impl.DiGraph;
+import com.test.algorithm.graph.impl.graphs.DiGraph;
 import com.test.algorithm.graph.interfaces.topological.TopoLogicalTemplate;
 import com.test.algorithm.list.linked.impl.LinkedStack;
 

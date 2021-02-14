@@ -1,8 +1,8 @@
 package com.test.algorithm.tree.impl;
 
-import com.test.algorithm.tree.PriorityQueueTemplate;
+import com.test.algorithm.tree.interfaces.PriorityQueueTemplate;
 
-import static com.test.algorithm.utils.ArrayUtils.*;
+import static com.jmc.array.Arrs.*;
 
 public class MaxPriorityQueue<T extends Comparable<T>> implements PriorityQueueTemplate<T> {
     private final T[] items;
@@ -35,7 +35,7 @@ public class MaxPriorityQueue<T extends Comparable<T>> implements PriorityQueueT
 
     private void swim(int k) {
         for (; k / 2 >= 1; k /= 2) {
-            if (greater(items[k], items[k / 2]))
+            if (greater(items, k, k / 2))
                 swap(items, k, k / 2);
             else
                 return;
@@ -44,8 +44,8 @@ public class MaxPriorityQueue<T extends Comparable<T>> implements PriorityQueueT
 
     private void sink(int k) {
         while (k * 2 <= N) {
-            int maxIdx = k * 2 + 1 > N ? k * 2 : greaterIdx(items, k * 2, k * 2 + 1);
-            if (less(items[k], items[maxIdx]))
+            int maxIdx = k * 2 + 1 > N ? k * 2 :greater(items, k * 2, k * 2 + 1) ? k * 2 : k * 2 + 1;
+            if (less(items, k, maxIdx))
                 swap(items, k, k = maxIdx);
             else
                 return;

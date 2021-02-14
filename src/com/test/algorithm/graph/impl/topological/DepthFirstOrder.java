@@ -1,6 +1,6 @@
 package com.test.algorithm.graph.impl.topological;
 
-import com.test.algorithm.graph.impl.DiGraph;
+import com.test.algorithm.graph.impl.graphs.DiGraph;
 import com.test.algorithm.graph.interfaces.topological.DepthFirstOrderTemplate;
 import com.test.algorithm.list.linked.impl.LinkedStack;
 
@@ -24,6 +24,7 @@ public class DepthFirstOrder extends DepthFirstOrderTemplate {
                 dfs(g, t);
             }
         }
+
         reversePost.push(v);
     }
 

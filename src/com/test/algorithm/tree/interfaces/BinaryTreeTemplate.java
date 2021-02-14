@@ -1,4 +1,4 @@
-package com.test.algorithm.tree;
+package com.test.algorithm.tree.interfaces;
 
 public interface BinaryTreeTemplate<K extends Comparable<K>, V> {
     void put(K k, V v);

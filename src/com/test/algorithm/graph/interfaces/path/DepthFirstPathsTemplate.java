@@ -1,8 +1,7 @@
 package com.test.algorithm.graph.interfaces.path;
 
-import com.test.algorithm.graph.impl.Graph;
+import com.test.algorithm.graph.impl.graphs.Graph;
 import com.test.algorithm.list.linked.impl.LinkedStack;
-import com.test.algorithm.list.sequence.impl.SequenceStack;
 
 public abstract class DepthFirstPathsTemplate {
     protected abstract void dfs(Graph g, int v);

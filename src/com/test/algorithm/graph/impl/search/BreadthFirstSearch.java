@@ -1,6 +1,6 @@
 package com.test.algorithm.graph.impl.search;
 
-import com.test.algorithm.graph.impl.Graph;
+import com.test.algorithm.graph.impl.graphs.Graph;
 import com.test.algorithm.graph.interfaces.search.BreadthFirstSearchTemplate;
 import com.test.algorithm.list.sequence.impl.SequenceQueue;
 

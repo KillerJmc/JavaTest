@@ -1,7 +1,7 @@
 package com.test.algorithm.list.linked.impl;
 
 
-import static com.test.algorithm.utils.ArrayUtils.less;
+import static com.jmc.util.Compare.less;
 
 public class LinkedSortedSymbolTable<K extends Comparable<K>, V> extends LinkedSymbolTable<K, V> {
     @Override

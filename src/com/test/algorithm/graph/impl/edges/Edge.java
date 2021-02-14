@@ -1,4 +1,4 @@
-package com.test.algorithm.graph.impl.weight;
+package com.test.algorithm.graph.impl.edges;
 
 public class Edge implements Comparable<Edge> {
     private final int v;

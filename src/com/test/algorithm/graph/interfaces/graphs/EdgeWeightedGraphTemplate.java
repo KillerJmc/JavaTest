@@ -1,6 +1,6 @@
-package com.test.algorithm.graph.interfaces.weight;
+package com.test.algorithm.graph.interfaces.graphs;
 
-import com.test.algorithm.graph.impl.weight.Edge;
+import com.test.algorithm.graph.impl.edges.Edge;
 import com.test.algorithm.list.sequence.impl.SequenceQueue;
 
 public interface EdgeWeightedGraphTemplate {

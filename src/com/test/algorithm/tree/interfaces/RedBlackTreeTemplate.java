@@ -1,4 +1,4 @@
-package com.test.algorithm.tree;
+package com.test.algorithm.tree.interfaces;
 
 public abstract class RedBlackTreeTemplate<K extends Comparable<K>, V> {
     protected static class Node<K, V> {

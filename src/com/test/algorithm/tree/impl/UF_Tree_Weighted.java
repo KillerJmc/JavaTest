@@ -21,7 +21,7 @@ public class UF_Tree_Weighted extends UF_Tree {
         // 确保小树指向大树
         if (sz[pRoot] < sz[qRoot]) {
             eleAndGroup[pRoot] = qRoot;
-            sz[qRoot] += sz[qRoot];
+            sz[qRoot] += sz[pRoot];
         } else {
             eleAndGroup[qRoot] = pRoot;
             sz[pRoot] += sz[qRoot];

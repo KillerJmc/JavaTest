@@ -2,6 +2,7 @@ package com.jmc.array;
 
 import com.jmc.lang.extend.Rand;
 import com.jmc.lang.extend.Tries;
+import com.jmc.util.Compare;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -26,14 +27,68 @@ public class Arrs {
     }
 
     /**
+     * 包装基本数据类型数组为可排序对象数组
+     * @param a 原数组
+     * @return 结果数组
+     */
+    @SuppressWarnings("rawtypes")
+    public static Comparable[] box(Object a) {
+        if (a instanceof int[]) {
+            return Arrays.stream((int[]) a)
+                    .parallel()
+                    .boxed()
+                    .toArray(Comparable[]::new);
+        } else if (a instanceof long[]) {
+            return Arrays.stream((long[]) a)
+                    .parallel()
+                    .boxed()
+                    .toArray(Comparable[]::new);
+        } else if (a instanceof double[]) {
+            return Arrays.stream((double[]) a)
+                    .parallel()
+                    .boxed()
+                    .toArray(Comparable[]::new);
+        } else if (a instanceof byte[] byte_a) {
+            var result = new Comparable[byte_a.length];
+            for (int i = 0; i < byte_a.length; i++)
+                result[i] = byte_a[i];
+            return result;
+        } else if (a instanceof char[] char_a) {
+            var result = new Comparable[char_a.length];
+            for (int i = 0; i < char_a.length; i++)
+                result[i] = char_a[i];
+            return result;
+        } else if (a instanceof short[] short_a) {
+            var result = new Comparable[short_a.length];
+            for (int i = 0; i < short_a.length; i++)
+                result[i] = short_a[i];
+            return result;
+        } else if (a instanceof float[] float_a) {
+            var result = new Comparable[float_a.length];
+            for (int i = 0; i < float_a.length; i++)
+                result[i] = float_a[i];
+            return result;
+        } else if (a instanceof boolean[] boolean_a) {
+            var result = new Comparable[boolean_a.length];
+            for (int i = 0; i < boolean_a.length; i++)
+                result[i] = boolean_a[i];
+            return result;
+        } else if (a instanceof Comparable[] comp_a){
+            return comp_a;
+        } else {
+            throw new IllegalArgumentException("array a is invalid!");
+        }
+    }
+
+    /**
      * 交换元素
      * @param a 数组名
      * @param idx1 第一个元素对应的下标
      * @param idx2 第二个元素对应的下标
-     * @param <T> 可排序元素
+     * @param <T> 数组元素
      */
-    public static <T extends Comparable<T>> void swap(T[] a, int idx1, int idx2) {
-        T tmp = a[idx1];
+    public static <T> void swap(T[] a, int idx1, int idx2) {
+        var tmp = a[idx1];
         a[idx1] = a[idx2];
         a[idx2] = tmp;
     }
@@ -45,6 +100,30 @@ public class Arrs {
      * @param idx2 第二个元素对应的下标
      */
     public static void swap(int[] a, int idx1, int idx2) {
+        var tmp = a[idx1];
+        a[idx1] = a[idx2];
+        a[idx2] = tmp;
+    }
+
+    /**
+     * 交换元素
+     * @param a 长整形数组
+     * @param idx1 第一个元素对应的下标
+     * @param idx2 第二个元素对应的下标
+     */
+    public static void swap(long[] a, int idx1, int idx2) {
+        var tmp = a[idx1];
+        a[idx1] = a[idx2];
+        a[idx2] = tmp;
+    }
+
+    /**
+     * 交换元素
+     * @param a 短整形数组
+     * @param idx1 第一个元素对应的下标
+     * @param idx2 第二个元素对应的下标
+     */
+    public static void swap(short[] a, int idx1, int idx2) {
         var tmp = a[idx1];
         a[idx1] = a[idx2];
         a[idx2] = tmp;
@@ -99,60 +178,71 @@ public class Arrs {
     }
 
     /**
+     * 交换元素
+     * @param a 布尔值数组
+     * @param idx1 第一个元素对应的下标
+     * @param idx2 第二个元素对应的下标
+     */
+    public static void swap(boolean[] a, int idx1, int idx2) {
+        var tmp = a[idx1];
+        a[idx1] = a[idx2];
+        a[idx2] = tmp;
+    }
+
+    /**
      * 比较是否大于
-     * @param o1 第一个元素
-     * @param o2 第二个元素
-     * @param <O> 可排序元素
+     * @param a 可排序数组
+     * @param idx1 第一个元素的下标
+     * @param idx2 第二个元素的下标
      * @return 第一个元素是否大于第二个元素
      */
-    public static <O extends Comparable<O>> boolean greater(O o1, O o2) {
-        return o1.compareTo(o2) > 0;
+    public static <T extends Comparable<T>> boolean greater(T[] a, int idx1, int idx2) {
+        return Compare.greater(a[idx1], a[idx2]);
     }
 
     /**
      * 比较是否大于或等于
-     * @param o1 第一个元素
-     * @param o2 第二个元素
-     * @param <O> 可排序元素
+     * @param a 可排序数组
+     * @param idx1 第一个元素的下标
+     * @param idx2 第二个元素的下标
      * @return 第一个元素是否大于或等于第二个元素
      */
-    public static <O extends Comparable<O>> boolean greaterOrEquals(O o1, O o2) {
-        return o1.compareTo(o2) >= 0;
+    public static <T extends Comparable<T>> boolean greaterOrEquals(T[] a, int idx1, int idx2) {
+        return Compare.greaterOrEquals(a[idx1], a[idx2]);
     }
 
     /**
      * 比较是否小于
-     * @param o1 第一个元素
-     * @param o2 第二个元素
-     * @param <O> 可排序元素
+     * @param a 可排序数组
+     * @param idx1 第一个元素的下标
+     * @param idx2 第二个元素的下标
      * @return 第一个元素是否小于第二个元素
      */
-    public static <O extends Comparable<O>> boolean less(O o1, O o2) {
-        return o1.compareTo(o2) < 0;
+    public static <T extends Comparable<T>> boolean less(T[] a, int idx1, int idx2) {
+        return Compare.less(a[idx1], a[idx2]);
     }
 
     /**
      * 比较是否小于或等于
-     * @param o1 第一个元素
-     * @param o2 第二个元素
-     * @param <O> 可排序元素
-     * @return 第一个元素是否小于第二个元素
+     * @param a 可排序数组
+     * @param idx1 第一个元素的下标
+     * @param idx2 第二个元素的下标
+     * @return 第一个元素是否小于或等于第二个元素
      */
-    public static <O extends Comparable<O>> boolean lessOrEquals(O o1, O o2) {
-        return o1.compareTo(o2) < 0;
+    public static <T extends Comparable<T>> boolean lessOrEquals(T[] a, int idx1, int idx2) {
+        return Compare.lessOrEquals(a[idx1], a[idx2]);
     }
 
     /**
      * 比较是否等于
-     * @param o1 第一个元素
-     * @param o2 第二个元素
-     * @param <O> 可排序元素
-     * @return 第一个元素是否大于第二个元素
+     * @param a 可排序数组
+     * @param idx1 第一个元素的下标
+     * @param idx2 第二个元素的下标
+     * @return 第一个元素是否等于第二个元素
      */
-    public static <O extends Comparable<O>> boolean equals(O o1, O o2) {
-        return o1.compareTo(o2) == 0;
+    public static <T extends Comparable<T>> boolean equals(T[] a, int idx1, int idx2) {
+        return Compare.equals(a[idx1], a[idx2]);
     }
-
 
     /**
      * 获取最大值
@@ -330,36 +420,18 @@ public class Arrs {
 
     public static int[] copyOf(int[] a, int newStartIdx) {
         int[] result = new int[a.length + newStartIdx];
-        int p = 0;
-        for (int i = newStartIdx; i < result.length; i++)
-            result[i] = a[p++];
+        System.arraycopy(a, 0, result, newStartIdx, result.length);
         return result;
     }
 
     /**
-     * 获取数组的指定范围的元素的字符串形式
-     * @param a 整型数组
-     * @param fromInclusive 开始的索引（包括）
-     * @param toInclusive 结束的索引（包括）
+     * 返回指定个数的子集合的字符串形式
+     * @param a 数组
+     * @param limit 子集合元素个数
      * @return 结果字符串
      */
-    public static String toString(int[] a, int fromInclusive, int toInclusive) {
-        if (fromInclusive < 0 || toInclusive > a.length - 1 || fromInclusive > toInclusive)
-            throw new ArrayIndexOutOfBoundsException(String.format("from : %d, to : %d, len = %d", fromInclusive, toInclusive, a.length));
-
-        int[] result = new int[toInclusive - fromInclusive + 1];
-        System.arraycopy(a, fromInclusive, result, 0, result.length);
-        return Arrays.toString(result);
-    }
-
-    /**
-     * 打印数组的指定范围的元素到字符串
-     * @param a 整型数组
-     * @param length 截取长度
-     * @return 结果字符串
-     */
-    public static String toString(int[] a, int length) {
-        return toString(a, 0, length - 1);
+    public static String toString(int[] a, int limit) {
+        return Arrays.toString(Arrays.copyOf(a, limit));
     }
 
     /**

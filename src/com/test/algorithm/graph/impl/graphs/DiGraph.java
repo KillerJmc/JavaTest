@@ -1,6 +1,6 @@
-package com.test.algorithm.graph.impl;
+package com.test.algorithm.graph.impl.graphs;
 
-import com.test.algorithm.graph.interfaces.DiGraphTemplate;
+import com.test.algorithm.graph.interfaces.graphs.DiGraphTemplate;
 import com.test.algorithm.list.sequence.impl.SequenceQueue;
 
 public class DiGraph extends DiGraphTemplate {

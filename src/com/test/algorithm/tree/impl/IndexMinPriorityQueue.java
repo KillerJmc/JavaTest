@@ -1,7 +1,7 @@
 package com.test.algorithm.tree.impl;
 
-import com.test.algorithm.tree.IndexPriorityQueueTemplate;
-import com.test.algorithm.utils.ArrayUtils;
+import com.jmc.array.Arrs;
+import com.test.algorithm.tree.interfaces.IndexPriorityQueueTemplate;
 
 import java.util.Arrays;
 
@@ -21,16 +21,16 @@ public class IndexMinPriorityQueue<T extends Comparable<T>> implements IndexPrio
     }
 
     private boolean less(int idx1, int idx2) {
-        return ArrayUtils.less(items[pq[idx1]], items[pq[idx2]]);
+        return Arrs.less(items, pq[idx1], pq[idx2]);
     }
 
     private boolean greater(int idx1, int idx2) {
-        return ArrayUtils.greater(items[pq[idx1]], items[pq[idx2]]);
+        return Arrs.greater(items, pq[idx1], pq[idx2]);
     }
 
     private void swap(int idx1, int idx2) {
-        ArrayUtils.swap(qp, pq[idx1], pq[idx2]);
-        ArrayUtils.swap(pq, idx1, idx2);
+        Arrs.swap(qp, pq[idx1], pq[idx2]);
+        Arrs.swap(pq, idx1, idx2);
     }
 
     @Override

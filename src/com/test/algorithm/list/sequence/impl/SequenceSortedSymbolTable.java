@@ -1,7 +1,7 @@
 package com.test.algorithm.list.sequence.impl;
 
 
-import static com.test.algorithm.utils.ArrayUtils.less;
+import static com.jmc.util.Compare.less;
 
 public class SequenceSortedSymbolTable<K, V> extends SequenceSymbolTable<K, V> {
     @Override

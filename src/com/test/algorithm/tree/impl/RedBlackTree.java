@@ -1,9 +1,9 @@
 package com.test.algorithm.tree.impl;
 
-import com.test.algorithm.tree.RedBlackTreeTemplate;
+import com.test.algorithm.tree.interfaces.RedBlackTreeTemplate;
 
-import static com.test.algorithm.utils.ArrayUtils.greater;
-import static com.test.algorithm.utils.ArrayUtils.less;
+import static com.jmc.util.Compare.greater;
+import static com.jmc.util.Compare.less;
 
 public class RedBlackTree<K extends Comparable<K>, V> extends RedBlackTreeTemplate<K, V> {;
     private Node<K, V> root;

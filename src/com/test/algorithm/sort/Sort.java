@@ -6,40 +6,9 @@ import com.test.algorithm.list.sequence.impl.IntArray;
 
 import java.util.Arrays;
 
-import static com.test.algorithm.utils.ArrayUtils.*;
+import static com.jmc.array.Arrs.*;
 
 public class Sort {
-    /**
-     * 对基本数据类型数组排序
-     * @param a 基本数据类型数组
-     * @param m 调用的排序方法
-     */
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public static void basicDataTypeSort(Object a, InvokeSortMethod m) {
-        switch (a.getClass().getSimpleName()) {
-            case "byte[]", "char[]", "short[]", "int[]", "long[]", "float[]", "double[]" -> {
-                var wrappedA = new Comparable[len(a)];
-                for (int i = 0; i < len(a); i++) wrappedA[i] = (Comparable) get(a, i);
-                m.sort(wrappedA);
-                for (int i = 0; i < len(a); i++) set(a, i, wrappedA[i]);
-            }
-
-            default -> throw new IllegalArgumentException("输入的不是基本类型数组！");
-        }
-    }
-
-    /**
-     * 调用排序方法的接口
-     */
-    public interface InvokeSortMethod {
-        /**
-         *
-         * @param a 包装类数组
-         * @param <T> 数组元素必须是可排序元素
-         */
-        <T extends Comparable<T>> void sort(T[] a);
-    }
-
     /**
      * 反转数组（时间复杂度：[n/2], 即O(n))
      * @param a 数组
@@ -47,9 +16,7 @@ public class Sort {
      */
     public static <T> void reverse(T[] a) {
         for (int i = 0; i < a.length / 2; i++) {
-            T t = a[i];
-            a[i] = a[a.length - 1 - i];
-            a[a.length - 1 - i] = t;
+            swap(a, i, a.length - 1 - i);
         }
     }
 
@@ -71,7 +38,8 @@ public class Sort {
     public static <T extends Comparable<T>> void bubbleSort(T[] a) {
         for (int i = a.length - 1; i > 0; i--)
             for (int k = 0; k < i; k++)
-                ifGreaterThanSwap(a, k, k + 1);
+                if (greater(a, k, k + 1))
+                    swap(a, k, k + 1);
     }
 
     /**
@@ -96,7 +64,7 @@ public class Sort {
         for (int i = 0; i < a.length - 1; i++) {
             int minIdx = i;
             for (int k = i + 1; k < a.length; k++)
-                if (less(a[k], a[minIdx]))
+                if (less(a, k, minIdx))
                     minIdx = k;
             swap(a, i, minIdx);
         }
@@ -126,7 +94,7 @@ public class Sort {
     public static <T extends Comparable<T>> void insertionSort(T[] a) {
         for (int i = 1; i < a.length; i++)
             for (int k = i; k > 0; k--)
-                if (less(a[k], a[k - 1]))
+                if (less(a, k, k - 1))
                     swap(a, k, k - 1);
                 else
                     break;
@@ -161,13 +129,12 @@ public class Sort {
     public static <T extends Comparable<T>> void binaryInsertionSort(T[] a) {
         for (int i = 1; i < a.length; i++) {
             int lo = 0, hi = i - 1, mid;
-            T k = a[i];
             while (hi >= lo) {
                 mid = (lo + hi) / 2;
-                if (greater(a[mid], k)) {
-                    if (mid == 0 || less(a[mid - 1], k)) {
+                if (greater(a, mid, i)) {
+                    if (mid == 0 || less(a, mid - 1, i)) {
                         System.arraycopy(a, lo, a, lo + 1, i - lo);
-                        a[lo] = k;
+                        a[lo] = a[i];
                         break;
                     } else {
                         hi = mid - 1;
@@ -220,7 +187,7 @@ public class Sort {
         for (int h = a.length / 2; h >= 1; h /= 2)
             for (int i = h; i < a.length; i++)
                 for (int k = i; k - h >= 0; k -= h)
-                    if (less(a[k], a[k - h]))
+                    if (less(a, k, k - h))
                         swap(a, k, k - h);
                     else
                         break;
@@ -265,7 +232,7 @@ public class Sort {
 
         private void merge(T[] a, int lo, int mid, int hi) {
             int i = lo, p1 = lo, p2 = mid + 1;
-            while (p1 <= mid && p2 <= hi) assist[i++] = less(a[p1], a[p2]) ? a[p1++] : a[p2++];
+            while (p1 <= mid && p2 <= hi) assist[i++] = less(a, p1, p2) ? a[p1++] : a[p2++];
             while (p1 <= mid) assist[i++] = a[p1++];
             while (p2 <= hi) assist[i++] = a[p2++];
             System.arraycopy(assist, lo, a, lo, hi - lo + 1);
@@ -346,8 +313,8 @@ public class Sort {
             int left = lo, right = hi + 1;
 
             while (true) {
-                while (left < right && !less(a[--right], a[lo]));
-                while (left < right && !greater(a[++left], a[lo]));
+                while (left < right && !less(a, --right, lo));
+                while (left < right && !greater(a, ++left, lo));
 
                 if (left == right) {
                     swap(a, lo, right);
@@ -432,6 +399,7 @@ public class Sort {
         // 构造堆
         T[] heap = (T[]) new Comparable[a.length + 1];
         System.arraycopy(a, 0, heap, 1, a.length);
+        // 只沉降非叶子节点
         for (int i = heap.length / 2; i >= 1; i--) sink(heap, i, heap.length - 1);
 
         int N = heap.length - 1;
@@ -451,8 +419,8 @@ public class Sort {
      */
     private static <T extends Comparable<T>> void sink(T[] heap, int x, int range) {
         while (x * 2 <= range) {
-            int maxIdx = x * 2 + 1 > range ? x * 2 : greaterIdx(heap, x * 2, x * 2 + 1);
-            if (less(heap[x], heap[maxIdx]))
+            int maxIdx = x * 2 + 1 > range ? x * 2 : greater(heap, x * 2, x * 2 + 1) ? x * 2 : x * 2 + 1;
+            if (less(heap, x, maxIdx))
                 swap(heap, x, x = maxIdx);
             else
                 return;

@@ -1,6 +1,6 @@
 package com.test.algorithm.tree.impl;
 
-import com.test.algorithm.tree.UFTemplate;
+import com.test.algorithm.tree.interfaces.UFTemplate;
 
 public class UF implements UFTemplate {
     protected final int[] eleAndGroup;

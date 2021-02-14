@@ -1,6 +1,7 @@
-package com.test.algorithm.graph.impl.weight;
+package com.test.algorithm.graph.impl.graphs;
 
-import com.test.algorithm.graph.interfaces.weight.EdgeWeightedGraphTemplate;
+import com.test.algorithm.graph.impl.edges.Edge;
+import com.test.algorithm.graph.interfaces.graphs.EdgeWeightedGraphTemplate;
 import com.test.algorithm.list.sequence.impl.SequenceQueue;
 
 public class EdgeWeightedGraph implements EdgeWeightedGraphTemplate {

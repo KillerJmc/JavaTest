@@ -1,4 +1,4 @@
-package com.test.algorithm.tree;
+package com.test.algorithm.tree.interfaces;
 
 public interface PriorityQueueTemplate<T extends Comparable<T>> {
     default T delMax() {

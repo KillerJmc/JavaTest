@@ -1,4 +1,4 @@
-package com.test.algorithm.tree;
+package com.test.algorithm.tree.interfaces;
 
 public interface UFTemplate {
     int count();

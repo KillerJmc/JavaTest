@@ -1,5 +1,7 @@
-package com.test.algorithm.graph.impl.weight;
+package com.test.algorithm.graph.impl.tree;
 
+import com.test.algorithm.graph.impl.edges.Edge;
+import com.test.algorithm.graph.impl.graphs.EdgeWeightedGraph;
 import com.test.algorithm.list.linked.impl.LinkedQueue;
 import com.test.algorithm.tree.impl.MinPriorityQueue;
 import com.test.algorithm.tree.impl.UF_Tree_Weighted;
