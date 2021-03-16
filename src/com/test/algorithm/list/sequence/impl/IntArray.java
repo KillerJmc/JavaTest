@@ -14,7 +14,7 @@ public class IntArray {
     private int N;
 
     public IntArray() {
-        this(1);
+        this(16);
     }
 
     public IntArray(int capacity) {
@@ -40,13 +40,13 @@ public class IntArray {
 
     public void insert(int t) {
         // 如果插入后元素个数大于数组最大容量就扩容
-        if (N + 1 > a.length) resize(a.length * 2);
+        if (N + 1 > a.length) resize(a.length << 1);
         a[N++] = t;
     }
 
     public void insert(int i, int t) {
         // 如果插入后元素个数大于数组最大容量就扩容
-        if (N == a.length) resize(a.length * 2);
+        if (N == a.length) resize(a.length << 1);
 
         System.arraycopy(a, i, a, i + 1, N++ - i);
         a[i] = t;
@@ -57,7 +57,7 @@ public class IntArray {
         System.arraycopy(a, i + 1, a, i, N-- - i - 1);
 
         // 如果移除后元素个数小于数组最大容量就缩容
-        if (N < a.length / 4) resize(a.length / 2);
+        if (N < a.length >> 2) resize(a.length << 1);
         return t;
     }
 

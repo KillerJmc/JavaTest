@@ -2,6 +2,8 @@ package com.test.algorithm.base.bag;
 
 import com.jmc.array.Arrs;
 
+import java.util.Arrays;
+
 public class Bag {
     /**
      * store the value of every item
@@ -30,8 +32,8 @@ public class Bag {
 
     public Bag(int[] val, int[] vol) {
         this.types = val.length;
-        this.val = Arrs.copyOf(val, 1);
-        this.vol = Arrs.copyOf(vol, 1);
+        this.val = Arrays.copyOfRange(val, 1, val.length);
+        this.vol = Arrays.copyOfRange(vol, 1, vol.length);
     }
 
     public void solve(int volume) {

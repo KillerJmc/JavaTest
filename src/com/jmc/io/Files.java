@@ -1,15 +1,21 @@
 package com.jmc.io;
- 
+
 import com.jmc.lang.extend.Objs;
 import com.jmc.lang.extend.Strs;
 import com.jmc.lang.extend.Tries;
 
 import java.io.*;
-import java.nio.charset.*;
-import java.text.*;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.text.DecimalFormat;
 import java.util.*;
-import java.util.concurrent.*;
-import java.util.zip.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.zip.CRC32;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 /**
  * <p>作者: Jmc
@@ -79,6 +85,7 @@ import java.util.zip.*;
  *   2020.8.18     1.将所有返回布尔值的方法改为返回void且出错时直接抛出运行时异常
  *                 2.添加deletes参数为文件列表的重载方法
  *   2020.12.27    对源码进行大幅度调整优化，并添加相应方法注释
+ *   2021.3.15     更新大文件复制通道代码，用NIO: ByteBuffer提高性能
  *
  * </pre>
  */
@@ -123,6 +130,11 @@ public class Files
 	 * 文件夹存放列表
 	 */
 	private static List<File> dirList;
+
+	/**
+	 * 此类为工具类，不能被实例化
+	 */
+	private Files() {}
 
 	/**
 	 * 搜索路径下符合要求的所有文件和文件夹
@@ -1541,18 +1553,15 @@ public class Files
 			try (var in = new FileInputStream(src).getChannel();
 			     var out = new FileOutputStream(des, appendMode).getChannel())
 			{
-				int position = 0;
-				long size = in.size();
-
-				// 保证完整复制
-				while (size > 0) {
-					long count = in.transferTo(position, size, out);
-					if (count > 0) {
-						position += count;
-						size -= count;
-					}
+				// 申请8M的堆外内存
+				var buff = ByteBuffer.allocateDirect(8 * 1024 * 1024);
+				while (in.read(buff) != -1) {
+					// 改变buff为读模式
+					buff.flip();
+					out.write(buff);
+					// buff的复位
+					buff.clear();
 				}
-				in.force(true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -1593,7 +1602,6 @@ public class Files
 			     var out = new FileOutputStream(des, appendMode))
 			{
 				in.transferTo(out);
-				out.flush();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -1638,7 +1646,6 @@ public class Files
 			     var out = new FileOutputStream(des))
 			{
 				in.transferTo(out);
-				out.flush();
 			} catch(Exception e) {
 				e.printStackTrace();
 			}

@@ -2,6 +2,8 @@ package com.test.algorithm.base.bag;
 
 import com.jmc.array.Arrs;
 
+import java.util.Arrays;
+
 @SuppressWarnings("all")
 public class Bag3 {
     /**
@@ -36,9 +38,9 @@ public class Bag3 {
 
     public Bag3(int[] val, int[] vol, int[] num) {
         this.types = val.length;
-        this.val = Arrs.copyOf(val, 1);
-        this.vol = Arrs.copyOf(vol, 1);
-        this.num = Arrs.copyOf(num, 1);
+        this.val = Arrays.copyOfRange(val, 1, val.length);
+        this.vol = Arrays.copyOfRange(vol, 1, vol.length);
+        this.num = Arrays.copyOfRange(num, 1, num.length);
     }
 
     public void solve(int volume) {

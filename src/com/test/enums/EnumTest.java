@@ -1,7 +1,5 @@
 package com.test.enums;
 
-import com.test.main.Main;
-
 public class EnumTest {
     public static void main(String[] args) {
         System.out.println(Color.BLUE);

@@ -1,7 +1,7 @@
 package com.jmc.reference;
 
 /**
- * <p> 方法引用
+ * <p> 函数引用
  * <p> 作者：Jmc
  * <p> 时间：2021.2.3
  * <p> 功能：
@@ -9,8 +9,8 @@ package com.jmc.reference;
  * @param <R> 返回值类型
  */
 @SuppressWarnings("unchecked")
-public abstract class MethodRef<R> {
-    private MethodRef() {}
+public abstract class Func<R> {
+    private Func() {}
 
     public abstract R invoke(Object... args);
 
@@ -19,8 +19,8 @@ public abstract class MethodRef<R> {
             throw new IllegalArgumentException("调用参数个数不匹配，需要%d个，实际提供了%d个".formatted(assertSize, realSize));
     }
 
-    public static MethodRef<Object> of(Void0 m) {
-        return new MethodRef<>() {
+    public static Func<Object> of(Void0 m) {
+        return new Func<>() {
             @Override
             public Object invoke(Object... args) {
                 checkParams(args.length, 0);
@@ -30,8 +30,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T> MethodRef<Object> of(Void1<T> m) {
-        return new MethodRef<>() {
+    public static <T> Func<Object> of(Void1<T> m) {
+        return new Func<>() {
             @Override
             public Object invoke(Object... args) {
                 checkParams(args.length, 1);
@@ -41,8 +41,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U> MethodRef<Object> of(Void2<T, U> m) {
-        return new MethodRef<>() {
+    public static <T, U> Func<Object> of(Void2<T, U> m) {
+        return new Func<>() {
             @Override
             public Object invoke(Object... args) {
                 checkParams(args.length, 2);
@@ -52,8 +52,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V> MethodRef<Object> of(Void3<T, U, V> m) {
-        return new MethodRef<>() {
+    public static <T, U, V> Func<Object> of(Void3<T, U, V> m) {
+        return new Func<>() {
             @Override
             public Object invoke(Object... args) {
                 checkParams(args.length, 3);
@@ -63,8 +63,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, W> MethodRef<Object> of(Void4<T, U, V, W> m) {
-        return new MethodRef<>() {
+    public static <T, U, V, W> Func<Object> of(Void4<T, U, V, W> m) {
+        return new Func<>() {
             @Override
             public Object invoke(Object... args) {
                 checkParams(args.length, 4);
@@ -74,8 +74,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, W, X> MethodRef<Object> of(Void5<T, U, V, W, X> m) {
-        return new MethodRef<>() {
+    public static <T, U, V, W, X> Func<Object> of(Void5<T, U, V, W, X> m) {
+        return new Func<>() {
             @Override
             public Object invoke(Object... args) {
                 checkParams(args.length, 5);
@@ -85,8 +85,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, W, X, Y> MethodRef<Object> of(Void6<T, U, V, W, X, Y> m) {
-        return new MethodRef<>() {
+    public static <T, U, V, W, X, Y> Func<Object> of(Void6<T, U, V, W, X, Y> m) {
+        return new Func<>() {
             @Override
             public Object invoke(Object... args) {
                 checkParams(args.length, 6);
@@ -96,8 +96,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, W, X, Y, Z> MethodRef<Object> of(Void7<T, U, V, W, X, Y, Z> m) {
-        return new MethodRef<>() {
+    public static <T, U, V, W, X, Y, Z> Func<Object> of(Void7<T, U, V, W, X, Y, Z> m) {
+        return new Func<>() {
             @Override
             public Object invoke(Object... args) {
                 checkParams(args.length, 7);
@@ -107,8 +107,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <R> MethodRef<R> of(Object0<R> m) {
-        return new MethodRef<>() {
+    public static <R> Func<R> of(Object0<R> m) {
+        return new Func<>() {
             @Override
             public R invoke(Object... args) {
                 checkParams(args.length, 0);
@@ -117,8 +117,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, R> MethodRef<R> of(Object1<T, R> m) {
-        return new MethodRef<>() {
+    public static <T, R> Func<R> of(Object1<T, R> m) {
+        return new Func<>() {
             @Override
             public R invoke(Object... args) {
                 checkParams(args.length, 1);
@@ -127,8 +127,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, R> MethodRef<R> of(Object2<T, U, R> m) {
-        return new MethodRef<>() {
+    public static <T, U, R> Func<R> of(Object2<T, U, R> m) {
+        return new Func<>() {
             @Override
             public R invoke(Object... args) {
                 checkParams(args.length, 2);
@@ -137,8 +137,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, R> MethodRef<R> of(Object3<T, U, V, R> m) {
-        return new MethodRef<>() {
+    public static <T, U, V, R> Func<R> of(Object3<T, U, V, R> m) {
+        return new Func<>() {
             @Override
             public R invoke(Object... args) {
                 checkParams(args.length, 3);
@@ -147,8 +147,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, W, R> MethodRef<R> of(Object4<T, U, V, W, R> m) {
-        return new MethodRef<>() {
+    public static <T, U, V, W, R> Func<R> of(Object4<T, U, V, W, R> m) {
+        return new Func<>() {
             @Override
             public R invoke(Object... args) {
                 checkParams(args.length, 4);
@@ -157,8 +157,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, W, X, R> MethodRef<R> of(Object5<T, U, V, W, X, R> m) {
-        return new MethodRef<>() {
+    public static <T, U, V, W, X, R> Func<R> of(Object5<T, U, V, W, X, R> m) {
+        return new Func<>() {
             @Override
             public R invoke(Object... args) {
                 checkParams(args.length, 5);
@@ -167,8 +167,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, W, X, Y, R> MethodRef<R> of(Object6<T, U, V, W, X, Y, R> m) {
-        return new MethodRef<>() {
+    public static <T, U, V, W, X, Y, R> Func<R> of(Object6<T, U, V, W, X, Y, R> m) {
+        return new Func<>() {
             @Override
             public R invoke(Object... args) {
                 checkParams(args.length, 6);
@@ -177,8 +177,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, W, X, Y, Z, R> MethodRef<R> of(Object7<T, U, V, W, X, Y, Z, R> m) {
-        return new MethodRef<>() {
+    public static <T, U, V, W, X, Y, Z, R> Func<R> of(Object7<T, U, V, W, X, Y, Z, R> m) {
+        return new Func<>() {
             @Override
             public R invoke(Object... args) {
                 checkParams(args.length, 7);
@@ -187,8 +187,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static MethodRef<Object> bind(Void0 m) {
-        return new MethodRef<>() {
+    public static Func<Object> bind(Void0 m) {
+        return new Func<>() {
             @Override
             public Object invoke(Object... args) {
                 checkParams(args.length, 0);
@@ -198,8 +198,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T> MethodRef<Object> bind(Void1<T> m, T t) {
-        return new MethodRef<>() {
+    public static <T> Func<Object> bind(Void1<T> m, T t) {
+        return new Func<>() {
             @Override
             public Object invoke(Object... args) {
                 checkParams(args.length, 0);
@@ -209,8 +209,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U> MethodRef<Object> bind(Void2<T, U> m, T t, U u) {
-        return new MethodRef<>() {
+    public static <T, U> Func<Object> bind(Void2<T, U> m, T t, U u) {
+        return new Func<>() {
             @Override
             public Object invoke(Object... args) {
                 checkParams(args.length, 0);
@@ -220,8 +220,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V> MethodRef<Object> bind(Void3<T, U, V> m, T t, U u, V v) {
-        return new MethodRef<>() {
+    public static <T, U, V> Func<Object> bind(Void3<T, U, V> m, T t, U u, V v) {
+        return new Func<>() {
             @Override
             public Object invoke(Object... args) {
                 checkParams(args.length, 0);
@@ -231,8 +231,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, W> MethodRef<Object> bind(Void4<T, U, V, W> m, T t, U u, V v, W w) {
-        return new MethodRef<>() {
+    public static <T, U, V, W> Func<Object> bind(Void4<T, U, V, W> m, T t, U u, V v, W w) {
+        return new Func<>() {
             @Override
             public Object invoke(Object... args) {
                 checkParams(args.length, 0);
@@ -242,8 +242,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, W, X> MethodRef<Object> bind(Void5<T, U, V, W, X> m, T t, U u, V v, W w, X x) {
-        return new MethodRef<>() {
+    public static <T, U, V, W, X> Func<Object> bind(Void5<T, U, V, W, X> m, T t, U u, V v, W w, X x) {
+        return new Func<>() {
             @Override
             public Object invoke(Object... args) {
                 checkParams(args.length, 0);
@@ -253,8 +253,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, W, X, Y> MethodRef<Object> bind(Void6<T, U, V, W, X, Y> m, T t, U u, V v, W w, X x, Y y) {
-        return new MethodRef<>() {
+    public static <T, U, V, W, X, Y> Func<Object> bind(Void6<T, U, V, W, X, Y> m, T t, U u, V v, W w, X x, Y y) {
+        return new Func<>() {
             @Override
             public Object invoke(Object... args) {
                 checkParams(args.length, 0);
@@ -264,8 +264,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, W, X, Y, Z> MethodRef<Object> bind(Void7<T, U, V, W, X, Y, Z> m, T t, U u, V v, W w, X x, Y y, Z z) {
-        return new MethodRef<>() {
+    public static <T, U, V, W, X, Y, Z> Func<Object> bind(Void7<T, U, V, W, X, Y, Z> m, T t, U u, V v, W w, X x, Y y, Z z) {
+        return new Func<>() {
             @Override
             public Object invoke(Object... args) {
                 checkParams(args.length, 0);
@@ -275,8 +275,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <R> MethodRef<R> bind(Object0<R> m) {
-        return new MethodRef<>() {
+    public static <R> Func<R> bind(Object0<R> m) {
+        return new Func<>() {
             @Override
             public R invoke(Object... args) {
                 checkParams(args.length, 0);
@@ -285,8 +285,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, R> MethodRef<R> bind(Object1<T, R> m, T t) {
-        return new MethodRef<>() {
+    public static <T, R> Func<R> bind(Object1<T, R> m, T t) {
+        return new Func<>() {
             @Override
             public R invoke(Object... args) {
                 checkParams(args.length, 0);
@@ -295,8 +295,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, R> MethodRef<R> bind(Object2<T, U, R> m, T t, U u) {
-        return new MethodRef<>() {
+    public static <T, U, R> Func<R> bind(Object2<T, U, R> m, T t, U u) {
+        return new Func<>() {
             @Override
             public R invoke(Object... args) {
                 checkParams(args.length, 0);
@@ -305,8 +305,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, R> MethodRef<R> bind(Object3<T, U, V, R> m, T t, U u, V v) {
-        return new MethodRef<>() {
+    public static <T, U, V, R> Func<R> bind(Object3<T, U, V, R> m, T t, U u, V v) {
+        return new Func<>() {
             @Override
             public R invoke(Object... args) {
                 checkParams(args.length, 0);
@@ -315,8 +315,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, W, R> MethodRef<R> bind(Object4<T, U, V, W, R> m, T t, U u, V v, W w) {
-        return new MethodRef<>() {
+    public static <T, U, V, W, R> Func<R> bind(Object4<T, U, V, W, R> m, T t, U u, V v, W w) {
+        return new Func<>() {
             @Override
             public R invoke(Object... args) {
                 checkParams(args.length, 0);
@@ -325,8 +325,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, W, X, R> MethodRef<R> bind(Object5<T, U, V, W, X, R> m, T t, U u, V v, W w, X x) {
-        return new MethodRef<>() {
+    public static <T, U, V, W, X, R> Func<R> bind(Object5<T, U, V, W, X, R> m, T t, U u, V v, W w, X x) {
+        return new Func<>() {
             @Override
             public R invoke(Object... args) {
                 checkParams(args.length, 0);
@@ -335,8 +335,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, W, X, Y, R> MethodRef<R> bind(Object6<T, U, V, W, X, Y, R> m, T t, U u, V v, W w, X x, Y y) {
-        return new MethodRef<>() {
+    public static <T, U, V, W, X, Y, R> Func<R> bind(Object6<T, U, V, W, X, Y, R> m, T t, U u, V v, W w, X x, Y y) {
+        return new Func<>() {
             @Override
             public R invoke(Object... args) {
                 checkParams(args.length, 0);
@@ -345,8 +345,8 @@ public abstract class MethodRef<R> {
         };
     }
 
-    public static <T, U, V, W, X, Y, Z, R> MethodRef<R> bind(Object7<T, U, V, W, X, Y, Z, R> m, T t, U u, V v, W w, X x, Y y, Z z) {
-        return new MethodRef<>() {
+    public static <T, U, V, W, X, Y, Z, R> Func<R> bind(Object7<T, U, V, W, X, Y, Z, R> m, T t, U u, V v, W w, X x, Y y, Z z) {
+        return new Func<>() {
             @Override
             public R invoke(Object... args) {
                 checkParams(args.length, 0);

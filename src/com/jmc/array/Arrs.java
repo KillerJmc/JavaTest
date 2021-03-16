@@ -418,12 +418,6 @@ public class Arrs {
         return rand;
     }
 
-    public static int[] copyOf(int[] a, int newStartIdx) {
-        int[] result = new int[a.length + newStartIdx];
-        System.arraycopy(a, 0, result, newStartIdx, result.length);
-        return result;
-    }
-
     /**
      * 返回指定个数的子集合的字符串形式
      * @param a 数组

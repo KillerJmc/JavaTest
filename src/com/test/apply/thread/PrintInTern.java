@@ -1,9 +1,5 @@
 package com.test.apply.thread;
 
-import com.test.main.Main;
-
-import java.io.IOException;
-
 public class PrintInTern {
     public static void main(String[] args) {
         m();
