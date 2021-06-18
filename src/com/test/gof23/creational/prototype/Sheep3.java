@@ -1,15 +1,6 @@
 package com.test.gof23.creational.prototype;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-
-/**
- * 序列化和反序列化实现深复制
- */
-
+import java.io.*;
 import java.sql.Date;
 
 public class Sheep3 implements Serializable {	//1997，英国克隆羊多利

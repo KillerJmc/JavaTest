@@ -1,16 +1,6 @@
 package com.test.newfeatures.date;
 
-import java.time.DayOfWeek;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.Period;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Set;
@@ -34,7 +24,7 @@ public class TestNewDateAPI {
 		LocalDateTime ldt = LocalDateTime.now();
 		System.out.println(ldt);
 		
-		LocalDateTime ldt2 = LocalDateTime.of(2019, 9, 18, 13, 00);
+		LocalDateTime ldt2 = LocalDateTime.of(2019, 9, 18, 13, 0);
 		System.out.println(ldt2);
 		
 		LocalDateTime ldt3 = ldt2.plusYears(2);
@@ -118,7 +108,7 @@ public class TestNewDateAPI {
 		LocalDateTime ldt3 = ldt.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
 		System.out.println(ldt3);
 		
-		LocalDateTime ldt5 = ldt.with((l) -> {
+		LocalDateTime ldt5 = ldt.with(l -> {
 			LocalDateTime ldt4 = (LocalDateTime) l;
 			DayOfWeek dow = ldt4.getDayOfWeek();
 			if (dow.equals(DayOfWeek.FRIDAY)) {

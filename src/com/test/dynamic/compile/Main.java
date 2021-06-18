@@ -3,8 +3,6 @@ package com.test.dynamic.compile;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
-import com.test.main.Tools;
-
 public class Main {
 
 	public static void main(String[] args) throws Exception {

@@ -39,7 +39,7 @@ public abstract class Query implements Cloneable {
     }
 
     /**
-     * Execute a DML command (the basic commands about insert, update, delete, select)
+     * Run a DML command (the basic commands about insert, update, delete, select)
      * @param sql SQL statement
      * @param params parameters
      * @return the amount of affected lines after executing SQL statement

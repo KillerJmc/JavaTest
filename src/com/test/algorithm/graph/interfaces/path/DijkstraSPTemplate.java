@@ -1,7 +1,7 @@
 package com.test.algorithm.graph.interfaces.path;
 
-import com.test.algorithm.graph.impl.graphs.EdgeWeightDiGraph;
 import com.test.algorithm.graph.impl.edges.DirectedEdge;
+import com.test.algorithm.graph.impl.graphs.EdgeWeightDiGraph;
 import com.test.algorithm.list.linked.impl.LinkedQueue;
 
 public abstract class DijkstraSPTemplate {

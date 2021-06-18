@@ -19,7 +19,7 @@ import java.io.File;
 public class MyClassLoader extends ClassLoader {
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-        String rootPath = Tools.getPath(this);
+        String rootPath = Tools.getCwd(this);
         File classFile = new File(rootPath.concat(name.replace(".", "/").concat(".class")));
 
         if (classFile.exists()) {

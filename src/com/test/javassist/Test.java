@@ -1,18 +1,12 @@
 package com.test.javassist;
 
+import com.jmc.io.Files;
+import javassist.*;
+
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-
-import com.jmc.io.Files;
-
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtConstructor;
-import javassist.CtField;
-import javassist.CtMethod;
-import javassist.CtNewMethod;
 
 public class Test {
 	public static void main(String[] args) throws Exception {

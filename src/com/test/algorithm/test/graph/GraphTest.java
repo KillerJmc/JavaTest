@@ -1,6 +1,8 @@
 package com.test.algorithm.test.graph;
 
+import com.test.algorithm.graph.impl.edges.Edge;
 import com.test.algorithm.graph.impl.graphs.DiGraph;
+import com.test.algorithm.graph.impl.graphs.EdgeWeightedGraph;
 import com.test.algorithm.graph.impl.graphs.Graph;
 import com.test.algorithm.graph.impl.path.DepthFirstPaths;
 import com.test.algorithm.graph.impl.path.Dijkstra;
@@ -10,8 +12,6 @@ import com.test.algorithm.graph.impl.search.DepthFirstSearch;
 import com.test.algorithm.graph.impl.topological.DepthFirstOrder;
 import com.test.algorithm.graph.impl.topological.DirectedCycle;
 import com.test.algorithm.graph.impl.topological.TopoLogical;
-import com.test.algorithm.graph.impl.edges.Edge;
-import com.test.algorithm.graph.impl.graphs.EdgeWeightedGraph;
 import com.test.algorithm.graph.impl.tree.KruskalMST;
 import com.test.algorithm.graph.impl.tree.PrimMST;
 import org.junit.Test;

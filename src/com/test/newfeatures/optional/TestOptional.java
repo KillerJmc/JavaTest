@@ -1,8 +1,10 @@
 package com.test.newfeatures.optional;
 
-import java.util.Optional;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import com.test.newfeatures.lambda.test01.Employee;
+import java.util.Optional;
 
 public class TestOptional {
 	public static void main(String[] args) {
@@ -12,7 +14,16 @@ public class TestOptional {
 		test04();
 		test05();
 		test06();
-	}	
+	}
+
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	static class Employee {
+		String name;
+		int age;
+		double salary;
+	}
 
 	private static void test01() {
 		Optional<Employee> op = Optional.of(new Employee());

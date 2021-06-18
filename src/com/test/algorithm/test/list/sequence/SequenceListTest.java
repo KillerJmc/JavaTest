@@ -1,6 +1,6 @@
 package com.test.algorithm.test.list.sequence;
 
-import com.jmc.lang.reflect.ReflectUtils;
+import com.jmc.lang.reflect.Reflects;
 import com.test.algorithm.list.sequence.impl.SequenceList;
 import org.junit.Test;
 
@@ -78,22 +78,22 @@ public class SequenceListTest {
         var a = new ArrayList<Integer>();
         for (int i = 0; i < 11; i++) {
             if (i == 0) {
-                var elementData = ReflectUtils.getField(a, "elementData", Object[].class);
+                var elementData = Reflects.getField(a, "elementData", Object[].class);
                 System.out.println(elementData.length);
             }
             a.add(1);
-            var elementData = ReflectUtils.getField(a, "elementData", Object[].class);
+            var elementData = Reflects.getField(a, "elementData", Object[].class);
             System.out.println(elementData.length);
         }
 
         for (int i = 0; i < 11; i++) {
             if (i == 0) {
-                var elementData = ReflectUtils.getField(a, "elementData", Object[].class);
+                var elementData = Reflects.getField(a, "elementData", Object[].class);
                 System.out.println(elementData.length);
             }
             a.remove(0);
             a.trimToSize();
-            var elementData = ReflectUtils.getField(a, "elementData", Object[].class);
+            var elementData = Reflects.getField(a, "elementData", Object[].class);
             System.out.println(elementData.length);
         }
     }

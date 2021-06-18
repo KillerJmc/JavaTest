@@ -1,13 +1,11 @@
 package com.test.main;
 
-import static com.jmc.lang.extend.Tries.*;
-
 public class Tools {
-	public static String getPath(Class<?> c) {
+	public static String getCwd(Class<?> c) {
 		return "src/" + c.getPackageName().replace(".", "/") + "/";
 	}
 
-	public static String getPath(Object o) {
+	public static String getCwd(Object o) {
 		return "src/" + o.getClass().getPackageName().replace(".", "/") + "/";
 	}
 	

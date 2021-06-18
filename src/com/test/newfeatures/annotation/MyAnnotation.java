@@ -1,7 +1,11 @@
 package com.test.newfeatures.annotation;
 
+import java.lang.annotation.Repeatable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 import static java.lang.annotation.ElementType.*;
-import java.lang.annotation.*;
 
 //重复注解
 @Repeatable(MyAnnotations.class)

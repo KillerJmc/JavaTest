@@ -16,8 +16,8 @@ public class HuffmanCodeTest {
         System.out.println(bs.length);
 
         var zip = HuffmanCode.zip(bs);
-        System.out.println(Arrays.toString(zip.first()));
-        System.out.println(zip.first().length);
+        System.out.println(Arrays.toString(zip.getFirst()));
+        System.out.println(zip.getFirst().length);
         var unzip = HuffmanCode.unzip(zip);
         System.out.println(new String(unzip));
     }
@@ -28,8 +28,8 @@ public class HuffmanCodeTest {
         System.out.println(bs.length);
 
         var zip = HuffmanCode.zip(bs);
-        System.out.println(zip.first().length);
-        Files.out(zip.first(), "temp/head.jzip", false);
+        System.out.println(zip.getFirst().length);
+        Files.out(zip.getFirst(), "temp/head.jzip", false);
 
         var unzip = HuffmanCode.unzip(zip);
         System.out.println(unzip.length);

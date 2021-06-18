@@ -1,7 +1,5 @@
 package com.test.algorithm.list.linked;
 
-import java.util.Iterator;
-
 public interface DoublyLinkedListTemplate<T> extends Iterable<T> {
     void clear();
     boolean isEmpty();

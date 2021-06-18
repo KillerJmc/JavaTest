@@ -8,11 +8,7 @@ import java.util.Date;
 public class DateFormatThreadLocal {
 	//ThreadLocal为每个线程提供了一个变量副本 是空间换时间 
 	//实现访问并行化 对象独享化
-	private static final ThreadLocal<DateFormat> df = new ThreadLocal<DateFormat>() {
-		protected DateFormat initialValue() {
-			return new SimpleDateFormat("yyyyMMdd");
-		};
-	};
+	private static final ThreadLocal<DateFormat> df = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyyMMdd"));
 	
 	public static Date convert(String src) throws ParseException {
 		//获取初始变量的值

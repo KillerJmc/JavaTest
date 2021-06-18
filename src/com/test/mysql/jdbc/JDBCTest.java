@@ -1,6 +1,5 @@
 package com.test.mysql.jdbc;
 
-import com.jmc.chatserver.CloseUtils;
 import com.jmc.io.Streams;
 import com.test.main.Tools;
 

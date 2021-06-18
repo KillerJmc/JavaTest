@@ -9,6 +9,7 @@
         <webroots>
           <root url="file://$MODULE_DIR$/src/com/jmc/httpserver/WEB_INFO" relative="/WEB-INF" />
         </webroots>
+        <sourceRoots />
       </configuration>
     </facet>
   </component>

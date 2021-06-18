@@ -1,8 +1,6 @@
 package com.test.mysql.orm.sorm.po;
 
 import java.io.Serializable;
-import java.sql.*;
-import java.util.*;
 
 public class Dept implements Serializable {
 	private String address;

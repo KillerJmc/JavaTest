@@ -1,15 +1,12 @@
 package com.test.classloader.former;
 
 import com.jmc.io.Files;
-import com.test.crypt.DecryptUtil;
 
 public class FileSystemClassLoader extends ClassLoader {
 	private String rootDir;
-	private boolean override;
 
-	public FileSystemClassLoader(String rootDir, boolean override) {
+	public FileSystemClassLoader(String rootDir) {
 		this.rootDir = rootDir;
-		this.override = override;
 	}
 	
 	@Override
@@ -18,21 +15,12 @@ public class FileSystemClassLoader extends ClassLoader {
 		if (c != null) {
 			return c;
 		} else {
-			try {
-				c = this.getParent().loadClass(name);
-			} catch (Exception e) {
-				
-			}
+			c = this.getParent().loadClass(name);
 			if (c != null) {
 				return c;
 			} else {
-				byte[] classData = null;
-				if (!override) {
-					classData = getClassData(name);
-				} else {
-					classData = DecryptUtil.getClassData(name);
-				}
-				
+				byte[] classData = getClassData(name);
+
 				if (classData != null) {
 					c = defineClass(name, classData, 0, classData.length);
 				}

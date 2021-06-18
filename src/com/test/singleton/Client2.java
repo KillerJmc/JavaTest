@@ -4,7 +4,10 @@
 
 package com.test.singleton;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class Client2 {
 	public static void main(String[] args) throws Exception {

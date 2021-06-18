@@ -107,8 +107,8 @@ public class HuffmanCode {
     }
 
     public static byte[] unzip(Pair<byte[], Map<Byte, String>> pair) {
-        byte[] bs = pair.first();
-        Map<Byte, String> huffmanCodes = pair.second();
+        byte[] bs = pair.getFirst();
+        Map<Byte, String> huffmanCodes = pair.getSecond();
 
         var sb = new StringBuilder(bs.length * 2);
         for (int i = 0; i < bs.length - 2; i++) sb.append(Binary.toString(bs[i], false));

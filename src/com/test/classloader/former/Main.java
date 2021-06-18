@@ -1,7 +1,5 @@
 package com.test.classloader.former;
 
-import com.test.classloader.former.FileSystemClassLoader;
-
 public class Main {
 	public static void main(String[] args) throws Exception {
 		test01();
@@ -9,7 +7,7 @@ public class Main {
 	
 	public static void test01() throws Exception {
 		FileSystemClassLoader loader =
-			new FileSystemClassLoader("C:/Jmc/Temp/ClassLoaderTest",false);
+			new FileSystemClassLoader("C:/Jmc/Temp/ClassLoaderTest");
 		Class<?> c = loader.loadClass("com.a.c.HellWorld");
 		Class<?> c1 = loader.loadClass("com.test.classloader.Main");
 		Class<?> c2 = loader.loadClass("java.lang.String");
@@ -19,7 +17,7 @@ public class Main {
 	}
 	
 	public static void test02() throws Exception {
-		Thread.currentThread().setContextClassLoader(new FileSystemClassLoader("C:/Jmc/Temp/ClassLoaderTest", false));
+		Thread.currentThread().setContextClassLoader(new FileSystemClassLoader("C:/Jmc/Temp/ClassLoaderTest"));
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Class<?> c = loader.loadClass("com.a.c.HellWorld");
 		System.out.println(c);

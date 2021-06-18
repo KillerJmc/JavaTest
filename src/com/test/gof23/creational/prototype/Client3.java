@@ -2,8 +2,6 @@ package com.test.gof23.creational.prototype;
 
 import java.sql.Date;
 
-import com.test.main.Tools;
-
 /**
  * 非原型模式（序列化与反序列化实现深复制）
  * @author Jmc

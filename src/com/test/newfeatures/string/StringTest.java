@@ -1,9 +1,11 @@
 package com.test.newfeatures.string;
 
-import java.io.*;
-import java.util.stream.Stream;
-
 import com.jmc.io.Files;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.stream.Stream;
 
 public class StringTest {
 	public static void main(String[] args) throws Exception {

@@ -1,9 +1,5 @@
 package com.test.annotation.practice2;
 
-import com.jmc.io.Files;
-import com.test.main.Tools;
-import com.test.rsa.Test;
-
 /**
  * 当主方法执行后，会自动检测加了@Check注解的所有方法，判断方法是否有异常，并记录到文件中。
  */
@@ -32,6 +28,6 @@ public class TestCheck {
         }
         sb.append("本次测试一共出现" + n + "次异常");
 
-        Files.out(sb.toString(), Tools.getPath(TestCheck.class), "log.txt", false);
+        System.out.println(sb);
     }
 }

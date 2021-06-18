@@ -2,10 +2,8 @@
   <artifact type="jar" name="jmc-utils">
     <output-path>$PROJECT_DIR$/../../../Maven/repository/com/jmc/jmc-utils/1.0.0</output-path>
     <root id="archive" name="jmc-utils-1.0.0.jar">
-      <element id="module-output" name="JavaTest" />
       <element id="library" level="project" name="lib" />
-      <element id="library" level="module" name="JUnit4" module-name="JavaTest" />
-      <element id="javaee-facet-resources" facet="JavaTest/web/Web" />
+      <element id="module-output" name="JavaTest" />
     </root>
   </artifact>
 </component>

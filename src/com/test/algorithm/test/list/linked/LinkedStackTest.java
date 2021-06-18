@@ -1,7 +1,7 @@
 package com.test.algorithm.test.list.linked;
 
 import com.jmc.lang.math.ExactExp;
-import com.jmc.lang.reflect.ReflectUtils;
+import com.jmc.lang.reflect.Reflects;
 import com.test.algorithm.list.linked.impl.LinkedStack;
 import org.junit.Test;
 
@@ -69,9 +69,9 @@ public class LinkedStackTest {
 
     @SuppressWarnings("all")
     private String[] transToSuffixExp(String exp) throws Exception {
-        Method split = ReflectUtils.getMethod(new ExactExp(), "split", String.class);
+        Method split = Reflects.getMethod(new ExactExp(), "split", String.class);
         var infixExp = split.invoke(null, exp);
-        Method transToSuffixExp = ReflectUtils.getMethod(new ExactExp(), "transToSuffixExp", String[].class);
+        Method transToSuffixExp = Reflects.getMethod(new ExactExp(), "transToSuffixExp", String[].class);
         return (String[]) transToSuffixExp.invoke(null, infixExp);
     }
 

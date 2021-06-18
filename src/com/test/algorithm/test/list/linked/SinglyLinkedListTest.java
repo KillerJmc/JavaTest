@@ -1,10 +1,10 @@
 package com.test.algorithm.test.list.linked;
 
-import static com.test.algorithm.list.linked.impl.SinglyLinkedList.*;
-
 import com.test.algorithm.list.linked.impl.DoublyLinkedList;
 import com.test.algorithm.list.linked.impl.SinglyLinkedList;
 import org.junit.Test;
+
+import static com.test.algorithm.list.linked.impl.SinglyLinkedList.Node;
 
 public class SinglyLinkedListTest {
     public void print(SinglyLinkedList<?> l) {

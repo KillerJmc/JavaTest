@@ -1,5 +1,6 @@
 package com.test.apply.math;
 
+import com.jmc.lang.extend.Outs;
 import com.jmc.lang.math.ExactExp;
 import com.jmc.lang.timer.Timers;
 
@@ -11,7 +12,7 @@ public class ExactExpTest {
     public static void main(String[] args) throws Exception {
         int n = 10000;
         Timers.milliTimer(() -> useExp(n), "useExp");
-        System.out.println("\n--------------------------------------------\n");
+        Outs.newLine();
         Timers.milliTimer(() -> useNormal(n), "useNormal");
     }
 

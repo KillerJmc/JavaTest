@@ -1,6 +1,6 @@
 package com.test.mysql.jdbc;
 
-import com.jmc.chatserver.CloseUtils;
+import com.test.mysql.orm.sorm.utils.CloseUtils;
 
 import java.io.FileInputStream;
 import java.sql.Connection;

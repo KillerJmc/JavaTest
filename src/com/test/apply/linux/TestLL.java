@@ -15,7 +15,7 @@ public class TestLL {
 	}
 	
 	private static void test() {
-		String src = Files.read(Tools.getPath(TestLL.class) + "test.txt");
+		String src = Files.read(Tools.getCwd(TestLL.class) + "test.txt");
 		int index = src.indexOf("\n");
 		
 		System.out.println("原来：\n" + src);

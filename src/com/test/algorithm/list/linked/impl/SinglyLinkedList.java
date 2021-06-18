@@ -1,7 +1,6 @@
 package com.test.algorithm.list.linked.impl;
 
 import com.test.algorithm.list.linked.SinglyLinkedListTemplate;
-import org.junit.Test;
 
 import java.util.Iterator;
 

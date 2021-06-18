@@ -1,6 +1,9 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
+    <inspection_tool class="EmptyStatementBody" enabled="false" level="WARNING" enabled_by_default="false">
+      <option name="m_reportEmptyBlocks" value="true" />
+    </inspection_tool>
     <inspection_tool class="JavaDoc" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="TOP_LEVEL_CLASS_OPTIONS">
         <value>
@@ -30,7 +33,7 @@
       <option name="IGNORE_JAVADOC_PERIOD" value="true" />
       <option name="IGNORE_DUPLICATED_THROWS" value="false" />
       <option name="IGNORE_POINT_TO_ITSELF" value="false" />
-      <option name="myAdditionalJavadocTags" value="Target：描述注解能够作用的位置,Retention（保留）：描述注解被保留的阶段,Documented：描述注解是否被抽取到api文档中,Inherited（遗传）：描述注解是否被子类继承,Override,date" />
+      <option name="myAdditionalJavadocTags" value="Target：描述注解能够作用的位置,Retention（保留）：描述注解被保留的阶段,Documented：描述注解是否被抽取到api文档中,Inherited（遗传）：描述注解是否被子类继承,Override,date,Author,Date" />
     </inspection_tool>
     <inspection_tool class="LocalVariableOfConcreteClass" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="ignoreAbstractClasses" value="true" />
