@@ -2,7 +2,7 @@
 <web-app>
 	<servlet>
 		<servlet-name>login</servlet-name>
-		<servlet-class>com.com.jmc.httpserver.servlet.LoginServlet</servlet-class>
+		<servlet-class>com.test.server.httpserver.servlet.LoginServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
     	<servlet-name>login</servlet-name>
@@ -12,7 +12,7 @@
 
 	<servlet>
 		<servlet-name>register</servlet-name>
-		<servlet-class>com.com.jmc.httpserver.servlet.RegisterServlet</servlet-class>
+		<servlet-class>com.test.server.httpserver.servlet.RegisterServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
   	  <servlet-name>register</servlet-name>
@@ -21,7 +21,7 @@
 	
 	<servlet>
 		<servlet-name>blank</servlet-name>
-		<servlet-class>com.com.jmc.httpserver.servlet.BlankServlet</servlet-class>
+		<servlet-class>com.test.server.httpserver.servlet.BlankServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>blank</servlet-name>

@@ -23,8 +23,7 @@ public class Dispatcher implements Runnable{
 			rep = new Response(client.getOutputStream(), true);
 		} catch (IOException e) {
 			code = 500;
-			return;
-		}	
+		}
 	}
 	
 	@Override

@@ -1,11 +1,10 @@
 package com.test.server.httpserver.server;
 
+import com.jmc.lang.extend.Tries;
 import com.test.server.httpserver.servlet.Servlet;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
@@ -19,7 +18,7 @@ public class WebApp {
 			WebHandler handler = new WebHandler();
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			SAXParser parser = factory.newSAXParser();
-			parser.parse(getInputStream(Server.projectPath,"com/com.jmc/httpserver/WEB_INFO/web.xml"),handler);
+			parser.parse(getInputStream("com/test/server/httpserver/WEB_INFO/web.xml"),handler);
 			
 			context = new ServletContext();
 			
@@ -48,22 +47,13 @@ public class WebApp {
 			return null;
 		}
 		
-		//返回的是直接对象
-		//return context.getServlet().get(context.getMapping().get(url));
-		
 		//返回的是对象完整路径
 		String name = context.getServlet().get(context.getMapping().get(url));
 		//反射，动态创建对象，确保空构造存在
-		return (Servlet)Class.forName(name).newInstance();
+		return Tries.tryReturnsT(() -> (Servlet) Class.forName(name).getDeclaredConstructor().newInstance());
 	}
 	
-	//按照不同设备获取输入流
-	public static InputStream getInputStream(String projectPath, String filePath) throws FileNotFoundException {
-		//如果是安卓用户
-		if (new File("/sdcard/").exists()) {
-			return new FileInputStream(projectPath + "/" + filePath);
-		}
-		
+	public static InputStream getInputStream(String filePath) throws FileNotFoundException {
 		return Thread.currentThread().getContextClassLoader()
 			.getResourceAsStream(filePath);
 	}
