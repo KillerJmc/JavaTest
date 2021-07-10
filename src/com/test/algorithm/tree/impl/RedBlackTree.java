@@ -2,8 +2,8 @@ package com.test.algorithm.tree.impl;
 
 import com.test.algorithm.tree.interfaces.RedBlackTreeTemplate;
 
-import static com.jmc.util.Compare.greater;
-import static com.jmc.util.Compare.less;
+import static com.jmc.util.Compare.gt;
+import static com.jmc.util.Compare.lt;
 
 public class RedBlackTree<K extends Comparable<K>, V> extends RedBlackTreeTemplate<K, V> {;
     private Node<K, V> root;
@@ -57,9 +57,9 @@ public class RedBlackTree<K extends Comparable<K>, V> extends RedBlackTreeTempla
     protected Node<K, V> put(Node<K, V> h, K k, V v) {
         if (h == null) return new Node<>(k, v, null, null, RED);
 
-        if (less(k, h.key))
+        if (lt(k, h.key))
             h.left = put(h.left, k, v);
-        else if (greater(k, h.key))
+        else if (gt(k, h.key))
             h.right = put(h.right, k, v);
         else
             h.value = v;
@@ -82,8 +82,8 @@ public class RedBlackTree<K extends Comparable<K>, V> extends RedBlackTreeTempla
     @Override
     protected V get(Node<K, V> x, K k) {
         return x == null ? null :
-            less(k, x.key) ? get(x.left, k) :
-            greater(k, x.key) ? get(x.right, k) : x.value;
+            lt(k, x.key) ? get(x.left, k) :
+            gt(k, x.key) ? get(x.right, k) : x.value;
     }
 
     @Override

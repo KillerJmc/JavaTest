@@ -1,7 +1,7 @@
 package com.test.algorithm.list.sequence.impl;
 
 
-import static com.jmc.util.Compare.less;
+import static com.jmc.util.Compare.lt;
 
 public class SequenceSortedSymbolTable<K, V> extends SequenceSymbolTable<K, V> {
     @Override
@@ -12,7 +12,7 @@ public class SequenceSortedSymbolTable<K, V> extends SequenceSymbolTable<K, V> {
             if (keys[i].equals(k)) {
                 values[i] = v;
                 return;
-            } else if (less((Comparable) k, (Comparable) keys[i])) {
+            } else if (lt((Comparable) k, (Comparable) keys[i])) {
                 System.arraycopy(keys, i, keys, i + 1, N - i);
                 System.arraycopy(values, i, values, i + 1, N - i);
                 keys[i] = k;

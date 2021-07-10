@@ -29,6 +29,7 @@ class Garbage {
 	
 	//这个方法GC在删除本对象时会调用一次
 	@Override
+	@SuppressWarnings("deprecation")
 	protected void finalize() throws Throwable {
 		System.out.println("collecting " + this);
 	}

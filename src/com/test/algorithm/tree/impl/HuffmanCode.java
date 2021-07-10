@@ -1,7 +1,8 @@
 package com.test.algorithm.tree.impl;
 
 import com.jmc.util.Binary;
-import com.jmc.util.Pair;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.util.*;
 
@@ -86,6 +87,12 @@ public class HuffmanCode {
         return huffmanCodes;
     }
 
+    @Data
+    @AllArgsConstructor
+    public static class Pair<T, V> {
+        T first;
+        V second;
+    }
 
     public static Pair<byte[], Map<Byte, String>> zip(byte[] bs) {
         var huffmanCodes = getCode(bs);

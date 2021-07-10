@@ -74,7 +74,7 @@ public class Dijkstra {
 
     public record Edge(int from, int to, double weight) {}
 
-    @SuppressWarnings({"all"})
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static class Graph {
         private final ArrayList[] adj;
         private final int E;

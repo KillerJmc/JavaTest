@@ -6,7 +6,6 @@
 
 package com.test.server.chatserver;
 
-import com.jmc.exception.ExceptionHandler;
 import com.jmc.io.Files;
 
 import java.io.File;
@@ -77,7 +76,7 @@ public class Server
 			//创建服务器
 			server = new ServerSocket(8888);
 		} catch(Exception e) {
-			System.out.println("\n" + ExceptionHandler.showCaused(e));
+			e.printStackTrace();
 			return;
 		}
 		
@@ -109,7 +108,7 @@ public class Server
 						//输出指令到数据库
 						Files.out(("服务器: " + command + "\n\n"),(dataPath + "DataBase/Record"),true);
 					} catch(Exception e) {
-						System.out.println(ExceptionHandler.showCaused(e));
+						e.printStackTrace();
 					}
 					
 					//指令
@@ -153,7 +152,7 @@ public class Server
 						try {
 							Files.out(users.substring(1) + "\n",(dataPath + "DataBase/Record"),true);
 						} catch(Exception e) {
-							System.out.println(ExceptionHandler.showCaused((e)));
+							e.printStackTrace();
 						}
 					} else if(command.equals("help")) {
 						System.out.println("\n" + "@all: content    发送给所有人"
@@ -179,7 +178,7 @@ public class Server
 								user.exit();
 							}
 						} catch(Exception e) {
-							System.out.println(ExceptionHandler.showCaused(e));
+							e.printStackTrace();
 						}
 						//显示信息
 						System.out.println("\n服务器已停止运行" + "\n");
@@ -187,7 +186,7 @@ public class Server
 						try {
 							Files.out(("服务器已停止运行" + "\n\n"),(dataPath + "DataBase/Record"),true);
 						} catch(Exception e) {
-							System.out.println(ExceptionHandler.showCaused((e)));
+							e.printStackTrace();
 						}
 						//返回
 						return;
@@ -285,11 +284,7 @@ public class Server
 						//开启同步
 						new Thread(client).start();
 					} catch (Exception e) {
-						System.out.println(ExceptionHandler.showCaused(e));
-						//输出到数据库
-						try {
-							Files.out((ExceptionHandler.showCaused(e) + "\n\n"), (dataPath + "DataBase/Record"), true);
-						} catch (Exception p){}
+						e.printStackTrace();
 					}
 				}
 			}).start();

@@ -1,6 +1,5 @@
 package com.test.mysql.jdbc;
 
-import com.jmc.io.Streams;
 import com.test.main.Tools;
 
 import java.io.ByteArrayInputStream;
@@ -103,7 +102,7 @@ public class JDBCTest {
             //写rs.gerClob(6)也行
             Clob c = rs.getClob("description");
             if (c != null) {
-                String clob = new String(Objects.requireNonNull(Streams.read(c.getAsciiStream())));
+                String clob = new String(c.getAsciiStream().readAllBytes());
                 System.out.print("clob（");
                 if (clob.length() > 20) {
                     System.out.print(clob.substring(0, 20) + "...");
@@ -115,7 +114,7 @@ public class JDBCTest {
 
             Blob b = rs.getBlob("headImg");
             if (b != null) {
-                String blob = new String(Objects.requireNonNull(Streams.read(b.getBinaryStream())));
+                String blob = new String(Objects.requireNonNull(b.getBinaryStream().readAllBytes()));
                 System.out.print("blob（");
                 if (blob.length() > 20) {
                     System.out.print(blob.substring(0, 20) + "...");

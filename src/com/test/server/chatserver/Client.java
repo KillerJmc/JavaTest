@@ -1,7 +1,5 @@
 package com.test.server.chatserver;
 
-import com.jmc.console.Input;
-import com.jmc.exception.ExceptionHandler;
 import com.jmc.io.Files;
 
 import java.net.Socket;
@@ -65,10 +63,10 @@ public class Client
 					+ "\n\n"),("/sdcard/Client/" + name + "/Record"),true
 				);
 			} catch(Exception e) {
-				System.out.println(ExceptionHandler.showCaused((e)));
+				e.printStackTrace();
 			}
 		} catch (Exception e) {
-			System.out.println(ExceptionHandler.showCaused(e));
+			e.printStackTrace();
 		}
 	}
 	
@@ -113,20 +111,11 @@ public class Client
 				System.out.print("\n请输入注册的密码:  ");
 				
 				//用控制台运行可实现星号显示密码
-				if ((System.console()) != null) {
-					password = new Input().readPassword();
-				} else {
-					password = in.next();
-				}
-				
+				password = in.next();
+
 				System.out.print("\n请再次输入注册的密码:  ");
 
-				//用控制台运行可实现星号显示密码
-				if ((System.console()) != null) {
-					password2 = new Input().readPassword();
-				} else {
-					password2 = in.next();
-				}
+				password2 = in.next();
 				if (password2.equals(password)) {
 					channel.send(password);
 				} else {
@@ -145,12 +134,7 @@ public class Client
 
 				System.out.print("\n请输入密码:  ");
 				
-				//用控制台运行可实现星号显示密码
-				if ((System.console()) != null) {
-					password = new Input().readPassword();
-				} else {
-					password = in.next();
-				}
+				password = in.next();
 				channel.send(password);
 				
 				//提示信息

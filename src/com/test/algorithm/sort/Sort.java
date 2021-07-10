@@ -38,7 +38,7 @@ public class Sort {
     public static <T extends Comparable<T>> void bubbleSort(T[] a) {
         for (int i = a.length - 1; i > 0; i--)
             for (int k = 0; k < i; k++)
-                if (greater(a, k, k + 1))
+                if (gt(a, k, k + 1))
                     swap(a, k, k + 1);
     }
 
@@ -64,7 +64,7 @@ public class Sort {
         for (int i = 0; i < a.length - 1; i++) {
             int minIdx = i;
             for (int k = i + 1; k < a.length; k++)
-                if (less(a, k, minIdx))
+                if (lt(a, k, minIdx))
                     minIdx = k;
             swap(a, i, minIdx);
         }
@@ -94,7 +94,7 @@ public class Sort {
     public static <T extends Comparable<T>> void insertionSort(T[] a) {
         for (int i = 1; i < a.length; i++)
             for (int k = i; k > 0; k--)
-                if (less(a, k, k - 1))
+                if (lt(a, k, k - 1))
                     swap(a, k, k - 1);
                 else
                     break;
@@ -131,8 +131,8 @@ public class Sort {
             int lo = 0, hi = i - 1, mid;
             while (hi >= lo) {
                 mid = (lo + hi) / 2;
-                if (greater(a, mid, i)) {
-                    if (mid == 0 || less(a, mid - 1, i)) {
+                if (gt(a, mid, i)) {
+                    if (mid == 0 || lt(a, mid - 1, i)) {
                         System.arraycopy(a, lo, a, lo + 1, i - lo);
                         a[lo] = a[i];
                         break;
@@ -187,7 +187,7 @@ public class Sort {
         for (int h = a.length / 2; h >= 1; h /= 2)
             for (int i = h; i < a.length; i++)
                 for (int k = i; k - h >= 0; k -= h)
-                    if (less(a, k, k - h))
+                    if (lt(a, k, k - h))
                         swap(a, k, k - h);
                     else
                         break;
@@ -232,7 +232,7 @@ public class Sort {
 
         private void merge(T[] a, int lo, int mid, int hi) {
             int i = lo, p1 = lo, p2 = mid + 1;
-            while (p1 <= mid && p2 <= hi) assist[i++] = less(a, p1, p2) ? a[p1++] : a[p2++];
+            while (p1 <= mid && p2 <= hi) assist[i++] = lt(a, p1, p2) ? a[p1++] : a[p2++];
             while (p1 <= mid) assist[i++] = a[p1++];
             while (p2 <= hi) assist[i++] = a[p2++];
             System.arraycopy(assist, lo, a, lo, hi - lo + 1);
@@ -313,8 +313,8 @@ public class Sort {
             int left = lo, right = hi + 1;
 
             while (true) {
-                while (left < right && !less(a, --right, lo));
-                while (left < right && !greater(a, ++left, lo));
+                while (left < right && !lt(a, --right, lo));
+                while (left < right && !gt(a, ++left, lo));
 
                 if (left == right) {
                     swap(a, lo, right);
@@ -419,8 +419,8 @@ public class Sort {
      */
     private static <T extends Comparable<T>> void sink(T[] heap, int x, int range) {
         while (x * 2 <= range) {
-            int maxIdx = x * 2 + 1 > range ? x * 2 : greater(heap, x * 2, x * 2 + 1) ? x * 2 : x * 2 + 1;
-            if (less(heap, x, maxIdx))
+            int maxIdx = x * 2 + 1 > range ? x * 2 : gt(heap, x * 2, x * 2 + 1) ? x * 2 : x * 2 + 1;
+            if (lt(heap, x, maxIdx))
                 swap(heap, x, x = maxIdx);
             else
                 return;

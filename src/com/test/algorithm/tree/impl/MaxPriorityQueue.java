@@ -35,7 +35,7 @@ public class MaxPriorityQueue<T extends Comparable<T>> implements PriorityQueueT
 
     private void swim(int k) {
         for (; k / 2 >= 1; k /= 2) {
-            if (greater(items, k, k / 2))
+            if (gt(items, k, k / 2))
                 swap(items, k, k / 2);
             else
                 return;
@@ -44,8 +44,8 @@ public class MaxPriorityQueue<T extends Comparable<T>> implements PriorityQueueT
 
     private void sink(int k) {
         while (k * 2 <= N) {
-            int maxIdx = k * 2 + 1 > N ? k * 2 :greater(items, k * 2, k * 2 + 1) ? k * 2 : k * 2 + 1;
-            if (less(items, k, maxIdx))
+            int maxIdx = k * 2 + 1 > N ? k * 2 :gt(items, k * 2, k * 2 + 1) ? k * 2 : k * 2 + 1;
+            if (lt(items, k, maxIdx))
                 swap(items, k, k = maxIdx);
             else
                 return;

@@ -1,7 +1,7 @@
 package com.test.algorithm.list.linked.impl;
 
 
-import static com.jmc.util.Compare.less;
+import static com.jmc.util.Compare.lt;
 
 public class LinkedSortedSymbolTable<K extends Comparable<K>, V> extends LinkedSymbolTable<K, V> {
     @Override
@@ -13,7 +13,7 @@ public class LinkedSortedSymbolTable<K extends Comparable<K>, V> extends LinkedS
             if (n.key.equals(k)) {
                 n.value = v;
                 return;
-            } else if (less(k, n.key)) {
+            } else if (lt(k, n.key)) {
                 pre.next = new Node<>(k, v, n);
                 N++;
                 return;

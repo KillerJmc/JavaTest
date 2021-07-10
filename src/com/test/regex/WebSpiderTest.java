@@ -1,21 +1,19 @@
-/**
- * 爬虫测试
- */
 package com.test.regex;
 
-import com.jmc.io.Streams;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 爬虫测试
+ */
 public class WebSpiderTest {
     public static void main(String[] args) throws IOException {
-        String content = getURLContent("http://www.163.com/", "GBK");
+        String content = getURLContent("http://www.163.com/");
 
         /*<a href="http://sitemap.163.com/">网站地图</a>
         取到整个超链接的内容：<a[\\s\\S]+?</a>*/
@@ -28,8 +26,8 @@ public class WebSpiderTest {
     /**
      * 获得网页源码内容
      */
-    public static String getURLContent(String url, String charsetName) throws IOException {
-        return new String(Streams.read(new URL(url).openStream()), Charset.forName(charsetName));
+    public static String getURLContent(String url) throws IOException {
+        return new String(new URL(url).openStream().readAllBytes());
     }
 
     /**

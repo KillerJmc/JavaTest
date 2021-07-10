@@ -1,6 +1,5 @@
 package com.test.server.httpserver.servlet;
 
-import com.jmc.io.Streams;
 import com.test.server.httpserver.server.Request;
 import com.test.server.httpserver.server.Response;
 import com.test.server.httpserver.server.WebApp;
@@ -18,9 +17,7 @@ public class LoginServlet extends Servlet {
 		if (null == name && null == pwd) {
 			reply.println(
 				new String(
-					Streams.read(
-						WebApp.getInputStream("com/test/server/httpserver/WEB_INFO/Login.html")
-					)
+					WebApp.getInputStream("com/test/server/httpserver/WEB_INFO/Login.html").readAllBytes()
 				));
 			return;
 		}

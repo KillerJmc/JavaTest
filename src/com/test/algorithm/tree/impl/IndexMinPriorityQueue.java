@@ -21,11 +21,11 @@ public class IndexMinPriorityQueue<T extends Comparable<T>> implements IndexPrio
     }
 
     private boolean less(int idx1, int idx2) {
-        return Arrs.less(items, pq[idx1], pq[idx2]);
+        return Arrs.lt(items, pq[idx1], pq[idx2]);
     }
 
     private boolean greater(int idx1, int idx2) {
-        return Arrs.greater(items, pq[idx1], pq[idx2]);
+        return Arrs.gt(items, pq[idx1], pq[idx2]);
     }
 
     private void swap(int idx1, int idx2) {

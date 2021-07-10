@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import static com.jmc.lang.extend.Objs.orEquals;
+import static com.jmc.lang.extend.Chars.orEquals;
 import static com.jmc.lang.extend.Outs.newLine;
 
 

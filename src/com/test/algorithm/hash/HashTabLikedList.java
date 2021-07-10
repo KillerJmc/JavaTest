@@ -6,7 +6,7 @@ import com.test.algorithm.list.linked.impl.SinglyLinkedList;
 public class HashTabLikedList<T> extends SinglyLinkedList<T> {
     public T findById(int id) {
         for (T t : this) {
-            var currentId = Reflects.invokeMethod(t, "id", Integer.class);
+            int currentId = Reflects.invokeMethod(t, "id");
             if (currentId == id) return t;
         }
         return null;
@@ -14,7 +14,7 @@ public class HashTabLikedList<T> extends SinglyLinkedList<T> {
 
     public void deleteById(int id) {
         for (T t : this) {
-            var currentId = Reflects.invokeMethod(t, "id", Integer.class);
+            int currentId = Reflects.invokeMethod(t, "id");
             if (currentId == id) {
                 remove(t);
                 return;
