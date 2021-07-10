@@ -7,6 +7,8 @@ import com.test.algorithm.list.sequence.impl.IntArray;
 import java.util.Arrays;
 
 import static com.jmc.array.Arrs.*;
+import static com.jmc.util.Compare.*;
+
 
 public class Sort {
     /**

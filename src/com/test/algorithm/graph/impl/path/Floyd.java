@@ -1,7 +1,7 @@
 package com.test.algorithm.graph.impl.path;
 
-import com.jmc.array.Arrs;
 import com.jmc.lang.extend.Outs;
+import com.test.algorithm.base.util.MyArr;
 
 import java.util.Arrays;
 
@@ -64,7 +64,7 @@ public class Floyd {
     }
 
     public void show() {
-        var disSplit = Arrs.toString(dis, true).split("\n");
+        var disSplit = MyArr.toString(dis, true).split("\n");
         String firstLine = disSplit[0];
         for (var s : firstLine.split("\t")) {
             if (!s.isEmpty()) {
@@ -83,7 +83,7 @@ public class Floyd {
         System.out.println();
         Outs.newLine();
 
-        var preStr = Arrs.toString(pre, true);
+        var preStr = MyArr.toString(pre, true);
         for (int i = 0; i < preStr.split("\n").length - 2; i++) {
             preStr = preStr.replace(i + "", vertex[i] + "");
         }

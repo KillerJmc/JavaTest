@@ -1,6 +1,6 @@
 package com.test.algorithm.base.bag;
 
-import com.jmc.array.Arrs;
+import com.test.algorithm.base.util.MyArr;
 
 import java.util.Arrays;
 
@@ -75,6 +75,6 @@ public class Bag2 {
     }
 
     public void printDp() {
-        System.out.println(Arrs.toString(dp, true));
+        System.out.println(MyArr.toString(dp, true));
     }
 }

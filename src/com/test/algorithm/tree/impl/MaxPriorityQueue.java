@@ -3,6 +3,7 @@ package com.test.algorithm.tree.impl;
 import com.test.algorithm.tree.interfaces.PriorityQueueTemplate;
 
 import static com.jmc.array.Arrs.*;
+import static com.jmc.util.Compare.*;
 
 public class MaxPriorityQueue<T extends Comparable<T>> implements PriorityQueueTemplate<T> {
     private final T[] items;

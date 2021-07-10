@@ -1,5 +1,6 @@
 package com.test.algorithm.tree.impl;
 
+import static com.jmc.util.Compare.*;
 import static com.jmc.array.Arrs.*;
 
 public class Heap<T extends Comparable<T>> {

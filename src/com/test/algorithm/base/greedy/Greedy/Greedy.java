@@ -1,7 +1,5 @@
 package com.test.algorithm.base.greedy.Greedy;
 
-import com.jmc.array.Arrs;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -25,7 +23,13 @@ public class Greedy {
             long[] a = Arrays.stream(areas)
                              .mapToLong(t -> Arrays.stream(t).filter(allAreas::contains).count())
                              .toArray();
-            int maxIdx = Arrs.maxIdx(a);
+            int maxIdx = 0;
+
+            for (int i = 1; i < a.length; i++) {
+                if (a[i] > a[maxIdx]) {
+                    maxIdx = i;
+                }
+            }
 
             // 当前能覆盖的最多电台的数量的电台对应的下标
             result.add(maxIdx);

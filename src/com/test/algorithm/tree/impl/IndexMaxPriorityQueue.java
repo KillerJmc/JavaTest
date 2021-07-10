@@ -1,6 +1,7 @@
 package com.test.algorithm.tree.impl;
 
 import com.jmc.array.Arrs;
+import com.jmc.util.Compare;
 import com.test.algorithm.tree.interfaces.IndexPriorityQueueTemplate;
 
 import java.util.Arrays;
@@ -21,11 +22,11 @@ public class IndexMaxPriorityQueue<T extends Comparable<T>> implements IndexPrio
     }
 
     private boolean less(int idx1, int idx2) {
-        return Arrs.lt(items, pq[idx1], pq[idx2]);
+        return Compare.lt(items, pq[idx1], pq[idx2]);
     }
 
     private boolean greater(int idx1, int idx2) {
-        return Arrs.gt(items, pq[idx1], pq[idx2]);
+        return Compare.gt(items, pq[idx1], pq[idx2]);
     }
 
     private void swap(int idx1, int idx2) {
