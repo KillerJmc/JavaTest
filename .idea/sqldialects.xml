@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/src/com/test/mysql/cmd/practice.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/com/test/main/Main.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/com/test/mysql/sorm/main/sorm_dept.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/com/test/mysql/sorm/main/sorm_emp.sql" dialect="GenericSQL" />
     <file url="file://G:/Temp/Experiment/homework.sql" dialect="MySQL" />
   </component>
 </project>
