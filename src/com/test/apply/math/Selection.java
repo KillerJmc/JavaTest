@@ -1,11 +1,11 @@
-/**
- * 题目源自小本练习册数列内容
- * 
- * @author Jmc
- * 
- */
 package com.test.apply.math;
 
+/**
+ * 题目源自小本练习册数列内容
+ *
+ * @author Jmc
+ *
+ */
 public class Selection {
 	public static void main(String[] args) {
 		calculate();
