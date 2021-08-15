@@ -1,7 +1,10 @@
 package com.test.algorithm.tree.impl;
 
-import static com.jmc.util.Compare.*;
-import static com.jmc.array.Arrs.*;
+import com.jmc.array.Array;
+
+import static com.jmc.array.Arrs.swap;
+import static com.jmc.util.Compare.gt;
+import static com.jmc.util.Compare.lt;
 
 public class Heap<T extends Comparable<T>> {
     private final T[] items;
@@ -17,7 +20,7 @@ public class Heap<T extends Comparable<T>> {
         if (N == 0) return null;
         T t = items[1];
 
-        swap(items, 1, N);
+        swap(Array.of(items), 1, N);
         items[N--] = null;
 
         sink(1);
@@ -31,8 +34,8 @@ public class Heap<T extends Comparable<T>> {
 
     private void swim(int k) {
         for (; k / 2 != 0; k /= 2)
-            if (gt(items, k, k / 2))
-                swap(items, k, k / 2);
+            if (gt(Array.of(items), k, k / 2))
+                swap(Array.of(items), k, k / 2);
             else
                 return;
     }
@@ -40,9 +43,9 @@ public class Heap<T extends Comparable<T>> {
     @SuppressWarnings("all")
     private void sink(int k) {
         while (k * 2 <= N) {
-            int maxIdx = k * 2 + 1 > N ? k * 2 : gt(items, k * 2, k * 2 + 1) ? k * 2 : k * 2 + 1;
-            if (lt(items, k, maxIdx))
-                swap(items, k, k = maxIdx);
+            int maxIdx = k * 2 + 1 > N ? k * 2 : gt(Array.of(items), k * 2, k * 2 + 1) ? k * 2 : k * 2 + 1;
+            if (lt(Array.of(items), k, maxIdx))
+                swap(Array.of(items), k, k = maxIdx);
             else
                 return;
         }

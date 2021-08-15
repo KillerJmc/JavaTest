@@ -1,5 +1,6 @@
 package com.test.algorithm.tree.impl;
 
+import com.jmc.array.Array;
 import com.test.algorithm.tree.interfaces.PriorityQueueTemplate;
 
 import static com.jmc.array.Arrs.swap;
@@ -21,7 +22,7 @@ public class MinPriorityQueue<T extends Comparable<T>> implements PriorityQueueT
         if (N == 0) return null;
 
         T t = items[1];
-        swap(items, 1, N);
+        swap(Array.of(items), 1, N);
 
         items[N--] = null;
         sink(1);
@@ -37,8 +38,8 @@ public class MinPriorityQueue<T extends Comparable<T>> implements PriorityQueueT
 
     private void swim(int k) {
         for (; k / 2 >= 1; k /= 2) {
-            if (lt(items, k, k / 2))
-                swap(items, k, k / 2);
+            if (lt(Array.of(items), k, k / 2))
+                swap(Array.of(items), k, k / 2);
             else
                 return;
         }
@@ -46,9 +47,9 @@ public class MinPriorityQueue<T extends Comparable<T>> implements PriorityQueueT
 
     private void sink(int k) {
         while (k * 2 <= N) {
-            int minIdx = k * 2 + 1 > N ? k * 2 : lt(items, k * 2, k * 2 + 1) ? k * 2 : k * 2 + 1;
-            if (gt(items, k, minIdx))
-                swap(items, k, k = minIdx);
+            int minIdx = k * 2 + 1 > N ? k * 2 : lt(Array.of(items), k * 2, k * 2 + 1) ? k * 2 : k * 2 + 1;
+            if (gt(Array.of(items), k, minIdx))
+                swap(Array.of(items), k, k = minIdx);
             else
                 return;
         }

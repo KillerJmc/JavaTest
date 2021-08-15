@@ -1,5 +1,6 @@
 package com.test.algorithm.test.tree;
 
+import com.jmc.array.Array;
 import com.test.algorithm.sort.Sort;
 import com.test.algorithm.tree.impl.*;
 import org.junit.Test;
@@ -27,7 +28,7 @@ public class HeapTest {
     @Test
     public void test2() {
         var a = new Character[] {'S', 'O', 'R', 'T', 'E', 'X', 'A', 'M', 'P', 'L', 'E', 'S'};
-        Sort.heapSort(a);
+        Sort.heapSort(Array.of(a));
         System.out.println(Arrays.toString(a));
     }
 
