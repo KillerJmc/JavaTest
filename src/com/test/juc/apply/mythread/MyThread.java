@@ -1,4 +1,4 @@
-package com.test.juc.thread.apply.mythread;
+package com.test.juc.apply.mythread;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.locks.LockSupport;

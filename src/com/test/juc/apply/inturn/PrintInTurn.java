@@ -1,4 +1,4 @@
-package com.test.juc.thread.apply.inturn;
+package com.test.juc.apply.inturn;
 
 import com.jmc.lang.extend.Tries;
 import com.test.main.Tools;
@@ -47,8 +47,8 @@ public class PrintInTurn {
 
         Thread num = new Thread(() -> {
             int i = 1;
+            lock.lock();
             try {
-                lock.lock();
                 while (i <= 26) {
                     System.err.println("num: " + i++);
                     Tries.tryThis(printNum::await);
@@ -62,8 +62,8 @@ public class PrintInTurn {
 
         Thread letter = new Thread(() -> {
             char c = 'a';
+            lock.lock();
             try {
-                lock.lock();
                 while (c <= 'z') {
                     System.err.println("letter: " + c++);
                     printNum.signal();
