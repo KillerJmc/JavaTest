@@ -1,7 +1,10 @@
 package com.test.juc.apply.pool;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.LockSupport;
 import java.util.function.Consumer;
 
 public class ThreadPool {
@@ -13,7 +16,7 @@ public class ThreadPool {
     /**
      * 线程集合
      */
-    private final ArrayList<Runner> threads;
+    private final List<Runner> threads;
 
     /**
      * 任务队列
@@ -31,6 +34,11 @@ public class ThreadPool {
     private volatile boolean stop;
 
     /**
+     * 执行此类的线程
+     */
+    private final Thread currentThread;
+
+    /**
      * 获取线程池实例
      * @param coreSize 核心线程个数
      * @param taskQueue 任务队列
@@ -38,9 +46,11 @@ public class ThreadPool {
      */
     public ThreadPool(int coreSize, BlockingQueue<Runnable> taskQueue, Consumer<Runnable> rejectPolicy) {
         this.coreSize = coreSize;
-        this.threads = new ArrayList<>();
+        // 加锁保证线程安全
+        this.threads = Collections.synchronizedList(new ArrayList<>());
         this.taskQueue = taskQueue;
         this.rejectPolicy = rejectPolicy;
+        this.currentThread = Thread.currentThread();
     }
 
     /**
@@ -63,6 +73,9 @@ public class ThreadPool {
                     runnable.run();
                 }
             }
+
+            // 把自己从线程池中删除
+            threads.remove(this);
         }
     }
 
@@ -81,8 +94,8 @@ public class ThreadPool {
             threads.add(runner);
             runner.start();
         } else {
-            // 放入任务阻塞队列
-            if (!taskQueue.add(target)) {
+            // 放入任务阻塞队列，若队列已满默认等待100ms
+            if (!taskQueue.add(target, 100, TimeUnit.MILLISECONDS)) {
                 // 队列已满就执行拒绝策略
                 rejectPolicy.accept(target);
             }
@@ -94,5 +107,28 @@ public class ThreadPool {
      */
     public void shutdown() {
         stop = true;
+
+        new Thread(() -> {
+            while (!threads.isEmpty());
+            LockSupport.unpark(currentThread);
+        }).start();
+    }
+
+    /**
+     * 等待线程池完全关闭
+     */
+    public void awaitTermination() {
+        LockSupport.park();
+    }
+
+    /**
+     * 等待线程池完全关闭
+     * @param waitTime 等待时间
+     * @param unit 时间单位
+     * @return 是否关闭成功
+     */
+    public boolean awaitTermination(long waitTime, TimeUnit unit) {
+        LockSupport.parkNanos(unit.toNanos(waitTime));
+        return threads.isEmpty();
     }
 }

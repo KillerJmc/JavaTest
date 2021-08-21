@@ -6,6 +6,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * 生产者消费者阻塞队列
+ * @param <T> 元素类型
+ */
 public class BlockingQueue<T> {
     /**
      * 内部的队列
@@ -28,6 +32,11 @@ public class BlockingQueue<T> {
     private final Condition emptyWaitingCondition = lock.newCondition();
 
     /**
+     * 队列已满条件
+     */
+    private final Condition fullWaitingCondition = lock.newCondition();
+
+    /**
      * 获取阻塞队列
      * @param capacity 容量
      */
@@ -38,16 +47,23 @@ public class BlockingQueue<T> {
     /**
      * 添加元素到阻塞队列中
      * @param t 元素
-     * @return 如果队列已满就返回false（添加失败），否则返回true（添加成功）
+     * @param waitTime 等待时间
+     * @param unit 时间单位
+     * @return 如果等待时间到返回false（获取元素失败），否则返回true
      */
-    public boolean add(T t) {
+    public boolean add(T t, long waitTime, TimeUnit unit) {
         lock.lock();
         try {
-            if (queue.size() == capacity) {
-                return false;
+            while (queue.size() == capacity) {
+                if (!fullWaitingCondition.await(waitTime, unit)) {
+                    return false;
+                }
             }
             queue.add(t);
-            emptyWaitingCondition.signalAll();
+            // 放入一个元素只需要消费者唤醒一次，效率高
+            emptyWaitingCondition.signal();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         } finally {
             lock.unlock();
         }
@@ -68,7 +84,10 @@ public class BlockingQueue<T> {
                     return null;
                 }
             }
-            return queue.poll();
+            var res = queue.poll();
+            // 获取一个元素只需要唤醒生产者一次，效率高
+            fullWaitingCondition.signal();
+            return res;
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
