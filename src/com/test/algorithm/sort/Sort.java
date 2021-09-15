@@ -11,7 +11,7 @@ import java.util.Arrays;
 import static com.jmc.util.Compare.gt;
 import static com.jmc.util.Compare.lt;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "unchecked"})
 public class Sort {
     /**
      * 反转数组（时间复杂度：[n/2], 即O(n))
