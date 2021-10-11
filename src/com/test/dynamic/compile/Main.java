@@ -6,7 +6,7 @@ import javax.tools.ToolProvider;
 @SuppressWarnings("unchecked")
 public class Main {
 	public static void main(String[] args) throws Exception {
-		String path = "D:\\Programs\\Projects\\IdeaProjects\\JavaTest\\src\\com\\test\\dynamic\\compile\\HelloWorld.java";
+		String path = "D:\\Programs\\Projects\\IdeaProjects\\JavaTest\\src\\com\\transfer\\dynamic\\compile\\HelloWorld.java";
 		compile(path);
 		compile1();
 	}

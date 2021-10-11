@@ -1,6 +1,6 @@
 package com.test.algorithm.base.horse;
 
-import com.jmc.lang.extend.Bools;
+import com.jmc.lang.primitive.Bools;
 
 import java.awt.*;
 import java.util.ArrayList;

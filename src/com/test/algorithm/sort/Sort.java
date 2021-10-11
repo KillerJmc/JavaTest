@@ -2,7 +2,7 @@ package com.test.algorithm.sort;
 
 import com.jmc.array.Array;
 import com.jmc.array.Arrs;
-import com.jmc.lang.extend.Rand;
+import com.jmc.lang.rand.Rand;
 import com.test.algorithm.list.sequence.impl.DoubleArray;
 import com.test.algorithm.list.sequence.impl.IntArray;
 

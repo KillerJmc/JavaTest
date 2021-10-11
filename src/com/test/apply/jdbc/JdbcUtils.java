@@ -1,4 +1,4 @@
-package com.test.mysql.jdbc;
+package com.test.apply.jdbc;
 
 import com.jmc.lang.extend.Strs;
 import com.jmc.lang.extend.Tries;
@@ -38,11 +38,11 @@ public class JdbcUtils {
     }
 
     public static void execute(String sql, Object... args) {
-        executeSql(sql, false, args);
+        executeSql(sql, args);
     }
 
     public static <T> List<T> queryList(String sql, Class<T> returnType, Object... args) {
-        var rs = executeSql(sql, true, args);
+        var rs = executeSql(sql, args);
         List<T> res = new ArrayList<>();
 
         return Tries.tryReturnsT(() -> {
@@ -70,7 +70,7 @@ public class JdbcUtils {
 
     @SuppressWarnings("unchecked")
     public static <T> T queryObject(String sql, Object... args) {
-        try (var rs = executeSql(sql, true, args)) {
+        try (var rs = executeSql(sql, args)) {
             if (rs.next()) {
                 return (T) rs.getObject(1);
             }
@@ -80,7 +80,7 @@ public class JdbcUtils {
         }
     }
 
-    private static ResultSet executeSql(String sql, boolean isQuery, Object... args) {
+    private static ResultSet executeSql(String sql, Object... args) {
         return Tries.tryReturnsT(() -> {
             var ps = DEFAULT_CONNECTION.prepareStatement(sql);
             Runtime.getRuntime().addShutdownHook(new Thread(() -> Tries.tryThis(ps::close)));
@@ -91,12 +91,16 @@ public class JdbcUtils {
                 }
             }
 
-            if (isQuery) {
+            if (sql.toUpperCase().startsWith("SELECT")) {
                 return ps.executeQuery();
             } else {
                 ps.executeUpdate();
                 return null;
             }
         });
+    }
+
+    public static Connection getDefaultConnection() {
+        return DEFAULT_CONNECTION;
     }
 }

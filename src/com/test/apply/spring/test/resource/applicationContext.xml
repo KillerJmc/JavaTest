@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans>
+    <bean id="userDao" class="com.test.apply.spring.test.dao.impl.UserDaoImpl"/>
+    <bean id="userService" class="com.test.apply.spring.test.service.impl.UserServiceImpl">
+        <constructor-arg index="0" ref="userDao"/>
+    </bean>
+    <bean id="userController" class="com.test.apply.spring.test.controller.UserController">
+        <constructor-arg index="0" ref="userService"/>
+    </bean>
+</beans>

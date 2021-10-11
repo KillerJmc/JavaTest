@@ -11,17 +11,16 @@ import java.lang.reflect.Method;
 
 public class Client {
 	public static void main(String[] args) throws Exception {
-		System.out.println(compare(01));
-		System.out.println(compare(02));
-		System.out.println(compare(03));
-		System.out.println(compare(04));
-		System.out.println(SingletonDemo05.INSTANCE == SingletonDemo05.INSTANCE);
+		System.out.println(compare(1));
+		System.out.println(compare(2));
+		System.out.println(compare(3));
+		System.out.println(compare(4));
 	}
 	
 	@SuppressWarnings("all")
 	private static boolean compare(int num) throws Exception {
 		//Class获取多次，都只指向同一个对象
-		Class<?> c = Class.forName("com.test.Singleton.SingletonDemo0" + num);
+		Class<?> c = Class.forName("com.transfer.Singleton.SingletonDemo0" + num);
 		Method m = c.getMethod("getInstance");
 		
 		return m.invoke(null).equals(m.invoke(null));

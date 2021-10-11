@@ -27,7 +27,7 @@ public class DBManager {
     /**
      * a map matches db and query class
      */
-    private static final Map<String, String> DB_QUERY_MAP = Map.of("mysql", "com.test.mysql.sorm.query.impl.MySQLQuery");
+    private static final Map<String, String> DB_QUERY_MAP = Map.of("mysql", "com.transfer.mysql.sorm.query.impl.MySQLQuery");
 
     static {
         var rb = ResourceBundle.getBundle("com/test/mysql/sorm/db");

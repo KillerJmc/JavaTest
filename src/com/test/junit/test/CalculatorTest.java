@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class CalculatorTest {
     /**
-     * Use for applying for the resources, all test fns would invoke this fn before running.
+     * Use for applying for the resources, all transfer fns would invoke this fn before running.
      * This fn must in the Test class, and would be run whether the result is success or not.
      */
     @Before
@@ -17,7 +17,7 @@ public class CalculatorTest {
     }
 
     /**
-     * all test fns would invoke this fn after running.
+     * all transfer fns would invoke this fn after running.
      * This fn must in the Test class, and would be run whether the result is success or not.
      */
     @After
@@ -26,7 +26,7 @@ public class CalculatorTest {
     }
 
     /**
-     * test Add fn
+     * transfer Add fn
      */
     @Test
     public void testAdd() {
@@ -38,7 +38,7 @@ public class CalculatorTest {
     }
 
     /**
-     * test Add fn
+     * transfer Add fn
      */
     @Test
     public void testSub() {

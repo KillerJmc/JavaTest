@@ -8,7 +8,7 @@ import static com.jmc.lang.extend.Outs.newLine;
  * Annotation
  * 注解可以免去properties文件书写
  */
-@Pro(className = "com.test.Annotation.practice.Animal", methodName = "eat")
+@Pro(className = "com.transfer.Annotation.practice.Animal", methodName = "eat")
 public class ReflectTest {
     public static void main(String[] args) throws Exception {
         var c = ReflectTest.class;
@@ -30,7 +30,7 @@ public class ReflectTest {
 
 /*
     public class ProImpl implements Pro {
-        public String className() { return "com.test.Annotation.practice.Animal"; }
+        public String className() { return "com.transfer.Annotation.practice.Animal"; }
         public String methodName() { return "eat"; }
     }
  */

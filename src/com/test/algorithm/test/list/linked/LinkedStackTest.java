@@ -8,8 +8,8 @@ import org.junit.Test;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import static com.jmc.lang.extend.Chars.orEquals;
 import static com.jmc.lang.extend.Outs.newLine;
+import static com.jmc.lang.primitive.Chars.orEquals;
 
 
 public class LinkedStackTest {
