@@ -31,7 +31,7 @@ public class GraphTest {
     }};
 
     @Test
-    public void test() {
+    public void dfsTest() {
         var search = new DepthFirstSearch(g, 0);
         System.out.println("与起点0相通的顶点的数量（包括0）为：" + search.count());
 
@@ -40,7 +40,7 @@ public class GraphTest {
     }
 
     @Test
-    public void test2() {
+    public void bfsTest() {
         var search = new BreadthFirstSearch(g, 0);
         System.out.println("与起点0相通的顶点的数量（包括0）为：" + search.count());
 
@@ -50,7 +50,7 @@ public class GraphTest {
 
     // 畅通工程
     @Test
-    public void test3() {
+    public void bfsTest2() {
         int cities = 20;
         Graph g = new Graph(cities) {{
             addEdge(
@@ -68,7 +68,7 @@ public class GraphTest {
     }
 
     @Test
-    public void test4() {
+    public void depthFirstPathsTest() {
         Graph g = new Graph(6) {{
             addEdge(
                     0, 2, 0, 1,
@@ -85,7 +85,7 @@ public class GraphTest {
     }
 
     @Test
-    public void test5() {
+    public void directedCycleTest() {
         var g = new DiGraph(6) {{
             addEdge(
                 3, 0,
@@ -101,7 +101,7 @@ public class GraphTest {
     }
 
     @Test
-    public void test6() {
+    public void depthFirstOrderTest() {
         var g = new DiGraph(6) {{
             addEdge(
                 1, 3, 0, 2,
@@ -114,7 +114,7 @@ public class GraphTest {
     }
 
     @Test
-    public void test7() {
+    public void topoLogicalTest() {
         var g = new DiGraph(6) {{
             addEdge(
                     1, 3, 0, 2,
@@ -141,7 +141,7 @@ public class GraphTest {
     }};
 
     @Test
-    public void test8() {
+    public void primeTest() {
         var primMST = new PrimMST(eg);
         for (Edge e : primMST.edges()) {
             System.out.println(e);
@@ -149,7 +149,7 @@ public class GraphTest {
     }
 
     @Test
-    public void test9() {
+    public void kruskalTest() {
         var kruskalMST = new KruskalMST(eg);
         for (Edge e : kruskalMST.edges()) {
             System.out.println(e);
@@ -157,24 +157,36 @@ public class GraphTest {
     }
 
     @Test
-    public void test10() {
-        var g = new Dijkstra.Graph(8) {{
-            addEdges(
-                    4, 5, 0.35, 5, 4, 0.35, 4, 7, 0.37,
-                    5, 7, 0.28, 7, 5, 0.28, 5, 1, 0.32,
-                    0, 4, 0.38, 0, 2, 0.26, 7, 3, 0.39,
-                    1, 3, 0.29, 2, 7, 0.34, 6, 2, 0.40,
-                    3, 6, 0.52, 6, 0, 0.58, 6, 4, 0.93
-            );
-        }};
+    public void dijkstraTest() {
+        int V = 6;
+        int[][] g = new int[V][V];
 
-        var dijkstra = new Dijkstra(g, 0);
-        var path = dijkstra.pathTo(6);
-        System.out.println(path);
+        g[0][1] = 1; g[0][2] = 4;
+        g[1][2] = 2; g[1][3] = 7; g[1][4] = 3;
+        g[2][3] = 5; g[2][4] = 1;
+        g[3][4] = 3; g[3][5] = 2;
+        g[4][5] = 6;
+
+        // 无向图
+        g[1][0] = 1;
+        g[2][0] = 4; g[2][1] = 2;
+        g[3][1] = 7; g[4][1] = 3; g[3][2] = 5;
+        g[4][2] = 1; g[4][3] = 3;
+        g[5][3] = 2; g[5][4] = 6;
+
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < V; j++) {
+                if (i != j && g[i][j] == 0) {
+                    g[i][j] = Integer.MAX_VALUE;
+                }
+            }
+        }
+
+        Dijkstra.solve(g, V, 0);
     }
 
     @Test
-    public void test11() {
+    public void floydTest() {
         char[] vertex = {'A', 'B', 'C', 'D', 'E', 'F', 'G'};
         // 不可联通点距离
         int N = 999999;

@@ -1,6 +1,7 @@
 package com.test.incubator.clinker;
 
 import com.jmc.lang.time.Time;
+import com.jmc.reference.Pointer;
 import jdk.incubator.foreign.*;
 
 import java.lang.invoke.MethodType;
@@ -109,11 +110,11 @@ public class Test {
 
             bindMap.forEach((ptr, cPtr) -> {
                 switch (ptr.get()) {
-                    case Integer ignored -> ptr.setUnchecked(MemoryAccess.getInt(cPtr));
-                    case Long ignored -> ptr.setUnchecked(MemoryAccess.getLong(cPtr));
-                    case Float ignored -> ptr.setUnchecked(MemoryAccess.getFloat(cPtr));
-                    case Double ignored -> ptr.setUnchecked(MemoryAccess.getDouble(cPtr));
-                    case String ignored -> ptr.setUnchecked(CLinker.toJavaString(cPtr));
+                    case Integer ignored -> ptr.resetUnchecked(MemoryAccess.getInt(cPtr));
+                    case Long ignored -> ptr.resetUnchecked(MemoryAccess.getLong(cPtr));
+                    case Float ignored -> ptr.resetUnchecked(MemoryAccess.getFloat(cPtr));
+                    case Double ignored -> ptr.resetUnchecked(MemoryAccess.getDouble(cPtr));
+                    case String ignored -> ptr.resetUnchecked(CLinker.toJavaString(cPtr));
                     default -> throw new IllegalStateException("Unsupported type: " + ptr.type().getSimpleName());
                 }
             });
