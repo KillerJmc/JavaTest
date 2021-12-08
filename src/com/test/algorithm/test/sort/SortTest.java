@@ -2,7 +2,7 @@ package com.test.algorithm.test.sort;
 
 import com.jmc.array.Array;
 import com.jmc.lang.timer.Timers;
-import com.jmc.reference.Func;
+import com.jmc.ref.Func;
 import com.test.algorithm.sort.Sort;
 import com.test.main.Tools;
 

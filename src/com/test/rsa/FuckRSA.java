@@ -1,7 +1,7 @@
 package com.test.rsa;
 
 import com.jmc.lang.math.ExactExp;
-import com.jmc.reference.Func;
+import com.jmc.ref.Func;
 import com.test.apply.utils.rsa.RSA;
 
 import java.math.BigInteger;

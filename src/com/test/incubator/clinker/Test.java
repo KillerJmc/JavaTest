@@ -1,7 +1,7 @@
 package com.test.incubator.clinker;
 
 import com.jmc.lang.time.Time;
-import com.jmc.reference.Pointer;
+import com.jmc.ref.Pointer;
 import jdk.incubator.foreign.*;
 
 import java.lang.invoke.MethodType;
