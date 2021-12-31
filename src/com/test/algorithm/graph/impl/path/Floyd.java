@@ -1,6 +1,6 @@
 package com.test.algorithm.graph.impl.path;
 
-import com.jmc.lang.extend.Outs;
+import com.jmc.lang.Outs;
 import com.test.algorithm.base.util.MyArr;
 
 import java.util.Arrays;

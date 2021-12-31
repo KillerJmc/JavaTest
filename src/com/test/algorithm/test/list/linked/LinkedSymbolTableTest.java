@@ -3,7 +3,7 @@ package com.test.algorithm.test.list.linked;
 import com.test.algorithm.list.linked.impl.LinkedSymbolTable;
 import org.junit.Test;
 
-import static com.jmc.lang.extend.Outs.newLine;
+import static com.jmc.lang.Outs.newLine;
 
 public class LinkedSymbolTableTest {
     @Test

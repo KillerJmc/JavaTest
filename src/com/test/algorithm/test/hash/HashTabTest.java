@@ -1,6 +1,6 @@
 package com.test.algorithm.test.hash;
 
-import com.jmc.lang.extend.Outs;
+import com.jmc.lang.Outs;
 import com.test.algorithm.hash.Emp;
 import com.test.algorithm.hash.HashTab;
 import org.junit.Test;

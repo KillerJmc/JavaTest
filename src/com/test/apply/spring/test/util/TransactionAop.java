@@ -1,6 +1,6 @@
 package com.test.apply.spring.test.util;
 
-import com.jmc.lang.extend.Tries;
+import com.jmc.lang.Tries;
 import com.test.apply.spring.aop.ProxyFactory;
 
 /**

@@ -10,7 +10,7 @@ public class HuffmanCode {
     /**
      * 节点类
      */
-    private static record Node(Byte data, int weight, Node left, Node right) implements Comparable<Node> {
+    private record Node(Byte data, int weight, Node left, Node right) implements Comparable<Node> {
         public Node(byte data, int weight) {
             this(data, weight, null, null);
         }

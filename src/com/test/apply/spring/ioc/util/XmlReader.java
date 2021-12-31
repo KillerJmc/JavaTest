@@ -1,6 +1,6 @@
 package com.test.apply.spring.ioc.util;
 
-import com.jmc.lang.extend.Strs;
+import com.jmc.lang.Strs;
 
 import java.util.ArrayList;
 import java.util.HashMap;

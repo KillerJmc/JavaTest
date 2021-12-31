@@ -1,7 +1,7 @@
 package com.test.apply.spring.ioc.core;
 
 import com.jmc.io.Files;
-import com.jmc.lang.extend.Tries;
+import com.jmc.lang.Tries;
 import com.test.apply.spring.ioc.util.XmlReader;
 
 import java.util.HashMap;

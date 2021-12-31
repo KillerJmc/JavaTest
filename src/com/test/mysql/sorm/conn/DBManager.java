@@ -1,6 +1,6 @@
 package com.test.mysql.sorm.conn;
 
-import com.jmc.lang.extend.Strs;
+import com.jmc.lang.Strs;
 import com.test.mysql.sorm.config.Configuration;
 import com.test.mysql.sorm.pool.DBConnPool;
 

@@ -2,7 +2,6 @@ package com.test.apply.spring.aop;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 /**

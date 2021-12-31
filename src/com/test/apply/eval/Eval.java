@@ -6,8 +6,9 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static com.jmc.process.Run.execToStr;
+import static com.jmc.lang.Run.execToStr;
 
+@SuppressWarnings("all")
 public class Eval {
     public static String eval(String cmd) throws IOException {
         String template = """

@@ -1,8 +1,8 @@
 package com.test.apply.spring.test.dao.impl;
 
-import com.test.apply.spring.test.util.UserDatabase;
 import com.test.apply.spring.test.dao.UserDao;
 import com.test.apply.spring.test.pojo.User;
+import com.test.apply.spring.test.util.UserDatabase;
 
 /**
  * @author Jmc

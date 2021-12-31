@@ -1,19 +1,19 @@
 package com.test.incubator.clinker;
 
-import com.jmc.lang.time.Time;
-import com.jmc.ref.Pointer;
-import jdk.incubator.foreign.*;
-
-import java.lang.invoke.MethodType;
-import java.util.HashMap;
-import java.util.function.Consumer;
-
 /**
  * 测试CLinker <br>
- * Compile Args: --add-modules jdk.incubator.foreign <br>
- * VM (Runtime) Args: --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.foreign
+ * <pre>
+ * 模块化应用：
+ *     module-info.java: requires jdk.incubator.foreign;
+ *     VM Args: --enable-native-access=module-name
+ *
+ * 非模块化应用：
+ *     Compile Args: --add-modules jdk.incubator.foreign
+ *     VM Args: --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.foreign
+ * </pre>
  */
 public class Test {
+    /*
     public static void main(String[] args) throws Throwable {
         // scanf & printf
         var aPtr = Pointer.of(0);
@@ -124,4 +124,5 @@ public class Test {
             throw new RuntimeException(t);
         }
     }
+    */
 }

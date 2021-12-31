@@ -1,6 +1,6 @@
 package com.test.server.httpserver.server;
 
-import com.jmc.lang.extend.Tries;
+import com.jmc.lang.Tries;
 import com.test.server.httpserver.servlet.Servlet;
 
 import javax.xml.parsers.SAXParser;
@@ -42,7 +42,7 @@ public class WebApp {
 		}
 	}
 	
-	public static Servlet getServlet(String url) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	public static Servlet getServlet(String url) {
 		if (null == url || (url = url.trim()).equals("")) {
 			return null;
 		}
@@ -53,7 +53,7 @@ public class WebApp {
 		return Tries.tryReturnsT(() -> (Servlet) Class.forName(name).getDeclaredConstructor().newInstance());
 	}
 	
-	public static InputStream getInputStream(String filePath) throws FileNotFoundException {
+	public static InputStream getInputStream(String filePath) {
 		return Thread.currentThread().getContextClassLoader()
 			.getResourceAsStream(filePath);
 	}

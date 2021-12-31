@@ -1,8 +1,8 @@
 package com.test.algorithm.test.sort;
 
 import com.jmc.array.Array;
-import com.jmc.lang.timer.Timers;
-import com.jmc.ref.Func;
+import com.jmc.lang.ref.Func;
+import com.jmc.util.Timers;
 import com.test.algorithm.sort.Sort;
 import com.test.main.Tools;
 

@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 @Measurement(iterations = 3, time = 1)
 // 上述测试进行次数（非必选，默认5轮）
 @Fork(1)
+@SuppressWarnings("all")
 public class StringConcatTest {
     // 设置成员变量测试时赋予的值
     @Param(value = {"10", "50", "100"})
@@ -48,7 +49,10 @@ public class StringConcatTest {
 
     public static void main(String[] args) throws RunnerException {
         // 开始测试
-        new Runner(new OptionsBuilder().build()).run();
+        var ops = new OptionsBuilder()
+                .include(StringConcatTest.class.getSimpleName())
+                .build();
+        new Runner(ops).run();
     }
 }
 

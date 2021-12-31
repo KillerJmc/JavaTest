@@ -1,6 +1,6 @@
 package com.test.juc.apply.inturn;
 
-import com.jmc.lang.extend.Tries;
+import com.jmc.lang.Tries;
 import com.test.main.Tools;
 
 import java.util.concurrent.locks.ReentrantLock;

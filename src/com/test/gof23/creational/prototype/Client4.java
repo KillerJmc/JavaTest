@@ -7,8 +7,9 @@ package com.test.gof23.creational.prototype;
 
 import java.sql.Date;
 
-import static com.jmc.lang.timer.Timers.milliTimer;
+import static com.jmc.util.Timers.milliTimer;
 
+@SuppressWarnings("all")
 public class Client4 {
 	public static void main(String[] args) {
 		//执行一亿次创建

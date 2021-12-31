@@ -1,6 +1,6 @@
 package com.test.mysql.sorm.main;
 
-import com.jmc.lang.extend.Outs;
+import com.jmc.lang.Outs;
 import com.test.mysql.sorm.pojo.Emp;
 import com.test.mysql.sorm.query.Query;
 import com.test.mysql.sorm.query.QueryFactory;
@@ -52,7 +52,7 @@ public class Test {
     }
 
     private static void query() {
-        List list = Q.queryRows("select * from emp", Emp.class);
+        List<Emp> list = Q.queryRows("select * from emp", Emp.class);
         list.forEach(System.out::println);
     }
 
@@ -67,7 +67,7 @@ public class Test {
     }
 
     private static void select03() {
-        List list = Q.queryRows("select * from emp where id>?", Emp.class, 3);
+        List<Emp> list = Q.queryRows("select * from emp where id>?", Emp.class, 3);
         list.forEach(System.out::println);
     }
 

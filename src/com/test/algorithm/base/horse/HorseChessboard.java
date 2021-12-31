@@ -1,8 +1,7 @@
 package com.test.algorithm.base.horse;
 
-import com.jmc.lang.primitive.Bools;
+import com.test.algorithm.base.util.Point;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -40,7 +39,7 @@ public class HorseChessboard {
         };
 
         for (var t : a)
-            if (Bools.in(t[0], 0, X - 1) && Bools.in(t[1], 0, Y - 1))
+            if (t[0] >= 0 && t[0] <= X - 1 && t[1] >= 0 && t[1] <= Y - 1)
                 ps.add(new Point(t[0], t[1]));
         return ps;
     }

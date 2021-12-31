@@ -1,6 +1,5 @@
 package com.test.apply.spring.test.pojo;
 
-import lombok.Builder;
 import lombok.Data;
 
 /**

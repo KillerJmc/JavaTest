@@ -1,7 +1,7 @@
 package com.test.mysql.sorm.query;
 
-import com.jmc.lang.extend.Strs;
-import com.jmc.lang.extend.Tries;
+import com.jmc.lang.Strs;
+import com.jmc.lang.Tries;
 import com.jmc.lang.reflect.Reflects;
 import com.test.mysql.sorm.conn.DBManager;
 import com.test.mysql.sorm.info.ColumnInfo;
@@ -108,7 +108,7 @@ public abstract class Query implements Cloneable {
      * @param c the Object of a class whose correspond to its table
      * @param id primary key value
      */
-    public void delete(Class c, Object id) {
+    public void delete(Class<?> c, Object id) {
         //find TableInfo with Class Object
         var tableInfo = TableContext.pojoClassTableMap.get(c);
         //only support one PriKey
@@ -127,7 +127,7 @@ public abstract class Query implements Cloneable {
      * @param obj the Object whose correspond to its table
      */
     public void delete(Object obj) {
-        Class c = obj.getClass();
+        Class<?> c = obj.getClass();
         var tableInfo = TableContext.pojoClassTableMap.get(c);
         //only support one PriKey
         ColumnInfo onlyPriKey = tableInfo.getOnlyPriKey();
@@ -178,14 +178,14 @@ public abstract class Query implements Cloneable {
      * @param params SQL parameters
      * @return the result of query
      */
-    public List queryRows(String sql, Class c, Object... params) {
-        return (List) executeQueryTemplate(sql, params, (conn, ps, rs) -> {
+    @SuppressWarnings("unchecked")
+    public <T> List<T> queryRows(String sql, Class<T> c, Object... params) {
+        return (List<T>) executeQueryTemplate(sql, params, (conn, ps, rs) -> {
             var metaData = rs.getMetaData();
             var list = new ArrayList<>();
 
             //multi-lines
             while (rs.next()) {
-                @SuppressWarnings("unchecked")
                 Object rowObj = c.getDeclaredConstructor().newInstance();
 
                 //select name 'username' , pwd, age from emp where id=?, age>18
@@ -215,7 +215,7 @@ public abstract class Query implements Cloneable {
      * @param params SQL parameters
      * @return the result of query
      */
-    public Object queryUniqueRow(String sql, Class c, Object... params) {
+    public Object queryUniqueRow(String sql, Class<?> c, Object... params) {
         var list = queryRows(sql, c, params);
         return list != null ? list.get(0) : null;
     }
@@ -226,7 +226,7 @@ public abstract class Query implements Cloneable {
      * @param id the value of the PriKey
      * @return the result of query
      */
-    public Object queryById(Class c, Object id) {
+    public Object queryById(Class<?> c, Object id) {
         //select * from emp where id=?
         var tableInfo = TableContext.pojoClassTableMap.get(c);
         //only support one PriKey

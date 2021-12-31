@@ -1,7 +1,7 @@
 package com.test.apply.utils.rsa;
 
-import com.jmc.lang.extend.Tries;
-import com.jmc.lang.math.ExactExp;
+import com.jmc.lang.Tries;
+import com.jmc.math.exp.ExactExp;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;

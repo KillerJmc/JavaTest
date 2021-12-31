@@ -1,7 +1,7 @@
 package com.test.apply.lambda;
 
-import com.jmc.lang.extend.Threads;
-import com.jmc.lang.extend.Tries;
+import com.jmc.lang.Threads;
+import com.jmc.lang.Tries;
 
 import java.util.stream.Stream;
 

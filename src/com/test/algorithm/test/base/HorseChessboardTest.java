@@ -1,8 +1,8 @@
 package com.test.algorithm.test.base;
 
-import com.jmc.lang.timer.Timers;
-import com.test.algorithm.base.util.MyArr;
+import com.jmc.util.Timers;
 import com.test.algorithm.base.horse.HorseChessboard;
+import com.test.algorithm.base.util.MyArr;
 import org.junit.Test;
 
 public class HorseChessboardTest {

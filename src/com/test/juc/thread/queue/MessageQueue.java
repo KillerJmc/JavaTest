@@ -1,6 +1,6 @@
 package com.test.juc.thread.queue;
 
-import com.jmc.lang.extend.Tries;
+import com.jmc.lang.Tries;
 import com.test.algorithm.list.linked.impl.LinkedQueue;
 
 public class MessageQueue<T> {

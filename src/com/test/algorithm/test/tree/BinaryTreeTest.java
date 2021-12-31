@@ -4,7 +4,7 @@ import com.test.algorithm.list.linked.impl.LinkedQueue;
 import com.test.algorithm.tree.impl.BinaryTree;
 import org.junit.Test;
 
-import static com.jmc.lang.extend.Outs.newLine;
+import static com.jmc.lang.Outs.newLine;
 
 public class BinaryTreeTest {
     @Test

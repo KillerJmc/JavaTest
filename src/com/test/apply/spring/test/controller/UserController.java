@@ -1,12 +1,8 @@
 package com.test.apply.spring.test.controller;
 
-import com.jmc.lang.extend.Threads;
-import com.jmc.lang.extend.Tries;
-import com.test.apply.spring.aop.ProxyFactory;
-import com.test.apply.spring.test.util.TransactionAop;
-import com.test.apply.spring.test.util.UserDatabase;
 import com.test.apply.spring.test.pojo.User;
 import com.test.apply.spring.test.service.UserService;
+import com.test.apply.spring.test.util.TransactionAop;
 import lombok.RequiredArgsConstructor;
 
 /**

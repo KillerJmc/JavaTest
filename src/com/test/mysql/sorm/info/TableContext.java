@@ -1,7 +1,7 @@
 package com.test.mysql.sorm.info;
 
-import com.jmc.lang.extend.Strs;
-import com.jmc.lang.extend.Tries;
+import com.jmc.lang.Strs;
+import com.jmc.lang.Tries;
 import com.test.mysql.sorm.conn.DBManager;
 import com.test.mysql.sorm.converter.MySQLConverter;
 import com.test.mysql.sorm.utils.JavaFileUtils;

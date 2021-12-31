@@ -1,7 +1,7 @@
 package com.test.mysql.sorm.utils;
 
 import com.jmc.io.Files;
-import com.jmc.lang.extend.Strs;
+import com.jmc.lang.Strs;
 import com.test.mysql.sorm.conn.DBManager;
 import com.test.mysql.sorm.converter.TypeConverter;
 import com.test.mysql.sorm.info.ColumnInfo;

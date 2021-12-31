@@ -1,6 +1,6 @@
 package com.test.mysql.sorm.query;
 
-import com.jmc.lang.extend.Tries;
+import com.jmc.lang.Tries;
 import com.test.mysql.sorm.conn.DBManager;
 
 /**

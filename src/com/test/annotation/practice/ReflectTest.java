@@ -2,7 +2,7 @@ package com.test.annotation.practice;
 
 import java.lang.reflect.Method;
 
-import static com.jmc.lang.extend.Outs.newLine;
+import static com.jmc.lang.Outs.newLine;
 
 /**
  * Annotation

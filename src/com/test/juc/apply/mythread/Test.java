@@ -1,6 +1,7 @@
 package com.test.juc.apply.mythread;
 
-import com.jmc.lang.extend.Tries;
+
+import com.jmc.lang.Tries;
 
 import java.util.concurrent.TimeUnit;
 

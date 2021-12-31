@@ -1,6 +1,6 @@
 package com.test.mysql.sorm.pool;
 
-import com.jmc.lang.extend.Tries;
+import com.jmc.lang.Tries;
 import com.test.mysql.sorm.conn.DBManager;
 
 import java.sql.Connection;

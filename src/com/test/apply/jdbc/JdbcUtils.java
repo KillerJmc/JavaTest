@@ -1,7 +1,7 @@
 package com.test.apply.jdbc;
 
-import com.jmc.lang.extend.Strs;
-import com.jmc.lang.extend.Tries;
+import com.jmc.lang.Strs;
+import com.jmc.lang.Tries;
 import com.jmc.lang.reflect.Reflects;
 
 import java.sql.Connection;
