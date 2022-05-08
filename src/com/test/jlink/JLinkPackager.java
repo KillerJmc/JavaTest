@@ -1,13 +1,14 @@
 package com.test.jlink;
 
-
 import com.jmc.lang.Objs;
 import com.jmc.lang.Run;
 
+import java.io.File;
 import java.util.Scanner;
 
 /**
- * 把JLink镜像打包为可执行文件
+ * 把JLink镜像打包为可执行文件 <br>
+ * 注：需要配置Java环境和安装WiX
  * @author Jmc
  */
 @SuppressWarnings({"unused", "UnusedReturnValue"})
@@ -116,11 +117,11 @@ public class JLinkPackager {
     }
 
     /**
-     * 图标
+     * 软件供应商
      */
-    public JLinkPackager icon(String iconAbsolutePath) {
-        // --icon "iconAbsolutePath"
-        cmd.append("--icon \"").append(iconAbsolutePath).append("\" ");
+    public JLinkPackager vendor(String vendor) {
+        // --vendor "vendor"
+        cmd.append("--vendor \"").append(vendor).append("\" ");
         return this;
     }
 
@@ -130,6 +131,15 @@ public class JLinkPackager {
     public JLinkPackager version(String version) {
         // --app-version "version"
         cmd.append("--app-version \"").append(version).append("\" ");
+        return this;
+    }
+
+    /**
+     * 图标
+     */
+    public JLinkPackager icon(String iconAbsolutePath) {
+        // --icon "iconAbsolutePath"
+        cmd.append("--icon \"").append(iconAbsolutePath).append("\" ");
         return this;
     }
 
@@ -174,10 +184,10 @@ public class JLinkPackager {
      * @param askUser 是否询问用户是否创建
      */
     public JLinkPackager winShortcut(boolean askUser) {
-        // --win-shortcut(-prompt)
-        cmd.append("--win-shortcut");
+        // --win-shortcut (--win-shortcut-prompt)
+        cmd.append("--win-shortcut ");
         if (askUser) {
-            cmd.append("-prompt");
+            cmd.append("--win-shortcut-prompt ");
         }
         cmd.append(' ');
         return this;
@@ -200,6 +210,8 @@ public class JLinkPackager {
     }
 
     public static void buildInteractively() {
+        checkEnv();
+
         var builder = builder();
         var in = new Scanner(System.in);
 
@@ -244,16 +256,22 @@ public class JLinkPackager {
         Objs.throwsIfNullOrEmpty("参数输入为空！", outputDirAbsolutePath);
         builder.outputDir(outputDirAbsolutePath);
 
-        System.err.print("\n软件图标（绝对路径，可选）：");
-        var iconAbsolutePath = in.nextLine();
-        if (!iconAbsolutePath.isBlank()) {
-            builder.icon(iconAbsolutePath);
+        System.err.print("\n软件供应商（可选）：");
+        var vendor = in.nextLine();
+        if (!vendor.isBlank()) {
+            builder.vendor(vendor);
         }
 
         System.err.print("\n软件版本（可选）：");
         var version = in.nextLine();
         if (!version.isBlank()) {
             builder.version(version);
+        }
+
+        System.err.print("\n软件图标（绝对路径，可选）：");
+        var iconAbsolutePath = in.nextLine();
+        if (!iconAbsolutePath.isBlank()) {
+            builder.icon(iconAbsolutePath);
         }
 
         System.err.print("\n软件介绍（可选）：");
@@ -339,5 +357,37 @@ public class JLinkPackager {
         
         ---------------------------------JLink Packager------------------------------------
         """);
+    }
+
+    /**
+     * 检查环境
+     */
+    private static void checkEnv() {
+        // 检查jpackage
+        Run.execToStr("jpackage");
+
+        // 检查WiX
+        var programPath = "C:/Program Files (x86)";
+
+        var programDirs = new File(programPath).listFiles();
+        if (programDirs == null) {
+            throw new RuntimeException("\"" + programPath + "\" can't read!");
+        }
+
+        var foundWix = false;
+        for (var f : programDirs) {
+            if (f.getName().contains("WiX Toolset")) {
+                foundWix = true;
+                break;
+            }
+        }
+
+        if (!foundWix) {
+            throw new RuntimeException("WiX environment not found!");
+        }
+    }
+
+    public static void main(String[] args) {
+        JLinkPackager.buildInteractively();
     }
 }

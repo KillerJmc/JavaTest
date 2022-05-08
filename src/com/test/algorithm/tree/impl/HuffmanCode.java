@@ -1,6 +1,6 @@
 package com.test.algorithm.tree.impl;
 
-import com.jmc.util.Binary;
+import com.jmc.math.Binary;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
