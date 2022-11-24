@@ -9,4 +9,6 @@ open module JavaTest {
     requires jmh.core;
     requires jmh.generator.annprocess;
     requires jmc.utils;
+    requires slf4j.api;
+    requires log4j;
 }
