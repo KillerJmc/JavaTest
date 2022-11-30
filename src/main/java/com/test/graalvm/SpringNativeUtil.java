@@ -13,6 +13,7 @@ import java.util.stream.Stream;
  * 参考：<a href="https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#_with_code_native_image_code">Spring Native Doc</a>
  */
 @Slf4j
+@SuppressWarnings("unused")
 public class SpringNativeUtil {
     /**
      * 从Spring Jar文件生成exe二进制文件
