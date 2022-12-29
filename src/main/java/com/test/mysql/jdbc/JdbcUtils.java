@@ -1,4 +1,4 @@
-package com.test.apply.jdbc;
+package com.test.mysql.jdbc;
 
 import com.jmc.lang.Strs;
 import com.jmc.lang.Tries;
