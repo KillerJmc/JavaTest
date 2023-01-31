@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * MySQL恢复工具
+ * @author Jmc
  */
 @Slf4j
 public class RestoreUtil {
@@ -48,6 +49,6 @@ public class RestoreUtil {
     }
 
     public static void main(String[] args) {
-        fromSql("D:/Projects/IdeaProjects/seckill-system/docker/mysql/sql");
+        RestoreUtil.fromSql("D:/Projects/IdeaProjects/seckill-system/docker/mysql/sql");
     }
 }
