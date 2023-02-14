@@ -51,7 +51,7 @@ public class LinkedStackTest {
         }
         return s1.size() == s2.size();
     }
-    
+
     @Test
     public void test2() {
         String[] a = {"(上海{长安[]})", "()", "()[]{}", "(]", "([)]", "{[]}", "((((((((((((", ")))))))))))))"};
@@ -68,9 +68,9 @@ public class LinkedStackTest {
 
     @SuppressWarnings("all")
     private String[] transToSuffixExp(String exp) throws Exception {
-        Method split = Reflects.getStaticMethod(ExactExp.class, "split", String.class);
+        Method split = Reflects.getMethod(ExactExp.class, "split", String.class);
         var infixExp = split.invoke(null, exp);
-        Method transToSuffixExp = Reflects.getStaticMethod(ExactExp.class, "transToSuffixExp", String[].class);
+        Method transToSuffixExp = Reflects.getMethod(ExactExp.class, "transToSuffixExp", String[].class);
         return (String[]) transToSuffixExp.invoke(null, infixExp);
     }
 

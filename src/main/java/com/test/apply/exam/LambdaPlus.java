@@ -22,9 +22,9 @@ public class LambdaPlus {
     public static void main(String[] args) throws IOException {
         var list = Files
                 .lines(Path.of("temp/students.dat"))
+                .sorted()
                 .filter(t -> !t.startsWith("B") && !t.endsWith("n"))
                 .map(String::toUpperCase)
-                .sorted()
                 .toList();
 
         list.forEach(System.out::println);

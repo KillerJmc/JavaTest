@@ -1,10 +1,14 @@
 package com.test.main;
 
+import org.junit.Test;
+
 /**
  * @author Jmc
  */
 public class Main {
-    public static void main(String[] args) {
+    @Test
+    public void main() throws Exception {
 
     }
 }
+

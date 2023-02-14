@@ -78,22 +78,22 @@ public class SequenceListTest {
         var a = new ArrayList<Integer>();
         for (int i = 0; i < 11; i++) {
             if (i == 0) {
-                Object[] elementData = Reflects.getField(a, "elementData");
+                Object[] elementData = Reflects.getFieldValue(a, "elementData");
                 System.out.println(elementData.length);
             }
             a.add(1);
-            Object[] elementData = Reflects.getField(a, "elementData");
+            Object[] elementData = Reflects.getFieldValue(a, "elementData");
             System.out.println(elementData.length);
         }
 
         for (int i = 0; i < 11; i++) {
             if (i == 0) {
-                Object[] elementData = Reflects.getField(a, "elementData");
+                Object[] elementData = Reflects.getFieldValue(a, "elementData");
                 System.out.println(elementData.length);
             }
             a.remove(0);
             a.trimToSize();
-            Object[] elementData = Reflects.getField(a, "elementData");
+            Object[] elementData = Reflects.getFieldValue(a, "elementData");
             System.out.println(elementData.length);
         }
     }
