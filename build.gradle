@@ -7,13 +7,15 @@ version "1.0.0"
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven { url "https://killerjmc.github.io/jmc-utils/repo" }
 }
 
 dependencies {
-    implementation "com.jmc:jmc-utils:2.9.0"
+    implementation "com.jmc:jmc-utils:2.9.1"
     implementation "org.slf4j:slf4j-log4j12:2.0.5"
     implementation "junit:junit:4.13.2"
+    implementation "cglib:cglib:3.3.0"
     compileOnly "org.projectlombok:lombok:1.18.24"
     annotationProcessor "org.projectlombok:lombok:1.18.24"
     implementation "org.openjdk.jmh:jmh-generator-annprocess:1.35"

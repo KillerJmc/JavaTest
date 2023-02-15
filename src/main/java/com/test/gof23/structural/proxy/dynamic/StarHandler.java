@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 
 public class StarHandler implements InvocationHandler {
 	Star realStar;
-	
+
 	public StarHandler(Star realStar) {
 		this.realStar = realStar;
 	}
@@ -16,24 +16,24 @@ public class StarHandler implements InvocationHandler {
 		if (method.getName().equals("sing")) {
 			o = method.invoke(realStar, args);
 		}
-		
+
 		return o;
 	}
 }
 
 /*
  * 代码生成的真实代理类结构
- 	public class StarProxy implements Star extends Proxy {
+ 	public class StarProxy implements Star extends DynamicProxy {
  		StarHandler handler;
- 		
+
  		public StarProxy(StarHandler handler) {
  			this.handler = handler;
  		}
- 		
+
  		public void bookTicket() {
  			handler.invoke(this, 当前方法, args);
  		}
- 		
+
  		...（以下其他方法里面均为invoke方法，全部汇总到StarHandler）
  	}
  */

@@ -9,7 +9,7 @@ import java.util.function.BiFunction;
  */
 public class ProxyFactory {
     /**
-     * 获取代理对象（JDK Proxy）
+     * 获取代理对象（JDK DynamicProxy）
      * @param t 被代理对象
      * @param enhanceBlock 增强块
      * @param <T> 被代理对象的类型
