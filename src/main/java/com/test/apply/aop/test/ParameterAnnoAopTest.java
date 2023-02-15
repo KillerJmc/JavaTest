@@ -42,6 +42,7 @@ public class ParameterAnnoAopTest {
     }
 
     public static void main(String[] a) {
+        // 获取实例，配置参数类型和从字符串生成该参数的方法
         var fileUtils = createDefaultArgInstance(FileUtils.class, Map.of(
                 "java.lang.Boolean", Boolean::valueOf,
                 "java.nio.charset.Charset", Charset::forName
