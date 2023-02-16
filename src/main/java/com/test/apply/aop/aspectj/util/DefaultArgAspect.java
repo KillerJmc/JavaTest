@@ -1,10 +1,13 @@
 package com.test.apply.aop.aspectj.util;
 
+import com.jmc.lang.reflect.Reflects;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -24,11 +27,18 @@ public class DefaultArgAspect {
 
         // 参数类型 -> 从字符串（默认参数注解的值）生成该参数的方法 的map集合
         var transferMap = new HashMap<String, Function<String, Object>>(Map.of(
+                Byte.class.getName(), Byte::valueOf,
+                Short.class.getName(), Short::valueOf,
                 Integer.class.getName(), Integer::valueOf,
                 Long.class.getName(), Long::valueOf,
+                Float.class.getName(), Float::valueOf,
+                Double.class.getName(), Double::valueOf,
+                Character.class.getName(), s -> s.charAt(0),
                 Boolean.class.getName(), Boolean::valueOf,
-                String.class.getName(), String::valueOf
+                BigInteger.class.getName(), BigInteger::new,
+                BigDecimal.class.getName(), BigDecimal::new
         ));
+        transferMap.put(String.class.getName(), s -> s);
 
         for (int i = 0; i < args.length; i++) {
             // 只有存在注解并且参数为null时才填充默认参数
@@ -39,11 +49,14 @@ public class DefaultArgAspect {
 
                     if (DefaultArg.class.getName().equals(annoClassName)) {
                         var defaultArgStrValue = ((DefaultArg) anno).value();
-                        if (!transferMap.containsKey(paramClassName)) {
-                            throw new RuntimeException("Unsupported type: " + paramClassName);
+                        if (transferMap.containsKey(paramClassName)) {
+                            args[i] = transferMap.get(paramClassName).apply(defaultArgStrValue);
+                            break;
                         }
 
-                        args[i] = transferMap.get(paramClassName).apply(defaultArgStrValue);
+                        var transferClass = ((DefaultArg) anno).transferClass();
+                        var transferInstance = Reflects.newInstance(transferClass);
+                        args[i] = transferInstance.apply(defaultArgStrValue);
                         break;
                     }
                 }
