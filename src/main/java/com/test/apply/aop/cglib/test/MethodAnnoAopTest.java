@@ -1,6 +1,6 @@
-package com.test.apply.proxy.test;
+package com.test.apply.aop.cglib.test;
 
-import com.test.apply.proxy.ClassAnnoAop;
+import com.test.apply.aop.cglib.MethodAnnoAop;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,14 +10,13 @@ import java.lang.annotation.Target;
 /**
  * @author Jmc
  */
-public class ClassAnnoAopTest {
+public class MethodAnnoAopTest {
     @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.TYPE)
-    private @interface AddPrefix {
+    @Target(ElementType.METHOD)
+    private @interface LogAnno {
         String value();
     }
 
-    @AddPrefix("???")
     public static class UserService {
         public String getPassword(String name) {
             if ("Jmc".equals(name)) {
@@ -26,16 +25,16 @@ public class ClassAnnoAopTest {
             return null;
         }
 
+        @LogAnno("获取用户名")
         public String getName() {
             return "Jmc";
         }
     }
 
-    public static void main(String[] a) throws Exception {
-        var userService = ClassAnnoAop.getInstance(UserService.class, AddPrefix.class, (classAnno, method, args) -> {
-            var prefix = classAnno.value();
-            // 全部方法返回值加前缀
-            return prefix + method.apply(args);
+    public static void main(String[] a) {
+        var userService = MethodAnnoAop.getInstance(UserService.class, LogAnno.class, (annotation, method, args) -> {
+            System.out.println("获取到注解值 -> " + annotation.value());
+            return method.apply(args);
         });
 
         var name = userService.getName();

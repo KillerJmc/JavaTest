@@ -1,7 +1,7 @@
-package com.test.apply.proxy.util;
+package com.test.apply.aop.cglib.util;
 
 import com.jmc.lang.ref.Pointer;
-import com.test.apply.proxy.ParameterAnnoAop;
+import com.test.apply.aop.cglib.ParameterAnnoAop;
 
 import java.util.HashMap;
 import java.util.Map;

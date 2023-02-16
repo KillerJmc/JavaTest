@@ -1,4 +1,4 @@
-package com.test.apply.aop;
+package com.test.apply.aop.aspectj.util;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,5 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface DefaultArgMethod {}
+@Target(ElementType.PARAMETER)
+public @interface DefaultArg {
+    String value();
+}

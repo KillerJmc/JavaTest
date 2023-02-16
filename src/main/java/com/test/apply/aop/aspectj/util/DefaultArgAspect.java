@@ -1,6 +1,5 @@
-package com.test.apply.aop;
+package com.test.apply.aop.aspectj.util;
 
-import com.test.apply.proxy.util.DefaultArg;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -16,7 +15,7 @@ import java.util.function.Function;
  */
 @Aspect
 public class DefaultArgAspect {
-    @Around("@annotation(DefaultArgMethod)")
+    @Around("execution(* *(.., @DefaultArg (*), ..))")
     public Object defaultArg(ProceedingJoinPoint joinPoint) throws Throwable {
         var method = ((MethodSignature) joinPoint.getSignature()).getMethod();
         var params = method.getParameters();

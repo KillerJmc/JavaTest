@@ -1,4 +1,4 @@
-package com.test.apply.proxy.util;
+package com.test.apply.aop.aspectj;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,7 +6,5 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PARAMETER)
-public @interface DefaultArg {
-    String value();
-}
+@Target({ElementType.TYPE, ElementType.METHOD, ElementType.PARAMETER})
+public @interface Demo {}

@@ -1,11 +1,9 @@
-package com.test.apply.aop.test;
+package com.test.apply.aop.aspectj.test;
 
-import com.test.apply.aop.DefaultArgMethod;
-import com.test.apply.proxy.util.DefaultArg;
+import com.test.apply.aop.aspectj.util.DefaultArg;
 
-public class Test {
+public class DefaultArgTest {
     public static class UserService {
-        @DefaultArgMethod
         public static String getInfo(@DefaultArg("1") Integer id, @DefaultArg("Jmc") String name) {
             return "id = %d, name = %s".formatted(id, name);
         }
