@@ -1,7 +1,7 @@
-package com.test.apply.aop.util;
+package com.test.apply.proxy.util;
 
 import com.jmc.lang.ref.Pointer;
-import com.test.apply.aop.ParameterAnnoAop;
+import com.test.apply.proxy.ParameterAnnoAop;
 
 import java.util.HashMap;
 import java.util.Map;

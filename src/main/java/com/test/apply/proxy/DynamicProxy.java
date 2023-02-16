@@ -1,4 +1,4 @@
-package com.test.apply.aop;
+package com.test.apply.proxy;
 
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;

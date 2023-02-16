@@ -1,6 +1,6 @@
-package com.test.apply.aop.test;
+package com.test.apply.proxy.test;
 
-import com.test.apply.aop.DynamicProxy;
+import com.test.apply.proxy.DynamicProxy;
 
 import java.util.Base64;
 

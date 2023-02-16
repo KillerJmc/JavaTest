@@ -1,4 +1,4 @@
-package com.test.apply.aop.util;
+package com.test.apply.proxy.util;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package com.test.apply.aop;
+package com.test.apply.proxy;
 
 import com.jmc.lang.Tries;
 

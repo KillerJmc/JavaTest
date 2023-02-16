@@ -1,7 +1,7 @@
-package com.test.apply.aop.test;
+package com.test.apply.proxy.test;
 
-import com.test.apply.aop.util.DefaultArg;
-import com.test.apply.aop.util.DefaultArgAop;
+import com.test.apply.proxy.util.DefaultArg;
+import com.test.apply.proxy.util.DefaultArgAop;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

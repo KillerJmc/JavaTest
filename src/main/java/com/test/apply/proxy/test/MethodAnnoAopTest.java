@@ -1,6 +1,6 @@
-package com.test.apply.aop.test;
+package com.test.apply.proxy.test;
 
-import com.test.apply.aop.MethodAnnoAop;
+import com.test.apply.proxy.MethodAnnoAop;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
