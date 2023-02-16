@@ -14,11 +14,17 @@ public class ClassAnnoAspect {
 
     @Demo
     private static class What {
+        public What() {
+            System.out.println("这行字不会被打印，表明构造方法被拦截！");
+        }
+
         public static void m1() {}
         public static void m2() {}
     }
 
+    @SuppressWarnings("all")
     public static void main(String[] args) {
+        new What();
         What.m1();
         What.m2();
     }

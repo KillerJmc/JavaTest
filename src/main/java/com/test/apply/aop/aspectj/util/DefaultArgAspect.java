@@ -4,8 +4,12 @@ import com.jmc.lang.reflect.Reflects;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.ConstructorSignature;
 import org.aspectj.lang.reflect.MethodSignature;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Parameter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -18,12 +22,29 @@ import java.util.function.Function;
  */
 @Aspect
 public class DefaultArgAspect {
-    @Around("execution(* *(.., @DefaultArg (*), ..))")
+    @Pointcut("execution(* *(.., @DefaultArg (*), ..))")
+    public void onMethod() {}
+
+    @Pointcut("execution(*.new(.., @DefaultArg (*), ..))")
+    public void onConstructor() {}
+
+    @Around("onMethod() || onConstructor()")
     public Object defaultArg(ProceedingJoinPoint joinPoint) throws Throwable {
-        var method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-        var params = method.getParameters();
-        var annotations = method.getParameterAnnotations();
+        var signature = joinPoint.getSignature();
+        Parameter[] params = null;
+        Annotation[][] annotations = null;
         var args = joinPoint.getArgs();
+
+        // 分别解决是方法和构造方法的情况
+        if (signature instanceof MethodSignature methodSignature) {
+            var method = methodSignature.getMethod();
+            params = method.getParameters();
+            annotations = method.getParameterAnnotations();
+        } else if (signature instanceof ConstructorSignature ctorSignature) {
+            var ctor = ctorSignature.getConstructor();
+            params = ctor.getParameters();
+            annotations = ctor.getParameterAnnotations();
+        }
 
         // 参数类型 -> 从字符串（默认参数注解的值）生成该参数的方法 的map集合
         var transferMap = new HashMap<String, Function<String, Object>>(Map.of(

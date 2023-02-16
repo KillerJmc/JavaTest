@@ -28,12 +28,20 @@ public class DefaultArgTest {
                     appendMode
             );
         }
+
+        public FileUtils(@DefaultArg("Hello") String s) {
+            System.out.println("正在创建实例，s = " + s);
+        }
     }
 
+    @SuppressWarnings("all")
     public static void main(String[] args) {
         // 此时会注入默认参数！
         FileUtils.out("Hello", "./a.txt", null, null);
         FileUtils.out("World", null, StandardCharsets.UTF_16, null);
         FileUtils.out("!", null, null, true);
+
+        // 构造方法也支持哦！
+        new FileUtils(null);
     }
 }
