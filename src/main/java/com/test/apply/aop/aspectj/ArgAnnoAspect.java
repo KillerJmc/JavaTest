@@ -7,7 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 
 @Aspect
 public class ArgAnnoAspect {
-    // 拦截普通方法和构造方法！
+    // 拦截成员方法，静态方法和构造方法！
     @Around("execution(* *(.., @Demo (*), ..)) || execution(*.new(.., @Demo (*), ..))")
     public Object argAnno(ProceedingJoinPoint joinPoint) {
         System.err.println(joinPoint.getSignature());

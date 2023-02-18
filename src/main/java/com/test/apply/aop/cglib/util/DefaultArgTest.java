@@ -1,16 +1,14 @@
-package com.test.apply.aop.cglib.test;
-
-import com.test.apply.aop.cglib.util.DefaultArg;
-import com.test.apply.aop.cglib.util.DefaultArgAop;
+package com.test.apply.aop.cglib.util;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
+ * VM Options: --add-opens java.base/java.lang=ALL-UNNAMED
  * @author Jmc
  */
-public class ParameterAnnoAopTest {
+class DefaultArgTest {
     public static class FileUtils {
         public void what(int a, int b) {
             System.out.printf("what: a = %d, b = %d\n", a, b);

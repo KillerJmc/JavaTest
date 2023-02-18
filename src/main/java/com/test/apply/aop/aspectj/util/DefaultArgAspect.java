@@ -21,7 +21,7 @@ import java.util.function.Function;
  * @author Jmc
  */
 @Aspect
-public class DefaultArgAspect {
+class DefaultArgAspect {
     @Pointcut("execution(* *(.., @DefaultArg (*), ..))")
     public void onMethod() {}
 

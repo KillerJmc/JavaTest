@@ -10,7 +10,7 @@ import java.util.function.Function;
 /**
  * @author Jmc
  */
-public class ParameterAnnoAop {
+public class ArgAnnoAop {
     public interface CallBack<Anno extends Annotation> {
         Object invoke(Map<Parameter, Anno> paramToAnno, Function<Object[], Object> method, Object[] args);
     }

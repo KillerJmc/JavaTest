@@ -1,6 +1,5 @@
 plugins {
     id "java"
-    id "io.freefair.aspectj.post-compile-weaving" version "6.6.2" apply false
 }
 
 group "com.jmc"
@@ -22,8 +21,6 @@ dependencies {
     annotationProcessor "org.openjdk.jmh:jmh-generator-annprocess:1.35"
 
     implementation "cglib:cglib:3.3.0"
-
-    apply plugin: "io.freefair.aspectj.post-compile-weaving"
     implementation "org.aspectj:aspectjrt:1.9.19"
 
     apply plugin: "groovy"

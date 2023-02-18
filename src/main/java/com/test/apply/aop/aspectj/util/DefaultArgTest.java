@@ -1,12 +1,17 @@
-package com.test.apply.aop.aspectj.test;
+package com.test.apply.aop.aspectj.util;
 
-import com.test.apply.aop.aspectj.util.DefaultArg;
+import com.sun.tools.attach.VirtualMachine;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.function.Function;
 
-public class DefaultArgTest {
+/**
+ * VM Options: -Djdk.attach.allowAttachSelf=true --add-opens java.base/java.lang=ALL-UNNAMED
+ * @author Jmc
+ */
+class DefaultArgTest {
     private static class FileUtils {
         private static class StringToCharset implements Function<String, Charset> {
             @Override
@@ -34,8 +39,22 @@ public class DefaultArgTest {
         }
     }
 
+    public static void attachAspectjAgent() {
+        var pathToAgentJar = new File("temp/aspectjweaver-1.9.19.jar").getAbsolutePath();
+        try {
+            var pid = ProcessHandle.current().pid();
+            VirtualMachine vm = VirtualMachine.attach(String.valueOf(pid));
+            vm.loadAgent(pathToAgentJar);
+            vm.detach();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @SuppressWarnings("all")
     public static void main(String[] args) {
+        attachAspectjAgent();
+
         // 此时会注入默认参数！
         FileUtils.out("Hello", "./a.txt", null, null);
         FileUtils.out("World", null, StandardCharsets.UTF_16, null);

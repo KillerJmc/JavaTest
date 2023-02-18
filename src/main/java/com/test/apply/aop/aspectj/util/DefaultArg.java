@@ -8,7 +8,7 @@ import java.util.function.Function;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface DefaultArg {
+@interface DefaultArg {
     String value();
 
     /**

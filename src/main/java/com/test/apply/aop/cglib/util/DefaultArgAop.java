@@ -1,7 +1,7 @@
 package com.test.apply.aop.cglib.util;
 
 import com.jmc.lang.ref.Pointer;
-import com.test.apply.aop.cglib.ParameterAnnoAop;
+import com.test.apply.aop.cglib.ArgAnnoAop;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.function.Function;
  * VM Options: --add-opens java.base/java.lang=ALL-UNNAMED
  * @author Jmc
  */
-public class DefaultArgAop {
+class DefaultArgAop {
     /**
      * 获取支持默认参数的增强实例
      * @param targetClass 需要支持默认参数的类
@@ -32,7 +32,7 @@ public class DefaultArgAop {
                 String.class.getName(), String::valueOf
         ));
 
-        return ParameterAnnoAop.getInstance(targetClass, DefaultArg.class, (paramToAnno, method, args) -> {
+        return ArgAnnoAop.getInstance(targetClass, DefaultArg.class, (paramToAnno, method, args) -> {
             // 参数列表的下标
             var idxPtr = Pointer.of(0);
 
