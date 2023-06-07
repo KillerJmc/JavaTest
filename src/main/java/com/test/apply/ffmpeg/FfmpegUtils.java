@@ -2,6 +2,7 @@ package com.test.apply.ffmpeg;
 
 import com.jmc.io.Files;
 import com.jmc.lang.Objs;
+import com.jmc.lang.Run;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
@@ -181,13 +182,66 @@ public class FfmpegUtils {
     }
 
     /**
+     * 视频编码类型
+     * @author Jmc
+     */
+    @AllArgsConstructor
+    public enum VideoEncoder {
+        /**
+         * h264编码
+         */
+        H264("h264"),
+
+        /**
+         * h265编码
+         */
+        H265("hevc"),
+
+        /**
+         * 未知类型
+         */
+        UNKNOWN(null);
+
+        /**
+         * 编码类型对应的ffprobe输出值
+         */
+        private final String FFPROBE_VALUE;
+    }
+
+    /**
+     * 获取视频的编码类型
+     * @param ffprobeBinPath ffprobe二进制文件路径
+     * @param videoPath 待分析视频路径
+     * @return 视频的编码类型
+     */
+    public static VideoEncoder getVideoEncoder(String ffprobeBinPath, String videoPath) {
+        // 获取视频的编码类型的命令
+        var cmd = """
+        %s -v error -select_streams v:0 -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 %s
+        """.formatted(ffprobeBinPath, videoPath);
+
+        // 执行命令获取结果
+        var res = Run.execToStr(cmd).trim();
+
+        // 判断结果对应的文件编码类型并返回
+        if (VideoEncoder.H264.FFPROBE_VALUE.equals(res)) {
+            return VideoEncoder.H264;
+        } else if (VideoEncoder.H265.FFPROBE_VALUE.equals(res)) {
+            return VideoEncoder.H265;
+        } else {
+            return VideoEncoder.UNKNOWN;
+        }
+    }
+
+    /**
      * 获取压缩视频的ffmpeg脚本
      * @param ffmpegBinPath ffmpeg二进制文件路径
+     * @param ffprobeBinPath ffprobe二进制文件路径
      * @param inputVideoDir 待转换视频根目录
      * @param outputVideoDir 输出视频根路径（会在输出视频文件夹中保留原视频路径结构）
      * @return 压缩视频的ffmpeg脚本
      */
-    public static String getCompressVideoScript(String ffmpegBinPath, String inputVideoDir, String outputVideoDir) {
+    public static String getCompressVideoScript(String ffmpegBinPath, String ffprobeBinPath, String inputVideoDir, String outputVideoDir) {
         // 创建输出视频根路径
         Files.mkdirs(outputVideoDir);
 
@@ -195,12 +249,15 @@ public class FfmpegUtils {
         var normalizedInputVideoDir = Files.getAbsolutePath(inputVideoDir);
         var normalizedOutputVideoDir = Files.getAbsolutePath(outputVideoDir);
 
-        // 换行字符串
+        // 字符串常量
+        var emptyStr = "";
         var newLine = "\n";
 
-        return Files.findFiles(inputVideoDir, "")
+        return Files.findFiles(inputVideoDir, emptyStr)
                 .stream()
                 .map(File::getAbsolutePath)
+                // 只筛选H264的视频（忽略已经是H265的视频）
+                .filter(srcPath -> getVideoEncoder(ffprobeBinPath, srcPath) == VideoEncoder.H264)
                 .map(srcPath -> {
                     // 提取相对路径
                     var videoRelativePath = srcPath.replace(normalizedInputVideoDir, "");
@@ -221,6 +278,7 @@ public class FfmpegUtils {
     public static void main(String[] args) {
         var script = getCompressVideoScript(
                 "D:/Temp/ffmpeg/bin/ffmpeg.exe",
+                "D:/Temp/ffmpeg/bin/ffprobe.exe",
                 "D:/Temp/结果/视频",
                 "D:/Temp/结果/输出"
         );
