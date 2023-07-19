@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /**
@@ -151,12 +152,12 @@ public class FfmpegUtils {
 
             // ffmpeg -i "input/path" -preset fast -c:v libx265 -r 30 -b:a 128k "output/path"
             return ffmpegBinPath + blank
-                    + INPUT_VIDEO_PATH_CMD_KEY + inputVideoPath + blank
+                    + INPUT_VIDEO_PATH_CMD_KEY + "\"" + inputVideoPath + "\"" + blank
                     + Preset.CMD_KEY + preset.CMD_VALUE + blank
                     + (outputVideoEncoder == null ? emptyStr : OutputVideoEncoder.CMD_KEY + outputVideoEncoder.CMD_VALUE + blank)
                     + (outputVideoFps == null ? emptyStr : OUTPUT_VIDEO_FPS_CMD_KEY + outputVideoFps + blank)
                     + (audioBitrate == null ? emptyStr : AudioBitrate.CMD_KEY + audioBitrate.CMD_VALUE + blank)
-                    + outputVideoPath;
+                    + "\"" + outputVideoPath + "\"";
         }
     }
 
@@ -200,7 +201,7 @@ public class FfmpegUtils {
         /**
          * 未知类型
          */
-        UNKNOWN(null);
+        UNKNOWN("unknown");
 
         /**
          * 编码类型对应的ffprobe输出值
@@ -224,13 +225,10 @@ public class FfmpegUtils {
         var res = Run.execToStr(cmd).trim();
 
         // 判断结果对应的文件编码类型并返回
-        if (VideoEncoder.H264.FFPROBE_VALUE.equals(res)) {
-            return VideoEncoder.H264;
-        } else if (VideoEncoder.H265.FFPROBE_VALUE.equals(res)) {
-            return VideoEncoder.H265;
-        } else {
-            return VideoEncoder.UNKNOWN;
-        }
+        return Arrays.stream(VideoEncoder.values())
+                .filter(videoEncoder -> videoEncoder.FFPROBE_VALUE.equals(res))
+                .findAny()
+                .orElse(VideoEncoder.UNKNOWN);
     }
 
     /**
@@ -257,10 +255,18 @@ public class FfmpegUtils {
                 .stream()
                 .map(File::getAbsolutePath)
                 // 只筛选H264的视频（忽略已经是H265的视频）
-                .filter(srcPath -> getVideoEncoder(ffprobeBinPath, srcPath) == VideoEncoder.H264)
+//                .filter(srcPath -> getVideoEncoder(ffprobeBinPath, srcPath) == VideoEncoder.H264)
+                .filter(srcPath -> srcPath.contains(".mp4"))
+                .filter(srcPath -> {
+                    // 提取相对路径
+                    var videoRelativePath = srcPath.replace(normalizedInputVideoDir, emptyStr);
+                    // 视频结果路径
+                    var desPath = normalizedOutputVideoDir + videoRelativePath;
+                    return !Files.exists(desPath);
+                })
                 .map(srcPath -> {
                     // 提取相对路径
-                    var videoRelativePath = srcPath.replace(normalizedInputVideoDir, "");
+                    var videoRelativePath = srcPath.replace(normalizedInputVideoDir, emptyStr);
                     // 视频结果路径
                     var desPath = normalizedOutputVideoDir + videoRelativePath;
 
@@ -279,8 +285,8 @@ public class FfmpegUtils {
         var script = getCompressVideoScript(
                 "D:/Temp/ffmpeg/bin/ffmpeg.exe",
                 "D:/Temp/ffmpeg/bin/ffprobe.exe",
-                "D:/Temp/结果/视频",
-                "D:/Temp/结果/输出"
+                "D:\\Temp\\结果\\视频",
+                "D:\\Temp\\结果\\输出"
         );
         System.out.println(script);
     }
