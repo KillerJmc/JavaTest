@@ -1,4 +1,4 @@
-package com.test.apply.utils.rsa;
+package com.test.apply.rsa;
 
 import com.jmc.lang.Tries;
 import com.jmc.math.exp.ExactExp;

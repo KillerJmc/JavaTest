@@ -2,7 +2,7 @@ package com.test.rsa;
 
 import com.jmc.lang.ref.Func;
 import com.jmc.math.exp.ExactExp;
-import com.test.apply.utils.rsa.RSA;
+import com.test.apply.rsa.RSA;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package com.test.rsa;
 
 import com.jmc.io.Files;
-import com.test.apply.utils.rsa.RSA;
+import com.test.apply.rsa.RSA;
 import org.junit.Test;
 
 import java.util.Arrays;
