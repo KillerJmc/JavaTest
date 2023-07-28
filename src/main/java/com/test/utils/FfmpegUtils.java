@@ -1,4 +1,4 @@
-package com.test.apply.ffmpeg;
+package com.test.utils;
 
 import com.jmc.io.Files;
 import com.jmc.lang.Objs;
@@ -226,7 +226,7 @@ public class FfmpegUtils {
 
         // 判断结果对应的文件编码类型并返回
         return Arrays.stream(VideoEncoder.values())
-                .filter(videoEncoder -> videoEncoder.FFPROBE_VALUE.equals(res))
+                .filter(videoEncoder -> res.contains(videoEncoder.FFPROBE_VALUE))
                 .findAny()
                 .orElse(VideoEncoder.UNKNOWN);
     }
@@ -255,8 +255,10 @@ public class FfmpegUtils {
                 .stream()
                 .map(File::getAbsolutePath)
                 // 只筛选H264的视频（忽略已经是H265的视频）
-//                .filter(srcPath -> getVideoEncoder(ffprobeBinPath, srcPath) == VideoEncoder.H264)
+                .filter(srcPath -> getVideoEncoder(ffprobeBinPath, srcPath) == VideoEncoder.H264)
+                // 只筛选.mp4文件
                 .filter(srcPath -> srcPath.contains(".mp4"))
+                // 不覆盖结果视频路径
                 .filter(srcPath -> {
                     // 提取相对路径
                     var videoRelativePath = srcPath.replace(normalizedInputVideoDir, emptyStr);
@@ -285,8 +287,8 @@ public class FfmpegUtils {
         var script = getCompressVideoScript(
                 "D:/Temp/ffmpeg/bin/ffmpeg.exe",
                 "D:/Temp/ffmpeg/bin/ffprobe.exe",
-                "D:\\Temp\\结果\\视频",
-                "D:\\Temp\\结果\\输出"
+                "D:\\Temp\\待处理",
+                "D:\\Temp\\输出"
         );
         System.out.println(script);
     }
