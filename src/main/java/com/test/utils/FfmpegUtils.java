@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -249,7 +250,7 @@ public class FfmpegUtils {
 
         // 字符串常量
         var emptyStr = "";
-        var newLine = "\n";
+        var spliter = "&&";
 
         return Files.findFiles(inputVideoDir, emptyStr)
                 .stream()
@@ -280,16 +281,22 @@ public class FfmpegUtils {
                     // 返回具体命令
                     return getH265TransferCmd(ffmpegBinPath, srcPath, desPath).toString();
                 })
-                .collect(Collectors.joining(newLine));
+                .collect(Collectors.joining(spliter));
     }
 
     public static void main(String[] args) {
         var script = getCompressVideoScript(
                 "D:/Temp/ffmpeg/bin/ffmpeg.exe",
                 "D:/Temp/ffmpeg/bin/ffprobe.exe",
-                "D:\\Temp\\待处理",
+                "D:\\Temp\\代转",
                 "D:\\Temp\\输出"
         );
-        System.out.println(script);
+
+        Files.out(
+                script,
+                "C:/Users/Jmc/Desktop/out.bat",
+                Charset.forName("GBK"),
+                false
+        );
     }
 }
