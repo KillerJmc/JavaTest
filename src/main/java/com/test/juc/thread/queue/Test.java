@@ -1,5 +1,6 @@
 package com.test.juc.thread.queue;
 
+import com.jmc.lang.Threads;
 import com.test.main.Tools;
 
 public class Test {
@@ -12,12 +13,12 @@ public class Test {
             new Thread(() -> mq.put(message)).start();
         }
 
-        Tools.sleep(1000);
+        Threads.sleep(1000);
 
         // 消费者
         for (int i = 0; i < 3; i++) {
             new Thread(mq::get).start();
-            Tools.sleep(1000);
+            Threads.sleep(1000);
         }
     }
 }

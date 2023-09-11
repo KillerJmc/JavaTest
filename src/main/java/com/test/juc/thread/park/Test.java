@@ -1,5 +1,6 @@
 package com.test.juc.thread.park;
 
+import com.jmc.lang.Threads;
 import com.test.main.Tools;
 
 import java.util.concurrent.locks.LockSupport;
@@ -15,7 +16,7 @@ public class Test {
 
         t.start();
 
-        Tools.sleep(3000);
+        Threads.sleep(3000);
         LockSupport.unpark(t);
     }
 }

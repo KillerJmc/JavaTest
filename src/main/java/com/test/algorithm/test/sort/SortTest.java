@@ -1,6 +1,7 @@
 package com.test.algorithm.test.sort;
 
 import com.jmc.array.Array;
+import com.jmc.lang.Threads;
 import com.jmc.lang.ref.Func;
 import com.jmc.util.Timers;
 import com.test.algorithm.sort.Sort;
@@ -13,7 +14,7 @@ import static com.test.algorithm.sort.Sort.reverse;
 
 public class SortTest {
     public static void main(String[] args) {
-        Tools.sleep(1000);
+        Threads.sleep(1000);
         testObject1(5);
         testObject2(8);
         testInt1(5);

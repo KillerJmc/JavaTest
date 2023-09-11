@@ -1,5 +1,6 @@
 package com.test.juc.apply.pool;
 
+import com.jmc.lang.Threads;
 import com.test.main.Tools;
 
 import java.util.concurrent.TimeUnit;
@@ -11,7 +12,7 @@ public class Test {
         for (int i = 1; i <= 10; i++) {
             int j = i;
             pool.execute(() -> {
-                Tools.sleep(1000);
+                Threads.sleep(1000);
                 System.out.println(j);
             });
         }

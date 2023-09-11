@@ -1,5 +1,6 @@
 package com.test.interview.ref;
 
+import com.jmc.lang.Threads;
 import com.test.main.Tools;
 import org.junit.Test;
 
@@ -24,14 +25,14 @@ public class PhantomRefTest {
         System.out.println(m.name);
 
         byte[] bs = new byte[1024 * 1024 * 5];
-        Tools.sleep(1000);
+        Threads.sleep(1000);
         byte[] bs2 = new byte[1024 * 1024 * 10];
 
         new Thread(() -> {
             while (true) {
                 Reference<? extends M> poll = queue.poll();
                 if (poll != null) System.out.println("M对象被回收了，引用对象：" + poll);
-                Tools.sleep(500);
+                Threads.sleep(500);
             }
         }).start();
     }
@@ -45,6 +46,6 @@ public class PhantomRefTest {
     public void testDirectByteBuffer() {
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(1024);
     }
-    
-    
+
+
 }

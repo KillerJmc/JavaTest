@@ -1,5 +1,6 @@
 package com.test.interview.thread;
 
+import com.jmc.lang.Threads;
 import com.test.main.Tools;
 
 /**
@@ -20,7 +21,7 @@ public class VolatileTest {
             while (flag) {}
             System.out.println("end...");
         }).start();
-        Tools.sleep(1000);
+        Threads.sleep(1000);
         flag = false;
     }
 }

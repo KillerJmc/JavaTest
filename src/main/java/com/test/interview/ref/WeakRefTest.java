@@ -1,5 +1,6 @@
 package com.test.interview.ref;
 
+import com.jmc.lang.Threads;
 import com.test.main.Tools;
 import org.junit.Test;
 
@@ -31,12 +32,12 @@ public class WeakRefTest {
             //防止内存泄露！
 //            tl.remove();
         }).start();
-        Tools.sleep(500);
+        Threads.sleep(500);
         new Thread(() -> System.out.println(tl.get())).start();
         /**
          * junit执行完所有test方法后会直接用System.exit();
          * 不会等待其他线程
          */
-        Tools.sleep(500);
+        Threads.sleep(500);
     }
 }

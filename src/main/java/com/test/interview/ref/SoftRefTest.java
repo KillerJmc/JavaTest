@@ -1,5 +1,6 @@
 package com.test.interview.ref;
 
+import com.jmc.lang.Threads;
 import com.test.main.Tools;
 
 import java.lang.ref.SoftReference;
@@ -14,7 +15,7 @@ public class SoftRefTest {
         System.out.println(m.get());
         //提醒gc来回收内存
         System.gc();
-        Tools.sleep(500);
+        Threads.sleep(500);
         System.out.println(m.get());
 
         byte[] b = new byte[1024 * 1024 * 15];

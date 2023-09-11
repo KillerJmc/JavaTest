@@ -1,5 +1,6 @@
 package com.test.juc.apply.inturn;
 
+import com.jmc.lang.Threads;
 import com.jmc.lang.Tries;
 import com.test.main.Tools;
 
@@ -17,7 +18,7 @@ public class PrintInTurn {
                 while (i <= 26) {
                     System.err.println("num: " + i++);
                     Tries.tryThis(PrintInTurn.class::wait);
-//                    Tools.sleep(1000);
+//                    Threads.sleep(1000);
                     PrintInTurn.class.notifyAll();
                 }
             }
@@ -30,13 +31,13 @@ public class PrintInTurn {
                     System.err.println("letter: " + c++);
                     PrintInTurn.class.notifyAll();
                     Tries.tryThis(PrintInTurn.class::wait);
-//                    Tools.sleep(1000);
+//                    Threads.sleep(1000);
                 }
             }
         });
 
         num.start();
-        Tools.sleep(100);
+        Threads.sleep(100);
         letter.start();
     }
 
@@ -52,7 +53,7 @@ public class PrintInTurn {
                 while (i <= 26) {
                     System.err.println("num: " + i++);
                     Tries.tryThis(printNum::await);
-//                    Tools.sleep(1000);
+//                    Threads.sleep(1000);
                     printLetter.signal();
                 }
             } finally {
@@ -68,7 +69,7 @@ public class PrintInTurn {
                     System.err.println("letter: " + c++);
                     printNum.signal();
                     Tries.tryThis(printLetter::await);
-//                    Tools.sleep(1000);
+//                    Threads.sleep(1000);
                 }
             } finally {
                 lock.unlock();
@@ -76,7 +77,7 @@ public class PrintInTurn {
         });
 
         num.start();
-        Tools.sleep(100);
+        Threads.sleep(100);
         letter.start();
     }
 }
