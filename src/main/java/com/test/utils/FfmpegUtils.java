@@ -3,12 +3,15 @@ package com.test.utils;
 import com.jmc.io.Files;
 import com.jmc.lang.Objs;
 import com.jmc.lang.Run;
+import com.jmc.lang.Strs;
+import com.jmc.util.Tuple;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -254,41 +257,43 @@ public class FfmpegUtils {
 
         return Files.findFiles(inputVideoDir, emptyStr)
                 .stream()
+                // 获取完整的源路径
                 .map(File::getAbsolutePath)
-                // 只筛选H264的视频（忽略已经是H265的视频）
+                // 只筛选H264的源视频（忽略已经是H265的视频）
                 .filter(srcPath -> getVideoEncoder(ffprobeBinPath, srcPath) == VideoEncoder.H264)
-                // 只筛选.mp4文件
-                .filter(srcPath -> srcPath.contains(".mp4"))
-                // 不覆盖结果视频路径
-                .filter(srcPath -> {
-                    // 提取相对路径
-                    var videoRelativePath = srcPath.replace(normalizedInputVideoDir, emptyStr);
-                    // 视频结果路径
-                    var desPath = normalizedOutputVideoDir + videoRelativePath;
-                    return !Files.exists(desPath);
-                })
+                // 获取文件结果路径，结果为元组（源路径，结果路径）
                 .map(srcPath -> {
                     // 提取相对路径
                     var videoRelativePath = srcPath.replace(normalizedInputVideoDir, emptyStr);
-                    // 视频结果路径
+
+                    // 如果源文件不是mp4格式，输出文件路径就转为mp4格式路径
+                    var mp4Suffix = ".mp4";
+                    var dotStr = ".";
+                    if (!inputVideoDir.endsWith(mp4Suffix)) {
+                        // 去除文件后缀
+                        var pathWithoutSuffix = Strs.subExclusive(videoRelativePath, emptyStr, dotStr);
+                        videoRelativePath = pathWithoutSuffix + mp4Suffix;
+                    }
+
+                    // 返回视频结果路径desPath
                     var desPath = normalizedOutputVideoDir + videoRelativePath;
-
-                    // 视频结果父路径
-                    var desRootPath = Files.getParentPath(desPath);
-                    // 创建父路径
-                    Files.mkdirs(desRootPath);
-
-                    // 返回具体命令
-                    return getH265TransferCmd(ffmpegBinPath, srcPath, desPath).toString();
+                    return Tuple.fromNamed(Map.of("srcPath", srcPath, "desPath", desPath));
                 })
+                // 不覆盖结果视频路径
+                .filter(tuple -> !Files.exists(tuple.<String>get("desPath")))
+                // 创建父路径
+                .peek(tuple -> Files.mkdirs(Files.getParentPath(tuple.get("desPath"))))
+                // 获取ffmpeg命令
+                .map(tuple -> getH265TransferCmd(ffmpegBinPath, tuple.get("srcPath"), tuple.get("desPath")).toString())
+                // 将命令串起来为最终的结果命令
                 .collect(Collectors.joining(spliter));
     }
 
     public static void main(String[] args) {
         var script = getCompressVideoScript(
-                "D:/Temp/ffmpeg/bin/ffmpeg.exe",
-                "D:/Temp/ffmpeg/bin/ffprobe.exe",
-                "D:\\Temp\\代转",
+                "D:/Tools/ffmpeg.exe",
+                "D:/Tools/ffprobe.exe",
+                "D:\\Temp\\待转",
                 "D:\\Temp\\输出"
         );
 
