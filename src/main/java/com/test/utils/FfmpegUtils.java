@@ -50,6 +50,11 @@ public class FfmpegUtils {
         private OutputVideoEncoder outputVideoEncoder;
 
         /**
+         * H265兼容性：和苹果产品（Iphone、Mac等）的默认视频播放器兼容
+         */
+        private OutputVideoEncoder.H265CompatibleWithApple h265CompatibleWithApple;
+
+        /**
          * 输出视频的帧数
          */
         private Long outputVideoFps;
@@ -116,6 +121,20 @@ public class FfmpegUtils {
              * 命令值
              */
             private final String CMD_VALUE;
+
+            /**
+             * H265模式和苹果产品（Iphone、Mac等）的默认视频播放器兼容
+             */
+            @AllArgsConstructor
+            public enum H265CompatibleWithApple {
+                TRUE("-tag:v hvc1"),
+                FALSE("");
+
+                /**
+                 * 命令
+                 */
+                private final String CMD;
+            }
         }
 
         /**
@@ -159,6 +178,7 @@ public class FfmpegUtils {
                     + INPUT_VIDEO_PATH_CMD_KEY + "\"" + inputVideoPath + "\"" + blank
                     + Preset.CMD_KEY + preset.CMD_VALUE + blank
                     + (outputVideoEncoder == null ? emptyStr : OutputVideoEncoder.CMD_KEY + outputVideoEncoder.CMD_VALUE + blank)
+                    + (h265CompatibleWithApple == null ? emptyStr : h265CompatibleWithApple.CMD + blank)
                     + (outputVideoFps == null ? emptyStr : OUTPUT_VIDEO_FPS_CMD_KEY + outputVideoFps + blank)
                     + (audioBitrate == null ? emptyStr : AudioBitrate.CMD_KEY + audioBitrate.CMD_VALUE + blank)
                     + "\"" + outputVideoPath + "\"";
@@ -181,6 +201,7 @@ public class FfmpegUtils {
                 .outputVideoPath(outputVideoPath)
                 .preset(FfmpegCmd.Preset.FAST)
                 .outputVideoEncoder(FfmpegCmd.OutputVideoEncoder.H265)
+                .h265CompatibleWithApple(FfmpegCmd.OutputVideoEncoder.H265CompatibleWithApple.TRUE)
                 .outputVideoFps(fixedFps)
                 .audioBitrate(FfmpegCmd.AudioBitrate.NORMAL)
                 .build();
