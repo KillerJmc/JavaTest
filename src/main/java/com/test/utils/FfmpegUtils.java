@@ -52,7 +52,7 @@ public class FfmpegUtils {
         /**
          * H265兼容性：和苹果产品（Iphone、Mac等）的默认视频播放器兼容
          */
-        private OutputVideoEncoder.H265CompatibleWithApple h265CompatibleWithApple;
+        private OutputVideoEncoder.H265CompatibleWithAppleDevice h265CompatibleWithAppleDevice;
 
         /**
          * 输出视频的帧数
@@ -123,11 +123,18 @@ public class FfmpegUtils {
             private final String CMD_VALUE;
 
             /**
-             * H265模式和苹果产品（Iphone、Mac等）的默认视频播放器兼容
+             * H265模式和苹果设备（Iphone、Mac等）的默认视频播放器兼容
              */
             @AllArgsConstructor
-            public enum H265CompatibleWithApple {
+            public enum H265CompatibleWithAppleDevice {
+                /**
+                 * 使用codec标签：hvc1，提供苹果设备兼容性
+                 */
                 TRUE("-tag:v hvc1"),
+
+                /**
+                 * 默认使用了codec标签：hev1，苹果设备不兼容
+                 */
                 FALSE("");
 
                 /**
@@ -178,7 +185,7 @@ public class FfmpegUtils {
                     + INPUT_VIDEO_PATH_CMD_KEY + "\"" + inputVideoPath + "\"" + blank
                     + Preset.CMD_KEY + preset.CMD_VALUE + blank
                     + (outputVideoEncoder == null ? emptyStr : OutputVideoEncoder.CMD_KEY + outputVideoEncoder.CMD_VALUE + blank)
-                    + (h265CompatibleWithApple == null ? emptyStr : h265CompatibleWithApple.CMD + blank)
+                    + (h265CompatibleWithAppleDevice == null ? emptyStr : h265CompatibleWithAppleDevice.CMD + blank)
                     + (outputVideoFps == null ? emptyStr : OUTPUT_VIDEO_FPS_CMD_KEY + outputVideoFps + blank)
                     + (audioBitrate == null ? emptyStr : AudioBitrate.CMD_KEY + audioBitrate.CMD_VALUE + blank)
                     + "\"" + outputVideoPath + "\"";
@@ -201,7 +208,7 @@ public class FfmpegUtils {
                 .outputVideoPath(outputVideoPath)
                 .preset(FfmpegCmd.Preset.FAST)
                 .outputVideoEncoder(FfmpegCmd.OutputVideoEncoder.H265)
-                .h265CompatibleWithApple(FfmpegCmd.OutputVideoEncoder.H265CompatibleWithApple.TRUE)
+                .h265CompatibleWithAppleDevice(FfmpegCmd.OutputVideoEncoder.H265CompatibleWithAppleDevice.TRUE)
                 .outputVideoFps(fixedFps)
                 .audioBitrate(FfmpegCmd.AudioBitrate.NORMAL)
                 .build();
