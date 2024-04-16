@@ -1,15 +1,5 @@
-package com.test.main;
+int res = 666;
 
-import org.junit.Test;
-
-/**
- * @author Jmc
- */
-public class Main {
-    @Test
-    public void main() throws Exception {
-
-    }
+void main() {
+    System.out.println(res);
 }
-
-

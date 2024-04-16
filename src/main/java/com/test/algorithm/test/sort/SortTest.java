@@ -5,7 +5,6 @@ import com.jmc.lang.Threads;
 import com.jmc.lang.ref.Func;
 import com.jmc.util.Timers;
 import com.test.algorithm.sort.Sort;
-import com.test.main.Tools;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;
@@ -91,11 +90,11 @@ public class SortTest {
     }
 
     public static void verify(String name, int[] res) {
-        int[] expected = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        for (int i = 0; i < expected.length; i++) {
-            if (res[i] != expected[i]) {
-                throw new RuntimeException(name + " failed!");
-            }
+        var sorted = res.clone();
+        Arrays.sort(sorted);
+
+        if (!Arrays.equals(res, sorted)) {
+            throw new RuntimeException(name + " failed!");
         }
     }
 

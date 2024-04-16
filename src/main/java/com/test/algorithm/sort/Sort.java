@@ -18,8 +18,9 @@ public class Sort {
      * @param a 整型数组
      */
     public static void reverse(int[] a) {
-        for (int i = 0; i < a.length / 2; i++)
+        for (int i = 0; i < a.length / 2; i++) {
             swap(a, i, a.length - 1 - i);
+        }
     }
 
     /**
@@ -28,10 +29,13 @@ public class Sort {
      * @param a 整型数组
      */
     public static void bubbleSort(int[] a) {
-        for (int i = a.length - 1; i > 0; i--)
-            for (int k = 0; k < i; k++)
-                if (a[k] > a[k + 1])
+        for (int i = a.length - 1; i > 0; i--) {
+            for (int k = 0; k < i; k++) {
+                if (a[k] > a[k + 1]) {
                     swap(a, k, k + 1);
+                }
+            }
+        }
     }
 
     /**
@@ -42,9 +46,11 @@ public class Sort {
     public static void selectionSort(int[] a) {
         for (int i = 0; i < a.length - 1; i++) {
             int minIdx = i;
-            for (int k = i + 1; k < a.length; k++)
-                if (a[k] < a[minIdx])
+            for (int k = i + 1; k < a.length; k++) {
+                if (a[k] < a[minIdx]) {
                     minIdx = k;
+                }
+            }
             swap(a, i, minIdx);
         }
     }
@@ -55,12 +61,15 @@ public class Sort {
      * @param a 整型数组
      */
     public static void insertionSort(int[] a) {
-        for (int i = 1; i < a.length; i++)
-            for (int k = i; k > 0; k--)
-                if (a[k] < a[k - 1])
+        for (int i = 1; i < a.length; i++) {
+            for (int k = i; k > 0; k--) {
+                if (a[k] < a[k - 1]) {
                     swap(a, k, k - 1);
-                else
+                } else {
                     break;
+                }
+            }
+        }
     }
 
     /**
@@ -95,6 +104,25 @@ public class Sort {
     }
 
     /**
+     * 希尔排序（时间复杂度：O(n^(1.3)) ~ O(n^2)，是插入排序的加强版，比插入排序，选择排序，冒泡排序效率高得多
+     * 排序不稳定
+     * @param a 数组
+     */
+    public static void shellSort(int[] a) {
+        for (int h = a.length / 2; h >= 1; h /= 2) {
+            for (int i = h; i < a.length; i++) {
+                for (int k = i; k - h >= 0; k -= h) {
+                    if (a[k] < a[k - h]) {
+                        swap(a, k, k - h);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * 整型归并排序主类
      * 注：申请assist数组是空间损耗的根本来源
      */
@@ -106,20 +134,56 @@ public class Sort {
             sort(a, 0, a.length - 1);
         }
 
-        private void sort(int[] a, int lo, int hi) {
-            if (hi <= lo) return;
-            int mid = (hi + lo) / 2;
-            sort(a, lo, mid);
-            sort(a, mid + 1, hi);
-            merge(a, lo, mid, hi);
+        private void sort(int[] a, int left, int right) {
+            if (left < right) {
+                int mid = (right + left) / 2;
+
+                // 从调试看来，会从最左边的2个开始，先左边（左半）后右边（右半）最后左右汇总
+                // 对左边部分进行排序
+                sort(a, left, mid);
+                // 对右边部分进行排序
+                sort(a, mid + 1, right);
+
+                // 对数组进行归并处理并放回原数组
+                merge(a, left, mid, right);
+            }
         }
 
-        private void merge(int[] a, int lo, int mid, int hi) {
-            int i = lo, p1 = lo, p2 = mid + 1;
-            while (p1 <= mid && p2 <= hi) assist[i++] = a[p1] < a[p2] ? a[p1++] : a[p2++];
-            while (p1 <= mid) assist[i++] = a[p1++];
-            while (p2 <= hi) assist[i++] = a[p2++];
-            System.arraycopy(assist, lo, a, lo, hi - lo + 1);
+        private void merge(int[] a, int left, int mid, int right) {
+            // 左边部分第一个元素下标
+            int p1 = left;
+            // 右边部分第一个元素下标
+            int p2 = mid + 1;
+            // 辅助数组当前下标
+            int i = left;
+
+            // 左部分和右部分按照谁大谁小交替放入
+            // p1: 1 4 7    p2: 2 3 5
+            // assist: 1 2 3 4 5 7
+            while (p1 <= mid && p2 <= right) {
+                if (a[p1] < a[p2]) {
+                    assist[i++] = a[p1];
+                    p1++;
+                } else {
+                    assist[i++] = a[p2];
+                    p2++;
+                }
+            }
+
+            // 如果左部分没放完就继续放完
+            while (p1 <= mid) {
+                assist[i++] = a[p1++];
+            }
+
+            // 如果右部分没放完就继续放完
+            while (p2 <= right) {
+                assist[i++] = a[p2++];
+            }
+
+            // 把归并结果复制回数组a
+            for (int j = left; j <= right; j++) {
+                a[j] = assist[j];
+            }
         }
     }
 
@@ -133,22 +197,6 @@ public class Sort {
         new IntMerge().sort(a);
     }
 
-
-    /**
-     * 希尔排序（时间复杂度：O(n^(1.3)) ~ O(n^2)，是插入排序的加强版，比插入排序，选择排序，冒泡排序效率高得多
-     * 排序不稳定
-     * @param a 数组
-     */
-    public static void shellSort(int[] a) {
-        for (int h = a.length / 2; h >= 1; h /= 2)
-            for (int i = h; i < a.length; i++)
-                for (int k = i; k - h >= 0; k -= h)
-                    if (a[k] < a[k - h])
-                        swap(a, k, k - h);
-                    else
-                        break;
-    }
-
     /**
      * 整型快速排序主类
      */
@@ -157,31 +205,39 @@ public class Sort {
             sort(a, 0, a.length - 1);
         }
 
-        private void sort(int[] a, int lo, int hi) {
-            if (hi <= lo) return;
-            int partition = partition(a, lo, hi);
-            sort(a, lo, partition - 1);
-            sort(a, partition + 1, hi);
+        private void sort(int[] a, int left, int right) {
+            if (left < right) {
+                int partition = partition(a, left, right);
+                sort(a, left, partition - 1);
+                sort(a, partition + 1, right);
+            }
         }
 
-        @SuppressWarnings("all")
-        private int partition(int[] a, int lo, int hi) {
-            // 优化时间复杂度，尽量避免最坏时间复杂度发生
-            swap(a, lo, Rand.nextInt(lo, hi));
+        private int partition(int[] a, int left, int right) {
+            int mid = (left + right) / 2;
 
-            int left = lo, right = hi + 1;
-
-            while (true) {
-                while (left < right && !(a[--right] < a[lo]));
-                while (left < right && !(a[++left] > a[lo]));
-
-                if (left == right) {
-                    swap(a, lo, right);
-                    return right;
-                } else {
-                    swap(a, left, right);
+            while (left != right) {
+                // 从左到右找到大于等于a[mid]的
+                // 需要考虑等于，因为等于的情况下是left = mid
+                // 比如2 1 3中需要交换2，1才能变成1 2 3
+                if (a[left] < a[mid]) {
+                    left++;
+                    continue;
                 }
+
+                // 从右到左找到小于等于a[mid]的
+                // 需要考虑等于，因为等于的情况下是right = mid
+                if (a[right] > a[mid]) {
+                    right--;
+                    continue;
+                }
+
+                // 此时交换左右元素
+                // 这个地方可能会交换left和mid或者mid和right
+                // 不用考虑，因为转换后a[mid]也会变成新值，会继续比较
+                swap(a, left, right);
             }
+            return left;
         }
     }
 
@@ -190,7 +246,7 @@ public class Sort {
      * 实践中对数组而言在n较大时快速排序总是优于归并排序，而在链表操作中归并排序更快
      * 理由：对数组而言，归并排序要在两个在内存中相隔较远的两个数组进行操作，对计算机内存访问而言，速度较慢，
      * 而快速排序则只需就近操作，速度较快
-     *
+     * <br>
      * 排序不稳定
      * @param a 整型数组
      */
@@ -312,7 +368,9 @@ public class Sort {
         }
 
         int[] count = new int[max - min + 1];
-        for (var t : a) count[t - min]++;
+        for (var t : a) {
+            count[t - min]++;
+        }
 
         // 保证稳定性
         // count数组表示对应元素（多个）在原数组中的最后一个这种元素的位置

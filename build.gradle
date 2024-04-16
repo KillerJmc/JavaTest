@@ -5,6 +5,14 @@ plugins {
 group "com.jmc"
 version "1.0.0"
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += "--enable-preview"
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -12,20 +20,32 @@ repositories {
 }
 
 dependencies {
-    implementation "com.jmc:jmc-utils:3.7.0"
-    implementation "org.slf4j:slf4j-log4j12:2.0.5"
-    implementation "junit:junit:4.13.2"
-    compileOnly "org.projectlombok:lombok:1.18.24"
-    annotationProcessor "org.projectlombok:lombok:1.18.24"
-    implementation "org.openjdk.jmh:jmh-generator-annprocess:1.35"
-    annotationProcessor "org.openjdk.jmh:jmh-generator-annprocess:1.35"
+    ext {
+        jmcUtilsVersion = "3.7.0"
+        log4jVersion = "2.0.5"
+        junitVersion = "4.13.2"
+        aspectjVersion = "1.9.21.1"
+        jmhVersion = "1.35"
+        lombokVersion = "1.18.30"
+        cglibVersion = "3.3.0"
+        javaAssistVersion = "3.29.2-GA"
+        groovyVersion = "4.0.11"
+    }
 
-    implementation "cglib:cglib:3.3.0"
-    implementation "org.aspectj:aspectjrt:1.9.19"
-    implementation "org.javassist:javassist:3.29.2-GA"
+    implementation "com.jmc:jmc-utils:$jmcUtilsVersion"
+    implementation "org.slf4j:slf4j-log4j12:$log4jVersion"
+    implementation "junit:junit:$junitVersion"
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    implementation "org.openjdk.jmh:jmh-generator-annprocess:$jmhVersion"
+    annotationProcessor "org.openjdk.jmh:jmh-generator-annprocess:$jmhVersion"
+
+    implementation "cglib:cglib:$cglibVersion"
+    implementation "org.aspectj:aspectjrt:$aspectjVersion"
+    implementation "org.javassist:javassist:$javaAssistVersion"
 
     apply plugin: "groovy"
-    implementation "org.apache.groovy:groovy:4.0.11"
+    implementation "org.apache.groovy:groovy:$groovyVersion"
 }
 
 
