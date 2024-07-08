@@ -9,13 +9,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import java.io.File;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * ffmpeg工具类
+ * ffmpeg工具类（CPU转换，跨平台）
  * @author Jmc
  */
 public class FfmpegUtils {
@@ -305,7 +305,7 @@ public class FfmpegUtils {
 
                     // 返回视频结果路径desPath
                     var desPath = normalizedOutputVideoDir + videoRelativePath;
-                    return Tuple.fromNamed(Map.of("srcPath", srcPath, "desPath", desPath));
+                    return Tuple.fromNamed(Map.entry("srcPath", srcPath), Map.entry("desPath", desPath));
                 })
                 // 不覆盖结果视频路径
                 .filter(tuple -> !Files.exists(tuple.<String>get("desPath")))
@@ -319,16 +319,16 @@ public class FfmpegUtils {
 
     public static void main(String[] args) {
         var script = getCompressVideoScript(
-                "D:/Tools/ffmpeg.exe",
-                "D:/Tools/ffprobe.exe",
-                "D:\\Temp\\待转",
-                "D:\\Temp\\输出"
+                "ffmpeg",
+                "ffprobe",
+                "/Volumes/Data/Temp/待转",
+                "/Volumes/Data/Temp/输出"
         );
 
         Files.out(
                 script,
-                "C:/Users/Jmc/Desktop/out.bat",
-                Charset.forName("GBK"),
+                "/Users/jmc/Desktop/out.sh",
+                StandardCharsets.UTF_8,
                 false
         );
     }
