@@ -14,14 +14,14 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
+    mavenLocal()
     maven { url "https://killerjmc.github.io/jmc-utils/repo" }
 }
 
 dependencies {
     ext {
-        jmcUtilsVersion = "3.7.0"
+        jmcUtilsVersion = "3.8.0"
         log4jVersion = "2.0.5"
         junitVersion = "4.13.2"
         aspectjVersion = "1.9.21.1"
