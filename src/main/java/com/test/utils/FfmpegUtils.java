@@ -11,6 +11,7 @@ import lombok.Builder;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -65,14 +66,24 @@ public class FfmpegUtils {
         private AudioBitrate audioBitrate;
 
         /**
+         * 是否强制覆盖已存在的输出视频
+         */
+        private boolean overrideOutputVideo;
+
+        /**
          * 输入视频文件路径的命令键
          */
-        private static final String INPUT_VIDEO_PATH_CMD_KEY = "-i ";
+        private static final String INPUT_VIDEO_PATH_CMD_KEY = "-i";
 
         /**
          * 输出视频帧数的命令键
          */
-        private static final String OUTPUT_VIDEO_FPS_CMD_KEY = "-r ";
+        private static final String OUTPUT_VIDEO_FPS_CMD_KEY = "-r";
+
+        /**
+         * 强制覆盖已存在的输出视频的命令 + 标记无控制台输入（没有覆盖前询问也就不会有控制台输入了，主要用于后台执行）
+         */
+        private static final String OVERRIDE_OUTPUT_VIDEO_CMD = "-y -nostdin";
 
         /**
          * 预设
@@ -88,7 +99,7 @@ public class FfmpegUtils {
             /**
              * 命令键
              */
-            private final static String CMD_KEY = "-preset ";
+            private final static String CMD_KEY = "-preset";
 
             /**
              * 命令值
@@ -115,7 +126,7 @@ public class FfmpegUtils {
             /**
              * 命令键
              */
-            private final static String CMD_KEY = "-c:v ";
+            private final static String CMD_KEY = "-c:v";
 
             /**
              * 命令值
@@ -162,7 +173,7 @@ public class FfmpegUtils {
             /**
              * 命令键
              */
-            private final static String CMD_KEY = "-b:a ";
+            private final static String CMD_KEY = "-b:a";
 
             /**
              * 命令值
@@ -178,40 +189,20 @@ public class FfmpegUtils {
         public String toString() {
             Objs.throwsIfNullOrEmpty("必须的参数为空！", ffmpegBinPath, inputVideoPath, outputVideoPath, preset);
 
-            String blank = " ", emptyStr = "";
+            String blank = " ", emptyStr = "", newLine = "\n";
 
             // ffmpeg -i "input/path" -preset fast -c:v libx265 -r 30 -b:a 128k "output/path"
-            return ffmpegBinPath + blank
-                    + INPUT_VIDEO_PATH_CMD_KEY + "\"" + inputVideoPath + "\"" + blank
-                    + Preset.CMD_KEY + preset.CMD_VALUE + blank
-                    + (outputVideoEncoder == null ? emptyStr : OutputVideoEncoder.CMD_KEY + outputVideoEncoder.CMD_VALUE + blank)
-                    + (h265CompatibleWithAppleDevice == null ? emptyStr : h265CompatibleWithAppleDevice.CMD + blank)
-                    + (outputVideoFps == null ? emptyStr : OUTPUT_VIDEO_FPS_CMD_KEY + outputVideoFps + blank)
-                    + (audioBitrate == null ? emptyStr : AudioBitrate.CMD_KEY + audioBitrate.CMD_VALUE + blank)
-                    + "\"" + outputVideoPath + "\"";
+            return STR."""
+            \{ffmpegBinPath} \{INPUT_VIDEO_PATH_CMD_KEY} "\{inputVideoPath}"
+            \{Preset.CMD_KEY} \{preset.CMD_VALUE}
+            \{outputVideoEncoder == null ? emptyStr : STR."\{OutputVideoEncoder.CMD_KEY} \{outputVideoEncoder.CMD_VALUE}"}
+            \{h265CompatibleWithAppleDevice == null ? emptyStr : h265CompatibleWithAppleDevice.CMD}
+            \{outputVideoFps == null ? emptyStr : STR."\{OUTPUT_VIDEO_FPS_CMD_KEY} \{outputVideoFps}"}
+            \{audioBitrate == null ? emptyStr : STR."\{AudioBitrate.CMD_KEY} \{audioBitrate.CMD_VALUE}"}
+            \{overrideOutputVideo ? OVERRIDE_OUTPUT_VIDEO_CMD : emptyStr}
+            "\{outputVideoPath}"
+            """.stripTrailing().replace(newLine, blank);
         }
-    }
-
-    /**
-     * 生成将视频转换为h265格式的命令
-     * @param ffmpegBinPath ffmpeg二进制文件路径
-     * @param inputVideoPath 待转换视频路径
-     * @param outputVideoPath 输出视频路径
-     * @return 将视频转换为h265格式的命令
-     */
-    public static FfmpegCmd getH265TransferCmd(String ffmpegBinPath, String inputVideoPath, String outputVideoPath) {
-        var fixedFps = 30L;
-
-        return FfmpegCmd.builder()
-                .ffmpegBinPath(ffmpegBinPath)
-                .inputVideoPath(inputVideoPath)
-                .outputVideoPath(outputVideoPath)
-                .preset(FfmpegCmd.Preset.FAST)
-                .outputVideoEncoder(FfmpegCmd.OutputVideoEncoder.H265)
-                .h265CompatibleWithAppleDevice(FfmpegCmd.OutputVideoEncoder.H265CompatibleWithAppleDevice.TRUE)
-                .outputVideoFps(fixedFps)
-                .audioBitrate(FfmpegCmd.AudioBitrate.NORMAL)
-                .build();
     }
 
     /**
@@ -264,14 +255,46 @@ public class FfmpegUtils {
     }
 
     /**
-     * 获取压缩视频的ffmpeg脚本
+     * 生成将视频转换为h265格式的默认命令
+     *
+     * @param ffmpegBinPath       ffmpeg二进制文件路径
+     * @param inputVideoPath      待转换视频路径
+     * @param outputVideoPath     输出视频路径
+     * @param overrideOutputVideo 是否覆盖已存在的输出视频
+     * @return 将视频转换为h265格式的命令
+     */
+    public static FfmpegCmd getTransferH265DefaultCmd(String ffmpegBinPath,
+                                                      String inputVideoPath,
+                                                      String outputVideoPath,
+                                                      boolean overrideOutputVideo) {
+        var fixedFps = 30L;
+
+        return FfmpegCmd.builder()
+                .ffmpegBinPath(ffmpegBinPath)
+                .inputVideoPath(inputVideoPath)
+                .outputVideoPath(outputVideoPath)
+                .preset(FfmpegCmd.Preset.FAST)
+                .outputVideoEncoder(FfmpegCmd.OutputVideoEncoder.H265)
+                .h265CompatibleWithAppleDevice(FfmpegCmd.OutputVideoEncoder.H265CompatibleWithAppleDevice.TRUE)
+                .outputVideoFps(fixedFps)
+                .audioBitrate(FfmpegCmd.AudioBitrate.NORMAL)
+                .overrideOutputVideo(overrideOutputVideo)
+                .build();
+    }
+
+    /**
+     * 获取压缩H265视频的ffmpeg命令列表
      * @param ffmpegBinPath ffmpeg二进制文件路径
      * @param ffprobeBinPath ffprobe二进制文件路径
      * @param inputVideoDir 待转换视频根目录
      * @param outputVideoDir 输出视频根路径（会在输出视频文件夹中保留原视频路径结构）
-     * @return 压缩视频的ffmpeg脚本
+     * @return 压缩视频的ffmpeg命令列表
      */
-    public static String getCompressVideoScript(String ffmpegBinPath, String ffprobeBinPath, String inputVideoDir, String outputVideoDir) {
+    public static List<FfmpegCmd> getCompressH265VideoCmds(String ffmpegBinPath,
+                                                        String ffprobeBinPath,
+                                                        String inputVideoDir,
+                                                        String outputVideoDir,
+                                                        boolean overrideOutputVideo) {
         // 创建输出视频根路径
         Files.mkdirs(outputVideoDir);
 
@@ -281,14 +304,13 @@ public class FfmpegUtils {
 
         // 字符串常量
         var emptyStr = "";
-        var spliter = "&&";
 
         return Files.findFiles(inputVideoDir, emptyStr)
                 .stream()
                 // 获取完整的源路径
                 .map(File::getAbsolutePath)
-                // 只筛选H264的源视频（忽略已经是H265的视频）
-                .filter(srcPath -> getVideoEncoder(ffprobeBinPath, srcPath) == VideoEncoder.H264)
+                // 只筛选编码类型正确的视频
+                .filter(srcPath -> getVideoEncoder(ffprobeBinPath, srcPath) != VideoEncoder.UNKNOWN)
                 // 获取文件结果路径，结果为元组（源路径，结果路径）
                 .map(srcPath -> {
                     // 提取相对路径
@@ -307,18 +329,90 @@ public class FfmpegUtils {
                     var desPath = normalizedOutputVideoDir + videoRelativePath;
                     return Tuple.fromNamed(Map.entry("srcPath", srcPath), Map.entry("desPath", desPath));
                 })
-                // 不覆盖结果视频路径
-                .filter(tuple -> !Files.exists(tuple.<String>get("desPath")))
+                // 判断是否需要过滤掉结果视频存在的路径
+                .filter(tuple -> !(!overrideOutputVideo && Files.exists(tuple.<String>get("desPath"))))
                 // 创建父路径
                 .peek(tuple -> Files.mkdirs(Files.getParentPath(tuple.get("desPath"))))
                 // 获取ffmpeg命令
-                .map(tuple -> getH265TransferCmd(ffmpegBinPath, tuple.get("srcPath"), tuple.get("desPath")).toString())
-                // 将命令串起来为最终的结果命令
+                .map(tuple -> getTransferH265DefaultCmd(
+                        ffmpegBinPath, tuple.get("srcPath"),
+                        tuple.get("desPath"),
+                        overrideOutputVideo
+                ))
+                .toList();
+    }
+
+    /**
+     * 获取压缩H265视频的ffmpeg顺序执行脚本（目标视频路径存在不覆盖）
+     * @param ffmpegBinPath ffmpeg二进制文件路径
+     * @param ffprobeBinPath ffprobe二进制文件路径
+     * @param inputVideoDir 待转换视频根目录
+     * @param outputVideoDir 输出视频根路径（会在输出视频文件夹中保留原视频路径结构）
+     * @return 压缩视频的ffmpeg脚本
+     */
+    public static String getCompressH265VideoSyncScript(String ffmpegBinPath,
+                                                        String ffprobeBinPath,
+                                                        String inputVideoDir,
+                                                        String outputVideoDir) {
+        var spliter = "&&";
+        return FfmpegUtils.getCompressH265VideoCmds(
+                ffmpegBinPath, ffprobeBinPath, inputVideoDir, outputVideoDir, false
+                )
+                .stream()
+                .map(Object::toString)
                 .collect(Collectors.joining(spliter));
     }
 
+    /**
+     * 获取压缩H265视频的ffmpeg并行执行脚本（目标视频路径存在会覆盖）
+     * @param ffmpegBinPath ffmpeg二进制文件路径
+     * @param ffprobeBinPath ffprobe二进制文件路径
+     * @param inputVideoDir 待转换视频根目录
+     * @param outputVideoDir 输出视频根路径（会在输出视频文件夹中保留原视频路径结构）
+     * @return 压缩视频的ffmpeg脚本
+     */
+    public static String getCompressH265VideoAsyncScript(String ffmpegBinPath,
+                                                         String ffprobeBinPath,
+                                                         String inputVideoDir,
+                                                         String outputVideoDir) {
+        // shell异步命令模板
+        var asyncCmdTemplate = "(%s) &";
+        // 等待执行完成的命令
+        var waitCmd = "wait";
+        var newLine = "\n";
+        // 计时相关的
+        var getStartTimeCmd = """
+        echo "正在把视频转换为H265格式，开始时间是：$(date "+%Y-%m-%d %H:%M:%S")"
+        start_epoch=$(date +%s)
+        """;
+        var endTimeAndCalcCostTimeCmd = """
+        
+        echo "结束时间是：$(date "+%Y-%m-%d %H:%M:%S")"
+        end_epoch=$(date +%s)
+        time_diff=$((end_epoch - start_epoch))
+        echo "视频已经全部转换为H265格式，一共花费了 $time_diff 秒！"
+        """;
+
+        var asyncFfmpegCmds = FfmpegUtils.getCompressH265VideoCmds(
+                ffmpegBinPath, ffprobeBinPath, inputVideoDir, outputVideoDir, true
+                )
+                .stream()
+                .map(Object::toString)
+                .map(asyncCmdTemplate::formatted)
+                .collect(Collectors.toList());
+        // 加上开始时间计时命令
+        asyncFfmpegCmds.addFirst(getStartTimeCmd);
+        // 加上等待执行完成的命令
+        asyncFfmpegCmds.addLast(waitCmd);
+        // 加上计时命令
+        asyncFfmpegCmds.addLast(endTimeAndCalcCostTimeCmd);
+        // 每行命令加上换行符
+        return String.join(newLine, asyncFfmpegCmds);
+    }
+
     public static void main(String[] args) {
-        var script = getCompressVideoScript(
+        // 获取异步执行的H265转化脚本
+        var script = getCompressH265VideoAsyncScript(
                 "ffmpeg",
                 "ffprobe",
                 "/Volumes/Data/Temp/待转",
