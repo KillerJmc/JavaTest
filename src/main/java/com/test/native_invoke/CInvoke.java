@@ -1,6 +1,7 @@
 import com.jmc.lang.ref.Pointer;
 import com.test.native_invoke.Switch;
 import org.junit.Assert;
+
 import java.lang.foreign.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 
+@SuppressWarnings("preview")
 void main() {
     // strlen
     var s = "hello";
@@ -52,16 +54,16 @@ static int printf(String format, Object... vargs) {
     var argTypeList = new ArrayList<MemoryLayout>(List.of(ValueLayout.ADDRESS));
     // 依次填充可变参数对应的类型
     Arrays.stream(vargs).forEach(arg -> {
-        var argType = Switch.<MemoryLayout> judge(arg.getClass())
-                .cases(Byte.class, () -> ValueLayout.JAVA_BYTE)
-                .cases(Boolean.class, () -> ValueLayout.JAVA_BOOLEAN)
-                .cases(Character.class, () -> ValueLayout.JAVA_CHAR)
-                .cases(Short.class, () -> ValueLayout.JAVA_SHORT)
-                .cases(Integer.class, () -> ValueLayout.JAVA_INT)
-                .cases(Long.class, () -> ValueLayout.JAVA_LONG)
-                .cases(Float.class, () -> ValueLayout.JAVA_FLOAT)
-                .cases(Double.class, () -> ValueLayout.JAVA_DOUBLE)
-                .cases(String.class, () -> ValueLayout.ADDRESS)
+        MemoryLayout argType = Switch.match(arg.getClass())
+                .when(Byte.class, ValueLayout.JAVA_BYTE)
+                .when(Boolean.class, ValueLayout.JAVA_BOOLEAN)
+                .when(Character.class, ValueLayout.JAVA_CHAR)
+                .when(Short.class, ValueLayout.JAVA_SHORT)
+                .when(Integer.class, ValueLayout.JAVA_INT)
+                .when(Long.class, ValueLayout.JAVA_LONG)
+                .when(Float.class, ValueLayout.JAVA_FLOAT)
+                .when(Double.class, ValueLayout.JAVA_DOUBLE)
+                .when(String.class, ValueLayout.ADDRESS)
                 .orElseThrow(() -> new IllegalStateException(STR."不支持的参数类型：\{arg.getClass()}"));
         argTypeList.add(argType);
     });
@@ -156,16 +158,16 @@ static int scanf(String format, Pointer<?>... vargs) {
             var argPtr = vargs[idx];
 
             // 读取指针，从参数指针的最开始获取参数值
-            var value = Switch.judge(argPtr.type())
-                    .cases(Byte.class, () -> argAddr.get(ValueLayout.JAVA_BYTE, 0))
-                    .cases(Boolean.class, () -> argAddr.get(ValueLayout.JAVA_BOOLEAN, 0))
-                    .cases(Character.class, () -> argAddr.get(ValueLayout.JAVA_CHAR, 0))
-                    .cases(Short.class, () -> argAddr.get(ValueLayout.JAVA_SHORT, 0))
-                    .cases(Integer.class, () -> argAddr.get(ValueLayout.JAVA_INT, 0))
-                    .cases(Long.class, () -> argAddr.get(ValueLayout.JAVA_LONG, 0))
-                    .cases(Float.class, () -> argAddr.get(ValueLayout.JAVA_FLOAT, 0))
-                    .cases(Double.class, () -> argAddr.get(ValueLayout.JAVA_DOUBLE, 0))
-                    .cases(String.class, () -> argAddr.getUtf8String(0))
+            Object value = Switch.match(argPtr.type())
+                    .when(Byte.class, () -> argAddr.get(ValueLayout.JAVA_BYTE, 0))
+                    .when(Boolean.class, () -> argAddr.get(ValueLayout.JAVA_BOOLEAN, 0))
+                    .when(Character.class, () -> argAddr.get(ValueLayout.JAVA_CHAR, 0))
+                    .when(Short.class, () -> argAddr.get(ValueLayout.JAVA_SHORT, 0))
+                    .when(Integer.class, () -> argAddr.get(ValueLayout.JAVA_INT, 0))
+                    .when(Long.class, () -> argAddr.get(ValueLayout.JAVA_LONG, 0))
+                    .when(Float.class, () -> argAddr.get(ValueLayout.JAVA_FLOAT, 0))
+                    .when(Double.class, () -> argAddr.get(ValueLayout.JAVA_DOUBLE, 0))
+                    .when(String.class, () -> argAddr.getUtf8String(0))
                     .orElseThrow(() -> new IllegalStateException(STR."不支持的指针类型：\{argPtr.type()}"));
             // 把参数值设置回Java指针中
             argPtr.resetUnchecked(value);

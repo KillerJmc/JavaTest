@@ -1,9 +1,7 @@
 package com.test.apply.net;
 
 import java.net.NetworkInterface;
-import java.net.InetAddress;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.Collections;
 
 /**
  * 网络工具类
@@ -15,16 +13,31 @@ public class NetworkUtil {
      * @return 本机Mac地址字符串
      */
     public static String getMacAddress() {
-        String delimiter = ":";
-        String hexFormat = "%02X";
+        var macAddressSeparator = ":";
+        var macAddressFormat = "%02X";
 
         try {
-            byte[] mac = NetworkInterface.getByInetAddress(InetAddress.getLocalHost()).getHardwareAddress();
-            return IntStream.range(0, mac.length)
-                    .mapToObj(i -> String.format(hexFormat, mac[i]))
-                    .collect(Collectors.joining(delimiter));
+            // 获取所有网络接口
+            for (NetworkInterface networkInterface : Collections.list(NetworkInterface.getNetworkInterfaces())) {
+                // 过滤掉环回接口并获取硬件地址
+                if (!networkInterface.isLoopback() && networkInterface.getHardwareAddress() != null) {
+                    byte[] mac = networkInterface.getHardwareAddress();
+                    if (mac != null) {
+                        // 格式化MAC地址并返回
+                        StringBuilder macAddress = new StringBuilder();
+                        for (int i = 0; i < mac.length; i++) {
+                            macAddress.append(String.format(macAddressFormat, mac[i]));
+                            if (i != mac.length - 1) {
+                                macAddress.append(macAddressSeparator);
+                            }
+                        }
+                        return macAddress.toString();
+                    }
+                }
+            }
+            throw new RuntimeException("无法获取有效的MAC地址");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("获取MAC地址失败", e);
         }
     }
 
