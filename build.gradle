@@ -6,20 +6,9 @@ group "com.jmc"
 version "1.0.0"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
 }
 
-tasks.withType(JavaCompile).configureEach {
-    options.compilerArgs += "--enable-preview"
-}
-
-tasks.withType(JavaExec).configureEach {
-    jvmArgs += "--enable-preview"
-}
-
-tasks.withType(Test).configureEach {
-    jvmArgs += "--enable-preview"
-}
 
 repositories {
     mavenCentral()
@@ -34,7 +23,7 @@ dependencies {
         junitVersion = "4.13.2"
         aspectjVersion = "1.9.21.1"
         jmhVersion = "1.35"
-        lombokVersion = "1.18.30"
+        lombokVersion = "1.18.38"
         cglibVersion = "3.3.0"
         javaAssistVersion = "3.29.2-GA"
         groovyVersion = "4.0.11"

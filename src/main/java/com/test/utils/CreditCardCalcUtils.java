@@ -1,11 +1,5 @@
 package com.test.utils;
 
-import com.jmc.math.Maths;
-import com.jmc.math.exp.ExactExp;
-import com.jmc.math.exp.ExpUtils;
-
-import java.math.BigDecimal;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -16,7 +10,6 @@ import static com.jmc.lang.BuiltIns.println;
  * 信用卡计算类
  * @author Jmc
  */
-@SuppressWarnings("preview")
 public class CreditCardCalcUtils {
     /**
      * 计算最低利息（每月还10%）
@@ -28,10 +21,10 @@ public class CreditCardCalcUtils {
      * @param dueDay        还款日（每月第几天）
      */
     public static void calcMinInterest(double billingAmount, LocalDate purchaseDate, int billingDay, int dueDay) {
-        println(STR."""
-        购买日：\{purchaseDate}
-        订单金额：\{billingAmount} 元
-        """);
+        println(String.format("""
+        购买日：%s
+        订单金额：%.2f 元
+        """, purchaseDate, billingAmount));
 
         // 每次还款百分比
         var repaymentRatePerTime = 0.1;
@@ -96,15 +89,18 @@ public class CreditCardCalcUtils {
             totalRepayment += repayAmount;
 
             printf(
-                    STR."""
-                    第\{month}个月:
-                      - 账单日：\{currBillingDate}
-                      - 还款日：\{currRepaymentDate}
+                    """
+                    第%d个月:
+                      - 账单日：%s
+                      - 还款日：%s
                       - 产生利息：%.2f 元
                       - 本月需还：%.2f 元
                       - 累计还款：%.2f 元
 
                     """,
+                    month,
+                    currBillingDate,
+                    currRepaymentDate,
                     interest,
                     repayAmount,
                     totalRepayment

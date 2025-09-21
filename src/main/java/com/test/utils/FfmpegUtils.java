@@ -192,16 +192,28 @@ public class FfmpegUtils {
             String blank = " ", emptyStr = "", newLine = "\n";
 
             // ffmpeg -i "input/path" -preset fast -c:v libx265 -r 30 -b:a 128k "output/path"
-            return STR."""
-            \{ffmpegBinPath} \{INPUT_VIDEO_PATH_CMD_KEY} "\{inputVideoPath}"
-            \{Preset.CMD_KEY} \{preset.CMD_VALUE}
-            \{outputVideoEncoder == null ? emptyStr : STR."\{OutputVideoEncoder.CMD_KEY} \{outputVideoEncoder.CMD_VALUE}"}
-            \{h265CompatibleWithAppleDevice == null ? emptyStr : h265CompatibleWithAppleDevice.CMD}
-            \{outputVideoFps == null ? emptyStr : STR."\{OUTPUT_VIDEO_FPS_CMD_KEY} \{outputVideoFps}"}
-            \{audioBitrate == null ? emptyStr : STR."\{AudioBitrate.CMD_KEY} \{audioBitrate.CMD_VALUE}"}
-            \{overrideOutputVideo ? OVERRIDE_OUTPUT_VIDEO_CMD : emptyStr}
-            "\{outputVideoPath}"
-            """.stripTrailing().replace(newLine, blank);
+            return String.format("""
+            %s %s "%s"
+            %s %s
+            %s
+            %s
+            %s
+            %s
+            %s
+            "%s"
+            """,
+                    ffmpegBinPath,
+                    INPUT_VIDEO_PATH_CMD_KEY,
+                    inputVideoPath,
+                    Preset.CMD_KEY,
+                    preset.CMD_VALUE,
+                    outputVideoEncoder == null ? emptyStr : String.format("%s %s", OutputVideoEncoder.CMD_KEY, outputVideoEncoder.CMD_VALUE),
+                    h265CompatibleWithAppleDevice == null ? emptyStr : h265CompatibleWithAppleDevice.CMD,
+                    outputVideoFps == null ? emptyStr : String.format("%s %s", OUTPUT_VIDEO_FPS_CMD_KEY, outputVideoFps),
+                    audioBitrate == null ? emptyStr : String.format("%s %s", AudioBitrate.CMD_KEY, audioBitrate.CMD_VALUE),
+                    overrideOutputVideo ? OVERRIDE_OUTPUT_VIDEO_CMD : emptyStr,
+                    outputVideoPath
+            ).stripTrailing().replace(newLine, blank);
         }
     }
 
