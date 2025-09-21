@@ -10,6 +10,13 @@ void main() {
     System.out.println("strlen -> 字符串「" + s + "」的长度是：" + len);
     Assert.assertEquals(5L, len);
 
+    // printf
+    double a = 4.5;
+    long b = 3L;
+    int printLen = printf("%s -> %.1f - %ld = %.1f\n", "printf", a, b, a - b);
+
+    Assert.assertEquals("printf -> 4.5 - 3 = 1.5\n".length(), printLen);
+
     // scanf
     var namePtr = Pointer.of("null");
     var agePtr = Pointer.of(-1);
@@ -19,13 +26,37 @@ void main() {
     System.out.println("你输入的姓名是：" + namePtr.get() + "；年龄是：" + agePtr.get() + "\n");
 
     Assert.assertEquals(2, scanLen);
+}
 
-    // printf
-    double a = 4.5;
-    long b = 3L;
-    int printLen = printf("%s -> %.1f - %ld = %.1f\n", "printf", a, b, a - b);
+/**
+ * C本地函数：size_t strlen(const char *s)
+ * @param s 字符串s
+ * @return C字符串长度
+ */
+static long strlen(String s) {
+    // 函数名
+    var funcName = "strlen";
 
-    Assert.assertEquals("printf -> 4.5 - 3 = 1.5\n".length(), printLen);
+    // 获取Linker对象
+    var linker = Linker.nativeLinker();
+
+    // 获取C函数，传入函数名、函数返回值和参数：size_t strlen(const char *s)
+    var strlenFunc = linker.downcallHandle(
+            // 函数指针：strlen函数
+            linker.defaultLookup().find(funcName).orElseThrow(),
+            // 函数签名：返回值类型 (long)，参数类型 (字符串指针)
+            FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.ADDRESS)
+    );
+
+    // 管理内存分配，在try结束后自动释放内存
+    try (var arena = Arena.ofConfined()) {
+        // 分配内存，并生成一个C字符串为函数参数
+        var cStr = arena.allocateFrom(s);
+        // 执行函数，返回结果
+        return (long) strlenFunc.invokeExact(cStr);
+    } catch (Throwable e) {
+        throw new RuntimeException("C函数调用失败: " + funcName, e);
+    }
 }
 
 /**
@@ -41,30 +72,29 @@ static int printf(String format, Object... vargs) {
     // 获取Linker对象
     var linker = Linker.nativeLinker();
 
-    // 参数类型列表：包含格式化字符串指针和可变参数
-    var argTypeList = new ArrayList<MemoryLayout>(List.of(ValueLayout.ADDRESS));
-    // 依次填充可变参数对应的类型
-    Arrays.stream(vargs).forEach(arg -> {
-        MemoryLayout argType = switch (arg) {
-            case Byte _ -> ValueLayout.JAVA_BYTE;
-            case Boolean _ -> ValueLayout.JAVA_BOOLEAN;
-            case Character _ -> ValueLayout.JAVA_CHAR;
-            case Short _ -> ValueLayout.JAVA_SHORT;
-            case Integer _ -> ValueLayout.JAVA_INT;
-            case Long _ -> ValueLayout.JAVA_LONG;
-            case Float _ -> ValueLayout.JAVA_FLOAT;
-            case Double _ -> ValueLayout.JAVA_DOUBLE;
-            case String _ -> ValueLayout.ADDRESS;
-            default -> throw new IllegalStateException("不支持的参数类型：" + arg.getClass());
-        };
-        argTypeList.add(argType);
-    });
+    // 参数类型列表：包含格式化字符串指针和可变参数（这里通过解析用户传入参数类型进行构造）
+    var argTypeList = Stream.concat(
+            Stream.of(ValueLayout.ADDRESS),
+            Arrays.stream(vargs).map(arg -> switch (arg) {
+                case Byte _ -> ValueLayout.JAVA_BYTE;
+                case Boolean _ -> ValueLayout.JAVA_BOOLEAN;
+                case Character _ -> ValueLayout.JAVA_CHAR;
+                case Short _ -> ValueLayout.JAVA_SHORT;
+                case Integer _ -> ValueLayout.JAVA_INT;
+                case Long _ -> ValueLayout.JAVA_LONG;
+                case Float _ -> ValueLayout.JAVA_FLOAT;
+                case Double _ -> ValueLayout.JAVA_DOUBLE;
+                case String _ -> ValueLayout.ADDRESS;
+                default -> throw new IllegalStateException("不支持的参数类型：" + arg.getClass());
+            })
+    ).toList();
 
     // 第一个可变参数在上述参数列表中的下标
     var firstVariadicArgIdx = 1;
 
     // 获取C函数，传入函数名、函数返回值和参数：int printf(const char *format, ...)
-    var printf = linker.downcallHandle(
+    var printfFunc = linker.downcallHandle(
+            // 函数指针：printf函数
             linker.defaultLookup().find(funcName).orElseThrow(),
             // 函数签名：返回值类型 (int)，参数类型 (格式化字符串指针, 可变参数列表)
             FunctionDescriptor.of(ValueLayout.JAVA_INT, argTypeList.toArray(MemoryLayout[]::new)),
@@ -74,24 +104,17 @@ static int printf(String format, Object... vargs) {
 
     // 管理内存分配，在try结束后自动释放内存
     try (var arena = Arena.ofConfined()) {
-        // 分配内存，并生成一个C字符串为format参数
-        var formatArg = arena.allocateFrom(format);
+        // 分配内存，并生成一个C字符串为format参数，并填充参数列表
+        var argList = Stream.concat(
+                // 构造format参数的c语言字符串
+                Stream.of(arena.allocateFrom(format)),
+                // 构造可变参数的c语言对应变量
+                Arrays.stream(vargs).map(arg -> arg instanceof String s ? arena.allocateFrom(s) : arg)
+        ).toArray();
 
-        // 参数列表
-        var argList = Stream.concat(Stream.of(formatArg), Arrays.stream(vargs))
-                .map(arg -> {
-                    // 把所有String转化为c_string
-                    if (arg instanceof String s) {
-                        return arena.allocateFrom(s);
-                    }
-                    return arg;
-                })
-                .toArray();
-
-        // 执行函数：必须使用invokeWithArguments才能传入Object[]，调用invoke/invokeExact会报参数错误异常
-        return (int) printf.invokeWithArguments(argList);
+        return (int) printfFunc.invokeWithArguments(argList);
     } catch (Throwable e) {
-        throw new RuntimeException(e);
+        throw new RuntimeException("C函数调用失败: " + funcName, e);
     }
 }
 
@@ -108,10 +131,8 @@ static int scanf(String format, Pointer<?>... vargs) {
     // 获取Linker对象
     var linker = Linker.nativeLinker();
 
-    // 参数类型列表：包含格式化字符串指针和可变参数
-    var argTypeList = new ArrayList<MemoryLayout>(List.of(ValueLayout.ADDRESS));
-    // 依次填充可变参数（都是地址类型）
-    Arrays.stream(vargs).forEach(_ -> argTypeList.add(ValueLayout.ADDRESS));
+    // 参数类型列表：包含格式化字符串指针和可变参数（都是地址类型）
+    var argTypeList = Stream.generate(() -> ValueLayout.ADDRESS).limit(1 + vargs.length).toList();
 
     // 第一个可变参数在上述参数列表中的下标
     var firstVariadicArgIdx = 1;
@@ -130,7 +151,7 @@ static int scanf(String format, Pointer<?>... vargs) {
         // 分配内存，并生成一个C字符串为format参数
         var formatArg = arena.allocateFrom(format);
 
-        // 参数指针列表（每个参数初始化值都设置为-1）
+        // 参数指针列表初始化
         var argAddrList = Arrays.stream(vargs)
                 .map(_ -> arena.allocate(ValueLayout.ADDRESS))
                 .toList();
@@ -142,12 +163,12 @@ static int scanf(String format, Pointer<?>... vargs) {
         var scanLen = (int) scanf.invokeWithArguments(argList);
 
         // 把传入参数放回Java指针中
-        for (int idx = 0; idx < argAddrList.size(); idx++) {
+        IntStream.range(0, vargs.length).forEach(idx -> {
             // 参数的C指针
             var argAddr = argAddrList.get(idx);
             // 参数的Java指针
             var argPtr = vargs[idx];
-
+            
             // 读取指针，从参数指针的最开始获取参数值
             Object value = switch (argPtr.type()) {
                 case Class<?> c when c == Byte.class -> argAddr.get(ValueLayout.JAVA_BYTE, 0);
@@ -158,45 +179,17 @@ static int scanf(String format, Pointer<?>... vargs) {
                 case Class<?> c when c == Long.class -> argAddr.get(ValueLayout.JAVA_LONG, 0);
                 case Class<?> c when c == Float.class -> argAddr.get(ValueLayout.JAVA_FLOAT, 0);
                 case Class<?> c when c == Double.class -> argAddr.get(ValueLayout.JAVA_DOUBLE, 0);
-                case Class<?> c when c == String.class -> argAddr.getString(0, java.nio.charset.StandardCharsets.UTF_8);
-                default -> throw new IllegalStateException("不支持的指针类型：" + argPtr.type());
+                case Class<?> c when c == String.class -> argAddr.getString(0, StandardCharsets.UTF_8);
+                default -> throw new IllegalStateException("不支持的Java指针类型：" + argPtr.type());
             };
             // 把参数值设置回Java指针中
             argPtr.resetUnchecked(value);
-        }
+        });
 
         return scanLen;
     } catch (Throwable e) {
-        throw new RuntimeException(e);
+        throw new RuntimeException("C函数调用失败: " + funcName, e);
     }
 }
 
-/**
- * C本地函数：size_t strlen(const char *s)
- * @param s 字符串s
- * @return C字符串长度
- */
-static long strlen(String s) {
-    // 函数名
-    var funcName = "strlen";
 
-    // 获取Linker对象
-    var linker = Linker.nativeLinker();
-
-    // 获取C函数，传入函数名、函数返回值和参数：size_t strlen(const char *s)
-    var strlen = linker.downcallHandle(
-            linker.defaultLookup().find(funcName).orElseThrow(),
-            // 函数签名：返回值类型 (long)，参数类型 (字符串指针)
-            FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.ADDRESS)
-    );
-
-    // 管理内存分配，在try结束后自动释放内存
-    try (var arena = Arena.ofConfined()) {
-        // 分配内存，并生成一个C字符串为函数参数
-        var cStr = arena.allocateFrom(s);
-        // 执行函数，返回结果
-        return (long) strlen.invokeExact(cStr);
-    } catch (Throwable e) {
-        throw new RuntimeException(e);
-    }
-}
