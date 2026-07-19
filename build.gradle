@@ -13,6 +13,7 @@ java {
 repositories {
     mavenCentral()
     mavenLocal()
+    maven { url 'https://mirrors.ustc.edu.cn/maven-central/' }
     maven { url "https://killerjmc.github.io/jmc-utils/repo" }
 }
 
